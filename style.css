@@ -273,6 +273,8 @@ html {
     width: auto;
     max-width: calc(100% - 324px);
     overflow-x: auto;
+    position: relative;
+    z-index: 1;
 }
 
 .ultimos_tickets table {
@@ -333,6 +335,7 @@ body.app-page {
     left: 0;
     z-index: 200;
     width: 100%;
+    height: 70px;
 }
 
 .app-page .navbar {
@@ -649,6 +652,250 @@ body.app-page {
     .inventario-table table { min-width: 900px; }
 }
 
+
+
+.usuario-info {
+    display: block;
+    max-width: 980px;
+    margin: 0 auto 24px;
+    padding: 0 20px;
+    color: var(--text-secondary);
+    background-color: transparent;
+    margin-left: 300px;
+}
+
+.usuario-info h1 {
+    font-size: 28px;
+    margin-bottom: 14px;
+    color: black;
+    margin-left: 0px;
+}
+
+.usuario-info p {
+    color: #030736;
+    margin-bottom: 20px;
+}
+
+
+
+
+.usuario-table {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    border-collapse: collapse;
+    overflow-x: auto;
+    margin-left: 30px;
+    margin-top: 60px;
+}
+
+.usuario-table table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.usuario-table th,
+.usuario-table td {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    text-align: left;
+    white-space: normal;
+    word-break: break-word;
+    vertical-align: top;
+}
+
+.usuario-table .cell-content {
+    display: block;
+    max-height: 3.6em; 
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.usuario-table .cell-content::-webkit-scrollbar { width: 8px; }
+.usuario-table .cell-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 6px; }
+
+@media (max-width: 860px) {
+    .usuario-table { max-width: 100%; overflow-x: auto; }
+    .usuario-table table { min-width: 900px; }
+}
+
+/* =========================================================
+   PERFIL
+   Usado por: perfil.php
+   ========================================================= */
+body.perfil-page {
+    background: #f5f5f5;
+    min-height: 100vh;
+    padding: 40px;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    gap: 40px;
+}
+
+.perfil-izq {
+    width: 360px;
+}
+
+.foto-perfil {
+    width: 300px;
+    height: 300px;
+    margin: auto;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icono-preview,
+.foto-perfil img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.selector-iconos {
+    margin-top: 25px;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.selector-iconos h3 {
+    margin-bottom: 8px;
+    color: #2d3e50;
+    font-size: 18px;
+}
+
+.selector-iconos p {
+    margin-bottom: 14px;
+    color: #666;
+    font-size: 14px;
+}
+
+.iconos-predeterminados {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.icono-opcion {
+    border: 1px solid #d0d7de;
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.icono-opcion img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+}
+
+.icono-opcion:hover {
+    background: #e8f0fe;
+    transform: translateY(-2px);
+}
+
+.perfil-der {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+}
+
+.perfil-der .titulo {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 30px;
+}
+
+.perfil-der .titulo span {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background: #fff;
+}
+
+.perfil-der .fila {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.perfil-der .grupo {
+    flex: 1;
+}
+
+.perfil-der .grupo label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.perfil-der .grupo input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.perfil-der .botones {
+    margin-top: 20px;
+}
+
+.perfil-der button.btn-guardar,
+.perfil-der button.btn-limpiar {
+    border: none;
+    padding: 10px 18px;
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.perfil-der button.btn-guardar {
+    background: #104d79;
+}
+
+.perfil-der button.btn-limpiar {
+    background: #1062be;
+}
+
+.perfil-der button:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+    .contenedor {
+        flex-direction: column;
+    }
+
+    .perfil-izq {
+        width: 100%;
+    }
+
+    .perfil-der .fila {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
 .app-page #titulo-informacion {
     padding: 0;
     max-width: 850px;
@@ -678,6 +925,8 @@ body.app-page {
     text-align: left;
     color: black;
     margin-left: 280px;
+    position: relative;
+    z-index: 1;
 }
 
 .app-page #fechahoy {

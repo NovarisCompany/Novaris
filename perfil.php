@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . "/../conexion.php";
+require_once __DIR__ . "/conexion.php";
 
 $mensaje = "";
 $error = "";
@@ -23,7 +23,7 @@ $apellido = "";
 $telefono = "";
 $email = "";
 $idRol = 0;
-$fotoPerfil = "../Imagenes/usuariofemenino.png";
+$fotoPerfil = "Imagenes/usuariofemenino.png";
 $roles = [];
 
 $consultaUsuario = "SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.telefono, u.id_rol, r.nombre_rol
@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $contrasena = $_POST["contrasena"] ?? "";
     $confirmarContrasena = $_POST["confirmar_contrasena"] ?? "";
     $idRol = (int) ($_POST["id_rol"] ?? 0);
-    $fotoPerfil = trim($_POST["foto_perfil"] ?? "../Imagenes/usuariofemenino.png");
+    $fotoPerfil = trim($_POST["foto_perfil"] ?? "Imagenes/usuariofemenino.png");
 
     if ($nombre === "" || $apellido === "" || $email === "") {
         $error = "Completa nombre, apellidos y email.";
@@ -106,9 +106,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="stylep.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="perfil-page">
 
 <div class="contenedor">
 
@@ -123,28 +123,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <p>Elige un icono para tu perfil</p>
             <div class="iconos-predeterminados">
                 <button type="button" class="icono-opcion" data-image="Imagenes/usuariofemenino.png" aria-label="Usuario femenino">
-                    <img src="../Imagenes/usuariofemenino.png" alt="Usuario femenino">
+                    <img src="Imagenes/usuariofemenino.png" alt="Usuario femenino">
                 </button>
-                <button type="button" class="icono-opcion" data-image="../Imagenes/usuariomasculino.png" aria-label="Usuario masculino">
-                    <img src="../Imagenes/usuariomasculino.png" alt="Usuario masculino">
+                <button type="button" class="icono-opcion" data-image="Imagenes/usuariomasculino.png" aria-label="Usuario masculino">
+                    <img src="Imagenes/usuariomasculino.png" alt="Usuario masculino">
                 </button>
-                <button type="button" class="icono-opcion" data-image="../Imagenes/usuariofemeninodescafro.png" aria-label="Usuario femenino descafrado">
-                    <img src="../Imagenes/usuariofemeninodescafro.png" alt="Usuario femenino descafrado">
+                <button type="button" class="icono-opcion" data-image="Imagenes/usuariofemeninodescafro.png" aria-label="Usuario femenino descafrado">
+                    <img src="Imagenes/usuariofemeninodescafro.png" alt="Usuario femenino descafrado">
                 </button>
-                <button type="button" class="icono-opcion" data-image="../Imagenes/usuariomasculinodescafro.png" aria-label="Usuario masculino descafrado">
-                    <img src="../Imagenes/usuariomasculinodescafro.png" alt="Usuario masculino descafrado">
+                <button type="button" class="icono-opcion" data-image="Imagenes/usuariomasculinodescafro.png" aria-label="Usuario masculino descafrado">
+                    <img src="Imagenes/usuariomasculinodescafro.png" alt="Usuario masculino descafrado">
                 </button>
-                <button type="button" class="icono-opcion" data-image="../Imagenes/usuariofemeninolentes.png" aria-label="Usuario femenino con lentes">
-                    <img src="../Imagenes/usuariofemeninolentes.png" alt="Usuario femenino con lentes">
+                <button type="button" class="icono-opcion" data-image="Imagenes/usuariofemeninolentes.png" aria-label="Usuario femenino con lentes">
+                    <img src="Imagenes/usuariofemeninolentes.png" alt="Usuario femenino con lentes">
                 </button>
-                <button type="button" class="icono-opcion" data-image="../Imagenes/usuariomasculinolentes.png" aria-label="Usuario masculino con lentes">
-                    <img src="../Imagenes/usuariomasculinolentes.png" alt="Usuario masculino con lentes">
+                <button type="button" class="icono-opcion" data-image="Imagenes/usuariomasculinolentes.png" aria-label="Usuario masculino con lentes">
+                    <img src="Imagenes/usuariomasculinolentes.png" alt="Usuario masculino con lentes">
                 </button>
-                <button type="button" class="icono-opcion" data-image="../Imagenes/usuariofemeninopelirroja.png" aria-label="Usuario femenino pelirroja">
-                    <img src="../Imagenes/usuariofemeninopelirroja.png" alt="Usuario femenino pelirroja">
+                <button type="button" class="icono-opcion" data-image="Imagenes/usuariofemeninopelirroja.png" aria-label="Usuario femenino pelirroja">
+                    <img src="Imagenes/usuariofemeninopelirroja.png" alt="Usuario femenino pelirroja">
                 </button>
-                <button type="button" class="icono-opcion" data-image="../Imagenes/usuariomasculinocalvo.png" aria-label="Usuario masculino calvo">
-                    <img src="../Imagenes/usuariomasculinocalvo.png" alt="Usuario masculino calvo">
+                <button type="button" class="icono-opcion" data-image="Imagenes/usuariomasculinocalvo.png" aria-label="Usuario masculino calvo">
+                    <img src="Imagenes/usuariomasculinocalvo.png" alt="Usuario masculino calvo">
                 </button>
             </div>
         </div>
@@ -249,8 +249,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     botonLimpiar.addEventListener('click', () => {
         formPerfil.reset();
-        preview.src = '../Imagenes/usuariofemenino.png';
-        inputFotoPerfil.value = '../Imagenes/usuariofemenino.png';
+        preview.src = 'Imagenes/usuariofemenino.png';
+        inputFotoPerfil.value = 'Imagenes/usuariofemenino.png';
 
         document.getElementById('nombre').value = '';
         document.getElementById('apellidos').value = '';

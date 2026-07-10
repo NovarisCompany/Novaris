@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once __DIR__ . "/conexion.php";
+require_once __DIR__ . "/../conexion.php";
 
 if (!isset($_SESSION["id_usuario"])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -15,20 +15,20 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novaris</title>
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="../style.css?v=6">
 </head>
 <body class="app-page">
     <header>
         <nav class="navbar">
             <a href="index-admin.php" class="brand">Novaris</a>
-            <a href="index-admin.php"><img src="Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
+            <a href="index-admin.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
             <div class="idioma">
                 <select name="idioma" id="idioma">
                     <option value="es">Español</option>
                     <option value="en">English</option>
                 </select>
             </div>
-            <a href="paginas/perfil.php" class="nav-cta">Mi Perfil</a>
+            <a href="../perfil.php" class="nav-cta">Mi Perfil</a>
         </nav>
     </header>
 
@@ -37,19 +37,19 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
             <a href="index-admin.php" class="side-link">Inicio</a>
         </div>
         <div class="inventario-link">
-            <a href="paginas/inventario.php" class="side-link">Inventario</a>
+            <a href="inventario.php" class="side-link">Inventario</a>
         </div>
         <div class="mesa-ayuda-link">
-            <a href="paginas/mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
+            <a href="mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
         </div>
         <div class="solicitudes-link">
-            <a href="paginas/solicitudes.html" class="side-link">Solicitudes de servicios</a>
+            <a href="solicitudes.php" class="side-link">Solicitudes</a>
         </div>
         <div class="reportes-link">
-            <a href="paginas/reportes.html" class="side-link">Reportes</a>
+            <a href="reportes.php" class="side-link">Reportes</a>
         </div>
         <div class="reportes-link">
-            <a href="paginas/reportes.html" class="side-link">Usuarios</a>
+            <a href="usuario.php" class="side-link">Usuarios</a>
         </div>
       
     </div>

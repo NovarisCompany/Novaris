@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $_SESSION["rol"] = $usuario["nombre_rol"];
 
     if ($usuario["id_rol"] == 1) {
-        header("Location: index-admin.php");
+        header("Location: admin_paginas/index-admin.php");
     } elseif ($usuario["id_rol"] == 2) {
         header("Location: index-tecnico.php");
     } elseif ($usuario["id_rol"] == 3) {

@@ -26,40 +26,37 @@ $resultado = mysqli_query($conexion, $consulta);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novaris</title>
-    <link rel="stylesheet" href="../style.css?v=1">
+    <link rel="stylesheet" href="../style.css?v=6">
 </head>
 <body class="app-page">
     <header>
         <nav class="navbar">
-            <a href="index.php" class="brand">Novaris</a>
+            <a href="index-admin.php" class="brand">Novaris</a>
             <div class="idioma">
                 <select name="idioma" id="idioma">
                     <option value="es">Español</option>
                     <option value="en">English</option>
                 </select>
             </div>
-            <a href="#" class="nav-cta">Mi Perfil</a>
+            <a href="../perfil.php" class="nav-cta">Mi Perfil</a>
         </nav>
     </header>
 
     <div class="side-bar">
         <div class="home-link">
-            <a href="index.php" class="side-link">Inicio</a>
+            <a href="index-admin.php" class="side-link">Inicio</a>
         </div>
         <div class="inventario-link">
-            <a href="paginas/inventario.php" class="side-link">Inventario</a>
+            <a href="inventario.php" class="side-link">Inventario</a>
         </div>
         <div class="mesa-ayuda-link">
-            <a href="paginas/mesa-ayuda.html" class="side-link">Mesa de ayuda</a>
+            <a href="mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
         </div>
         <div class="solicitudes-link">
-            <a href="paginas/solicitudes.html" class="side-link">Solicitudes de servicios</a>
+            <a href="solicitudes.php" class="side-link">Solicitudes de servicios</a>
         </div>
         <div class="reportes-link">
-            <a href="paginas/reportes.html" class="side-link">Reportes</a>
-        </div>
-        <div class="configuracion-link">
-            <a href="paginas/configuracion.html" class="side-link">Configuración</a>
+            <a href="reportes.php" class="side-link">Reportes</a>
         </div>
     </div>
 

@@ -15,33 +15,39 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novaris</title>
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body class="app-page">
     <header>
         <nav class="navbar">
-            <a href="index-solicitante.php" class="brand">Novaris</a>
-            <a href="index-solicitante.php"><img src="Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
+            <a href="index-tecnico.php" class="brand">Novaris</a>
+            <a href="index-tecnico.php"><img src="Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
             <div class="idioma">
                 <select name="idioma" id="idioma">
                     <option value="es">Español</option>
                     <option value="en">English</option>
                 </select>
             </div>
-            <a href="paginas/perfil.php" class="nav-cta">Mi Perfil</a>
+            <a href="perfil.php" class="nav-cta">Mi Perfil</a>
         </nav>
     </header>
 
     <div class="side-bar">
         <div class="home-link">
-            <a href="index-admin.php" class="side-link">Inicio</a>
+            <a href="index-tecnico.php" class="side-link">Inicio</a>
         </div>
         <div class="inventario-link">
-            <a href="paginas/inventario.php" class="side-link">Crear ticket</a>
+            <a href="admin_paginas/mesa-ayuda.php" class="side-link">Mis tickets</a>
         </div>
         <div class="mesa-ayuda-link">
-            <a href="paginas/mesa-ayuda.php" class="side-link">Mis equipos</a>
-    </div>
+            <a href="admin_paginas/mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
+        </div>
+        <div class="solicitudes-link">
+            <a href="admin_paginas/inventario.php" class="side-link">Inventario</a>
+        </div>
+        <div class="reportes-link">
+            <a href="admin_paginas/reportes.php" class="side-link">Historial de trabajos</a>
+        </div>
       
     </div>
 
@@ -50,6 +56,23 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
         <div id="titulo-informacion">
             <strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?>
         </div>
+
+        <div class="info-resumen">
+            <div class="tickets">
+                <h3>Tickets en proceso:</h3>
+                <p>6</p>
+                <h4>Tickets pendientes:</h4>
+                <p>3</p>
+            </div>
+            <div class="inventario">
+                <h3>Inventario:</h3>
+                <p>120</p>
+                <h4>Equipos disponibles:</h4>
+                <p>80</p>
+            </div>
+        </div>
+    </div>
+
     <script>
         const fechaFormateada = new Date().toLocaleDateString("es-ES", {
             weekday: "long",
