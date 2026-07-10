@@ -7,7 +7,7 @@ $error = "";
 try {
     $conexion = conectarBD();
 } catch (mysqli_sql_exception $e) {
-    die("Error de conexión con la base de datos.");
+    die("error");
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST["password"] ?? "";
 
     if ($email === "" || $password === "") {
-        $error = "Por favor, completa todos los campos.";
+        $error = "Por favor complete todos los datos";
     } else {
         try {
             $consulta = "SELECT 
@@ -57,9 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 
-            $error = "Email o contraseña incorrectos.";
+            $error = "Email o contraseña incorrectos";
         } catch (mysqli_sql_exception $e) {
-            $error = "Error al iniciar sesión.";
+            $error = "Error al iniciar sesión";
         }
     }
 }

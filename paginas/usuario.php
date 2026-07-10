@@ -43,7 +43,7 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
             <a href="paginas/mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
         </div>
         <div class="solicitudes-link">
-            <a href="paginas/solicitudes.html" class="side-link">Solicitudes</a>
+            <a href="paginas/solicitudes.html" class="side-link">Solicitudes de servicios</a>
         </div>
         <div class="reportes-link">
             <a href="paginas/reportes.html" class="side-link">Reportes</a>

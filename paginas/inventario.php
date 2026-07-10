@@ -82,19 +82,19 @@ $resultado = mysqli_query($conexion, $consulta);
                     </tr>
                 </thead>
                
-                                 <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
-                                         <tr>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["id_equipo"]); ?>"><?php echo escaparHTML($fila["id_equipo"]); ?></div></td>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["nombre"]); ?>"><?php echo escaparHTML($fila["nombre"]); ?></div></td>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["tipo"]); ?>"><?php echo escaparHTML($fila["tipo"]); ?></div></td>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["marca"]); ?>"><?php echo escaparHTML($fila["marca"]); ?></div></td>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["modelo"]); ?>"><?php echo escaparHTML($fila["modelo"]); ?></div></td>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["numero_serie"]); ?>"><?php echo escaparHTML($fila["numero_serie"]); ?></div></td>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["estado_equipo"]); ?>"><?php echo escaparHTML($fila["estado_equipo"]); ?></div></td>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["fecha_alta"]); ?>"><?php echo escaparHTML($fila["fecha_alta"]); ?></div></td>
-                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["ubicacion"]); ?>"><?php echo escaparHTML($fila["ubicacion"]); ?></div></td>
-                                             </tr>
-                                 <?php endwhile; ?>
+                <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
+                    <tr>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["id_equipo"]); ?>"><?php echo escaparHTML($fila["id_equipo"]); ?></div></td>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["nombre"]); ?>"><?php echo escaparHTML($fila["nombre"]); ?></div></td>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["tipo"]); ?>"><?php echo escaparHTML($fila["tipo"]); ?></div></td>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["marca"]); ?>"><?php echo escaparHTML($fila["marca"]); ?></div></td>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["modelo"]); ?>"><?php echo escaparHTML($fila["modelo"]); ?></div></td>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["numero_serie"]); ?>"><?php echo escaparHTML($fila["numero_serie"]); ?></div></td>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["estado_equipo"]); ?>"><?php echo escaparHTML($fila["estado_equipo"]); ?></div></td>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["fecha_alta"]); ?>"><?php echo escaparHTML($fila["fecha_alta"]); ?></div></td>
+                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["ubicacion"]); ?>"><?php echo escaparHTML($fila["ubicacion"]); ?></div></td>
+                    </tr>
+                <?php endwhile; ?>
             </table>
         </div>
     </div>
