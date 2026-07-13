@@ -1,6 +1,3 @@
-<?php
-require_once "../conexion.php";
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,6 +10,7 @@ require_once "../conexion.php";
     <header>
         <nav class="navbar">
             <a href="index-admin.php" class="brand">Novaris</a>
+            <a href="index-admin.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
             <div class="idioma">
                 <select name="idioma" id="idioma">
                     <option value="es">Español</option>
@@ -33,11 +31,8 @@ require_once "../conexion.php";
         <div class="mesa-ayuda-link">
             <a href="mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
         </div>
-        <div class="solicitudes-link">
-            <a href="solicitudes.php" class="side-link">Solicitudes de servicios</a>
-        </div>
-        <div class="reportes-link">
-            <a href="reportes.php" class="side-link">Reportes</a>
+        <div class="usuarios-link">
+            <a href="usuario.php" class="side-link">Usuarios</a>
         </div>
     </div>
 

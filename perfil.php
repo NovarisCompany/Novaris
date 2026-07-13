@@ -23,7 +23,7 @@ $apellido = "";
 $telefono = "";
 $email = "";
 $idRol = 0;
-$fotoPerfil = "Imagenes/usuariofemenino.png";
+$fotoPerfil = "images/usuariofemenino.png";
 $roles = [];
 
 $consultaUsuario = "SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.telefono, u.id_rol, r.nombre_rol
@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $contrasena = $_POST["contrasena"] ?? "";
     $confirmarContrasena = $_POST["confirmar_contrasena"] ?? "";
     $idRol = (int) ($_POST["id_rol"] ?? 0);
-    $fotoPerfil = trim($_POST["foto_perfil"] ?? "Imagenes/usuariofemenino.png");
+    $fotoPerfil = trim($_POST["foto_perfil"] ?? "images/usuariofemenino.png");
 
     if ($nombre === "" || $apellido === "" || $email === "") {
         $error = "Completa nombre, apellidos y email.";
@@ -102,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Usuario</title>
+    <title>Perfil de Usuario (Maqueta)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="perfil-izq">
 
         <div class="foto-perfil" id="foto-perfil">
-            <img src="<?= escaparHTML($fotoPerfil) ?>" alt="Icono de perfil" class="icono-preview" id="icono-preview">
+            <img src="Imagenes/usuariofemenino.png" alt="Icono de perfil" class="icono-preview" id="icono-preview">
         </div>
 
         <div class="selector-iconos">
@@ -157,40 +157,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <span>Perfil</span>
         </div>
 
-        <form method="post" action="perfil.php" id="form-perfil">
-            <?php if ($mensaje !== ""): ?>
-                <div class="mensaje-exito"><?= escaparHTML($mensaje) ?></div>
-            <?php endif; ?>
-
-            <?php if ($error !== ""): ?>
-                <div class="mensaje-error"><?= escaparHTML($error) ?></div>
-            <?php endif; ?>
+        <form id="form-perfil" onsubmit="event.preventDefault(); alert('Maqueta: cambios no guardados');">
+            <div class="mensaje-exito" style="display:none;">Datos guardados correctamente.</div>
 
             <div class="fila">
                 <div class="grupo">
                     <label>Nombre</label>
-                    <input type="text" name="nombre" id="nombre" placeholder="Nombre" value="<?= escaparHTML($nombre) ?>">
+                    <input type="text" name="nombre" id="nombre" placeholder="Nombre" value="María">
                 </div>
 
                 <div class="grupo">
                     <label>Apellidos</label>
-                    <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos" value="<?= escaparHTML($apellido) ?>">
+                    <input type="text" name="apellidos" id="apellidos" placeholder="Apellidos" value="García">
                 </div>
             </div>
 
             <div class="fila">
                 <div class="grupo">
                     <label>Teléfono</label>
-                    <input type="text" name="telefono" id="telefono" placeholder="Teléfono" value="<?= escaparHTML($telefono) ?>">
+                    <input type="text" name="telefono" id="telefono" placeholder="Teléfono" value="+57 300 1234567">
                 </div>
 
                 <div class="grupo">
                     <label>Rol</label>
                     <select name="id_rol" id="id_rol">
-                        <option value="">Seleccione un rol</option>
-                        <?php foreach ($roles as $rol): ?>
-                            <option value="<?= (int) $rol["id_rol"] ?>" <?= ((int) $idRol === (int) $rol["id_rol"]) ? "selected" : "" ?>><?= escaparHTML($rol["nombre_rol"]) ?></option>
-                        <?php endforeach; ?>
+                        <option value="1" selected>Administrador</option>
+                        <option value="2">Técnico</option>
+                        <option value="3">Solicitante</option>
                     </select>
                 </div>
             </div>
@@ -198,7 +191,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="fila">
                 <div class="grupo">
                     <label>Email</label>
-                    <input type="email" name="email" id="email" placeholder="you@email.com" value="<?= escaparHTML($email) ?>">
+                    <input type="email" name="email" id="email" placeholder="you@email.com" value="maria@ejemplo.com">
                 </div>
             </div>
 
@@ -214,7 +207,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             </div>
 
-            <input type="hidden" name="foto_perfil" id="foto-perfil-input" value="<?= escaparHTML($fotoPerfil) ?>">
+            <input type="hidden" name="foto_perfil" id="foto-perfil-input" value="Imagenes/usuariofemenino.png">
 
             <div class="botones">
                 <button type="submit" class="btn-guardar">

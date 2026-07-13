@@ -1,25 +1,3 @@
-<?php
-require_once "../conexion.php";
-
-$conexion = conectarBD();
-
-$consulta = "
-    SELECT 
-        e.id_equipo,
-        e.nombre,
-        e.tipo,
-        e.marca,
-        e.modelo,
-        e.numero_serie,
-        e.estado_equipo,
-        e.fecha_alta,
-        a.ubicacion
-    FROM equipo e
-    INNER JOIN area a ON e.id_area = a.id_area
-";
-
-$resultado = mysqli_query($conexion, $consulta);
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,6 +10,7 @@ $resultado = mysqli_query($conexion, $consulta);
     <header>
         <nav class="navbar">
             <a href="index-admin.php" class="brand">Novaris</a>
+            <a href="index-admin.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
             <div class="idioma">
                 <select name="idioma" id="idioma">
                     <option value="es">Español</option>
@@ -52,11 +31,8 @@ $resultado = mysqli_query($conexion, $consulta);
         <div class="mesa-ayuda-link">
             <a href="mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
         </div>
-        <div class="solicitudes-link">
-            <a href="solicitudes.php" class="side-link">Solicitudes de servicios</a>
-        </div>
-        <div class="reportes-link">
-            <a href="reportes.php" class="side-link">Reportes</a>
+        <div class="usuarios-link">
+            <a href="usuario.php" class="side-link">Usuarios</a>
         </div>
     </div>
 
@@ -78,20 +54,29 @@ $resultado = mysqli_query($conexion, $consulta);
                         <th>Ubicación</th>
                     </tr>
                 </thead>
-               
-                <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
                     <tr>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["id_equipo"]); ?>"><?php echo escaparHTML($fila["id_equipo"]); ?></div></td>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["nombre"]); ?>"><?php echo escaparHTML($fila["nombre"]); ?></div></td>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["tipo"]); ?>"><?php echo escaparHTML($fila["tipo"]); ?></div></td>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["marca"]); ?>"><?php echo escaparHTML($fila["marca"]); ?></div></td>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["modelo"]); ?>"><?php echo escaparHTML($fila["modelo"]); ?></div></td>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["numero_serie"]); ?>"><?php echo escaparHTML($fila["numero_serie"]); ?></div></td>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["estado_equipo"]); ?>"><?php echo escaparHTML($fila["estado_equipo"]); ?></div></td>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["fecha_alta"]); ?>"><?php echo escaparHTML($fila["fecha_alta"]); ?></div></td>
-                         <td><div class="cell-content" title="<?php echo escaparHTML($fila["ubicacion"]); ?>"><?php echo escaparHTML($fila["ubicacion"]); ?></div></td>
+                        <td><div class="cell-content" title="101">101</div></td>
+                        <td><div class="cell-content" title="Equipo de cómputo">Equipo de cómputo</div></td>
+                        <td><div class="cell-content" title="PC">PC</div></td>
+                        <td><div class="cell-content" title="Dell">Dell</div></td>
+                        <td><div class="cell-content" title="OptiPlex 3080">OptiPlex 3080</div></td>
+                        <td><div class="cell-content" title="SN123456">SN123456</div></td>
+                        <td><div class="cell-content" title="Activo">Activo</div></td>
+                        <td><div class="cell-content" title="2025-01-10">2025-01-10</div></td>
+                        <td><div class="cell-content" title="Oficina Central">Oficina Central</div></td>
                     </tr>
-                <?php endwhile; ?>
+                    <tr>
+                        <td><div class="cell-content" title="102">102</div></td>
+                        <td><div class="cell-content" title="Impresora Laser">Impresora Laser</div></td>
+                        <td><div class="cell-content" title="Impresora">Impresora</div></td>
+                        <td><div class="cell-content" title="HP">HP</div></td>
+                        <td><div class="cell-content" title="LaserJet M404">LaserJet M404</div></td>
+                        <td><div class="cell-content" title="SN654321">SN654321</div></td>
+                        <td><div class="cell-content" title="En mantenimiento">En mantenimiento</div></td>
+                        <td><div class="cell-content" title="2024-11-02">2024-11-02</div></td>
+                        <td><div class="cell-content" title="Planta Baja">Planta Baja</div></td>
+                    </tr>
+                </table>
             </table>
         </div>
     </div>

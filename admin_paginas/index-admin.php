@@ -1,14 +1,3 @@
-<?php
-session_start();
-require_once __DIR__ . "/../conexion.php";
-
-if (!isset($_SESSION["id_usuario"])) {
-    header("Location: ../login.php");
-    exit;
-}
-
-$nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? ""));
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -42,10 +31,6 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
         <div class="mesa-ayuda-link">
             <a href="mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
         </div>
-        <div class="solicitudes-link">
-            <a href="solicitudes.php" class="side-link">Solicitudes</a>
-        </div>
-
         <div class="reportes-link">
             <a href="usuario.php" class="side-link">Usuarios</a>
         </div>
@@ -55,7 +40,7 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
     <div class="informacion">
         <span id="fechahoy"></span>
         <div id="titulo-informacion">
-            <strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?>
+            <strong>Bienvenido,</strong> Administrador
         </div>
 
         <div class="info-resumen">

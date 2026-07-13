@@ -1050,3 +1050,115 @@ body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier
         height: auto;
     }
 }
+
+
+.help-page {
+    max-width: 1100px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.help-page {
+    margin-left: 300px;
+    max-width: calc(100% - 360px);
+}
+
+.help-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 28px;
+    align-items: start;
+}
+
+.help-form {
+    background: #ffffff;
+    padding: 26px;
+    border-radius: 10px;
+    box-shadow: 0 18px 36px rgba(3,29,69,0.08);
+    color: #030736;
+}
+
+.help-form h2 {
+    margin: 0 0 18px;
+    font-size: 20px;
+    color: #030736;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2d3e50;
+}
+
+.help-form input[type="text"],
+.help-form input[type="email"],
+.help-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #031028;
+    background: #fff;
+}
+
+.help-form textarea { resize: vertical; }
+
+.ticket-list {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 18px 36px rgba(3,29,69,0.08);
+    color: #030736;
+}
+
+.ticket-list h2 {
+    margin: 0 0 12px;
+    font-size: 18px;
+}
+
+.ticket-table-wrapper { overflow-x: auto; }
+
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 520px;
+}
+
+.ticket-table th,
+.ticket-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eef2f7;
+    color: #0b1630;
+    font-size: 14px;
+}
+
+.ticket-table thead th {
+    background: transparent;
+    font-weight: 700;
+}
+
+.error, .success {
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.error { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+.success { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+
+@media (max-width: 920px) {
+    .help-grid { grid-template-columns: 1fr; }
+    .ticket-list { order: 2; }
+    .help-page { margin-left: 0; max-width: 100%; padding: 0 16px; }
+}
+
