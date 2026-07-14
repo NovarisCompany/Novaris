@@ -1,38 +1,65 @@
+<?php
+require_once "../conexion.php";
+
+$conexion = conectarBD();
+
+$consulta = "
+    SELECT 
+        e.id_equipo,
+        e.nombre,
+        e.tipo,
+        e.marca,
+        e.modelo,
+        e.numero_serie,
+        e.estado_equipo,
+        e.fecha_alta,
+        a.ubicacion
+    FROM equipo e
+    INNER JOIN area a ON e.id_area = a.id_area
+";
+
+$resultado = mysqli_query($conexion, $consulta);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novaris</title>
-    <link rel="stylesheet" href="../style.css?v=6">
+    <link rel="stylesheet" href="../style.css?v=1">
 </head>
 <body class="app-page">
     <header>
         <nav class="navbar">
-            <a href="index-admin.php" class="brand">Novaris</a>
-            <a href="index-admin.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
+            <a href="index.php" class="brand">Novaris</a>
             <div class="idioma">
                 <select name="idioma" id="idioma">
                     <option value="es">Español</option>
                     <option value="en">English</option>
                 </select>
             </div>
-            <a href="../perfil.php" class="nav-cta">Mi Perfil</a>
+            <a href="#" class="nav-cta">Mi Perfil</a>
         </nav>
     </header>
 
     <div class="side-bar">
         <div class="home-link">
-            <a href="index-admin.php" class="side-link">Inicio</a>
+            <a href="index.php" class="side-link">Inicio</a>
         </div>
         <div class="inventario-link">
-            <a href="inventario.php" class="side-link">Inventario</a>
+            <a href="paginas/inventario.php" class="side-link">Inventario</a>
         </div>
         <div class="mesa-ayuda-link">
-            <a href="mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
+            <a href="paginas/mesa-ayuda.html" class="side-link">Mesa de ayuda</a>
         </div>
-        <div class="usuarios-link">
-            <a href="usuario.php" class="side-link">Usuarios</a>
+        <div class="solicitudes-link">
+            <a href="paginas/solicitudes.html" class="side-link">Solicitudes de servicios</a>
+        </div>
+        <div class="reportes-link">
+            <a href="paginas/reportes.html" class="side-link">Reportes</a>
+        </div>
+        <div class="configuracion-link">
+            <a href="paginas/configuracion.html" class="side-link">Configuración</a>
         </div>
     </div>
 
@@ -54,29 +81,20 @@
                         <th>Ubicación</th>
                     </tr>
                 </thead>
-                    <tr>
-                        <td><div class="cell-content" title="101">101</div></td>
-                        <td><div class="cell-content" title="Equipo de cómputo">Equipo de cómputo</div></td>
-                        <td><div class="cell-content" title="PC">PC</div></td>
-                        <td><div class="cell-content" title="Dell">Dell</div></td>
-                        <td><div class="cell-content" title="OptiPlex 3080">OptiPlex 3080</div></td>
-                        <td><div class="cell-content" title="SN123456">SN123456</div></td>
-                        <td><div class="cell-content" title="Activo">Activo</div></td>
-                        <td><div class="cell-content" title="2025-01-10">2025-01-10</div></td>
-                        <td><div class="cell-content" title="Oficina Central">Oficina Central</div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="cell-content" title="102">102</div></td>
-                        <td><div class="cell-content" title="Impresora Laser">Impresora Laser</div></td>
-                        <td><div class="cell-content" title="Impresora">Impresora</div></td>
-                        <td><div class="cell-content" title="HP">HP</div></td>
-                        <td><div class="cell-content" title="LaserJet M404">LaserJet M404</div></td>
-                        <td><div class="cell-content" title="SN654321">SN654321</div></td>
-                        <td><div class="cell-content" title="En mantenimiento">En mantenimiento</div></td>
-                        <td><div class="cell-content" title="2024-11-02">2024-11-02</div></td>
-                        <td><div class="cell-content" title="Planta Baja">Planta Baja</div></td>
-                    </tr>
-                </table>
+               
+                                 <?php while ($fila = mysqli_fetch_assoc($resultado)): ?>
+                                         <tr>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["id_equipo"]); ?>"><?php echo escaparHTML($fila["id_equipo"]); ?></div></td>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["nombre"]); ?>"><?php echo escaparHTML($fila["nombre"]); ?></div></td>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["tipo"]); ?>"><?php echo escaparHTML($fila["tipo"]); ?></div></td>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["marca"]); ?>"><?php echo escaparHTML($fila["marca"]); ?></div></td>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["modelo"]); ?>"><?php echo escaparHTML($fila["modelo"]); ?></div></td>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["numero_serie"]); ?>"><?php echo escaparHTML($fila["numero_serie"]); ?></div></td>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["estado_equipo"]); ?>"><?php echo escaparHTML($fila["estado_equipo"]); ?></div></td>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["fecha_alta"]); ?>"><?php echo escaparHTML($fila["fecha_alta"]); ?></div></td>
+                                                 <td><div class="cell-content" title="<?php echo escaparHTML($fila["ubicacion"]); ?>"><?php echo escaparHTML($fila["ubicacion"]); ?></div></td>
+                                             </tr>
+                                 <?php endwhile; ?>
             </table>
         </div>
     </div>
