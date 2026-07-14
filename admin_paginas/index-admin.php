@@ -112,5 +112,6 @@
 
         document.getElementById("fechahoy").textContent = fechaFormateada;
     </script>
+    
 </body>
 </html>
