@@ -101,6 +101,40 @@
             <a class="accion-botones">Generar Reporte</a>
         </div>
     </div>
+    <div id="chat-widget" aria-live="polite">
+  <div id="chat-header">
+    <div id="chat-header-left">
+      <span id="status-dot"></span>
+      <div>
+        <p id="chat-title">Asistente de Moda</p>
+        <p id="chat-subtitle">En línea ahora</p>
+      </div>
+    </div>
+    <button id="chat-close" aria-label="Cerrar chat">✕</button>
+  </div>
+
+  <div id="chat-messages">
+    <div class="msg bot">
+        "¡Hola! Soy la asistente virtual de AMARA. Estoy acá para ayudarte a elegir el mejor producto orgánico para tu piel, explicarte cómo usarlos o sacarte dudas sobre tus envíos. ¿En qué puedo asesorarte hoy?    </div>
+  </div>
+
+ <div id="chat-suggestions">
+    <button class="suggestion" data-text="¿Qué productos me recomiendan para piel seca?">Recomendación Piel</button>
+    <button class="suggestion" data-text="¿Cómo se aplica el aceite capilar de Argán?">Uso de productos</button>
+    <button class="suggestion" data-text="¿Cuánto cuesta el envío a mi ciudad?">Costo de envío</button>
+ </div>
+
+  <div id="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Escribí tu consulta..." autocomplete="off" />
+    <button id="chat-send" aria-label="Enviar mensaje">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+    </button>
+  </div>
+</div>
+
 
     <script>
         const fechaFormateada = new Date().toLocaleDateString("es-ES", {
