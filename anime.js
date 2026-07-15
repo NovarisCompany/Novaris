@@ -1,11 +1,10 @@
-import { createTimer } from 'animejs';
+import { animate } from './node_modules/animejs/dist/modules/index.js';
 
-const [ $time, $count ] = utils.$('.value');
-
-createTimer({
-  duration: 1000,
-  loop: true,
-  frameRate: 30,
-  onUpdate: self => $time.innerHTML = self.currentTime,
-  onLoop: self => $count.innerHTML = self._currentIteration
+document.addEventListener('DOMContentLoaded', () => {
+  animate('.square', {
+    y: { from: 0, to: '400px' },
+    duration: 5000,
+    ease: 'linear',
+    loop: true,
+  });
 });

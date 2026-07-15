@@ -1,0 +1,163 @@
+<div class="pantalla-carga">
+  <p class="texto-carga">Cargando Sistemas de Gestion...</p>
+  
+</div>
+<img id="satelite" class="satelite" src="Imagenes/logo.png" alt="Foto" />
+
+<style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+.pantalla-carga {
+  width: 100vw;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, rgba(0,255,204,0.20), #06090e 40%), #06090e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: monospace;
+  position: relative;
+  overflow: hidden;
+}
+
+.texto-carga {
+  color: #8b949e;
+  margin-top: 20px;
+}
+
+
+
+      .satelite {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        z-index: 20;
+        left: 20px;
+        bottom: 20px;
+        pointer-events: none;
+      }
+.panel-datos {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(19, 26, 46, 0.95);
+  border: 1px solid #00ffcc;
+  padding: 15px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  width: 280px;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0,255,204,0.15);
+  color: #e2e8f0;
+}
+
+.panel-datos h3 {
+  margin: 0 0 10px 0;
+  color: #00ffcc;
+  font-size: 1rem;
+  border-bottom: 1px solid rgba(0,255,204,0.3);
+  padding-bottom: 5px;
+}
+
+.formula-linea {
+  margin: 6px 0;
+  color: #e2e8f0;
+}
+
+.variable {
+  color: #ff007c;
+  font-weight: bold;
+}
+
+.resultado {
+  color: #00ffcc;
+  font-weight: bold;
+}
+
+.btn-lanzar {
+  margin-top: 20px;
+  background-color: #00ffcc;
+  color: #06090e;
+  border: 2px solid #00ffcc;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  z-index: 10;
+}
+
+.btn-lanzar:hover {
+  background-color: #8bffff;
+  color: #06090e;
+  box-shadow: 0 0 20px rgba(0,255,204,0.4);
+}
+@keyframes rotacionConstante {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+<script>
+// Parámetros físicos iniciales
+const v0 = 65; // Velocidad inicial
+const anguloGrados = 40; // Ángulo en grados
+const anguloRadianes = anguloGrados * (Math.PI / 180); // Conversión correcta a radianes
+const g = 10; // Gravedad
+
+// Cálculos físicos
+const vox = v0 * Math.cos(anguloRadianes);
+const voy = v0 * Math.sin(anguloRadianes);
+const tSubida = voy / g;
+const tTotal = 2 * tSubida;
+
+const satelite = document.getElementById('satelite');
+let idAnimacion = null;
+
+function actualizarPosicion(startTime) {
+  let tiempoInicio = startTime || performance.now();
+
+  function loop(tiempoActual) {
+    // tiempo transcurrido en segundos (sin parar): usado para el loop
+    const raw = (tiempoActual - tiempoInicio) / 1000 * 1.5;
+
+    // si tTotal es cero (evitar div/0), mostramos raw
+    const t = tTotal > 0 ? raw % tTotal : raw;
+
+    const x = vox * t;
+    const y = (voy * t) - (0.5 * g * t * t);
+
+    // Actualizar valores si existen los elementos
+    const setIf = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = val;
+    };
+    setIf('val-t', t.toFixed(2));
+    setIf('val-x', Math.round(x));
+    setIf('val-y', Math.round(y));
+
+    if (satelite) {
+      satelite.style.left = (280 + x * 1.8) + 'px';
+      satelite.style.bottom = (0 + y * 1.8) + 'px';
+    }
+
+    idAnimacion = requestAnimationFrame(loop);
+  }
+
+  idAnimacion = requestAnimationFrame(loop);
+}
+
+// Arrancar automáticamente al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+  actualizarPosicion(performance.now());
+});
+</script>
