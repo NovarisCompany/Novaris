@@ -1,7 +1,8 @@
+    <meta charset="UTF-8">
 <div class="pantalla-carga">
-  <p class="texto-carga">Cargando Sistemas de Gestion...</p>
-  
+  <p id="texto-carga" class="texto-carga visible">Cargando Sistemas de Gestion...</p>
 </div>
+<meta http-equiv="refresh" content="5;url=http://localhost/proyecto-final/empresa/novaris.html">
 <img id="satelite" class="satelite" src="Imagenes/logo.png" alt="Foto" />
 
 <style>
@@ -10,6 +11,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  overflow: hidden;
 }
 
 .pantalla-carga {
@@ -28,6 +30,15 @@ body {
 .texto-carga {
   color: #8b949e;
   margin-top: 20px;
+  font-size: 25px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.texto-carga.cambiando {
+  opacity: 0;
+  transform: translateY(8px);
 }
 
 
@@ -39,8 +50,10 @@ body {
         object-fit: contain;
         z-index: 20;
         left: 20px;
-        bottom: 20px;
+        bottom: -140px;
+        opacity: 0;
         pointer-events: none;
+        transition: opacity 0.2s ease;
       }
 .panel-datos {
   position: absolute;
@@ -122,6 +135,8 @@ const tTotal = 2 * tSubida;
 
 const satelite = document.getElementById('satelite');
 let idAnimacion = null;
+const alturaSuelo = 20;
+const entradaDesdeAbajo = 140;
 
 function actualizarPosicion(startTime) {
   let tiempoInicio = startTime || performance.now();
@@ -146,8 +161,12 @@ function actualizarPosicion(startTime) {
     setIf('val-y', Math.round(y));
 
     if (satelite) {
+      const bottomPx = alturaSuelo + (y * 1.8) - entradaDesdeAbajo;
+      const dentroPantalla = bottomPx >= -80 && bottomPx <= window.innerHeight + 80;
+
       satelite.style.left = (280 + x * 1.8) + 'px';
-      satelite.style.bottom = (0 + y * 1.8) + 'px';
+      satelite.style.bottom = bottomPx + 'px';
+      satelite.style.opacity = dentroPantalla ? '1' : '0';
     }
 
     idAnimacion = requestAnimationFrame(loop);
@@ -159,5 +178,28 @@ function actualizarPosicion(startTime) {
 // Arrancar automáticamente al cargar la páginas
 document.addEventListener('DOMContentLoaded', () => {
   actualizarPosicion(performance.now());
+
+  const textoCarga = document.getElementById('texto-carga');
+  const mensajes = [
+    'Cargando Sistemas de Gestión.',
+    'Cargando Sistemas de Gestión..',
+    'Cargando Sistemas de Gestión...'
+  ];
+  let indice = 0;
+
+  function cambiarTextoCarga() {
+    if (!textoCarga) return;
+
+    textoCarga.classList.add('cambiando');
+
+    setTimeout(() => {
+      textoCarga.textContent = mensajes[indice];
+      textoCarga.classList.remove('cambiando');
+      indice = (indice + 1) % mensajes.length;
+    }, 150);
+  }
+
+  cambiarTextoCarga();
+  setInterval(cambiarTextoCarga, 1800);
 });
 </script>

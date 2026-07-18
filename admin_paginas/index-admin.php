@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novaris</title>
     <link rel="stylesheet" href="../style.css?v=6">
+
 </head>
 <body class="app-page">
     <header>
@@ -101,12 +102,15 @@
             <a class="accion-botones">Generar Reporte</a>
         </div>
     </div>
+
+    <button id="chat-toggle" type="button" aria-label="Abrir chat">💬</button>
+
     <div id="chat-widget" aria-live="polite">
   <div id="chat-header">
     <div id="chat-header-left">
       <span id="status-dot"></span>
       <div>
-        <p id="chat-title">Asistente de Moda</p>
+        <p id="chat-title">Asistente de Novaris</p>
         <p id="chat-subtitle">En línea ahora</p>
       </div>
     </div>
@@ -115,13 +119,13 @@
 
   <div id="chat-messages">
     <div class="msg bot">
-        "¡Hola! Soy la asistente virtual de AMARA. Estoy acá para ayudarte a elegir el mejor producto orgánico para tu piel, explicarte cómo usarlos o sacarte dudas sobre tus envíos. ¿En qué puedo asesorarte hoy?    </div>
+        "¡Hola! Soy la asistente virtual de Novaris. Estoy acá para ayudarte con el sistema de soporte informático, tickets y recursos de TI. ¿En qué puedo asesorarte hoy?"    </div>
   </div>
 
  <div id="chat-suggestions">
-    <button class="suggestion" data-text="¿Qué productos me recomiendan para piel seca?">Recomendación Piel</button>
-    <button class="suggestion" data-text="¿Cómo se aplica el aceite capilar de Argán?">Uso de productos</button>
-    <button class="suggestion" data-text="¿Cuánto cuesta el envío a mi ciudad?">Costo de envío</button>
+    <button class="suggestion" data-text="¿Cómo creo un ticket de soporte?">Crear ticket</button>
+    <button class="suggestion" data-text="¿Cómo asigno un técnico a un ticket?">Asignar técnico</button>
+    <button class="suggestion" data-text="¿Dónde veo el estado de mis tickets?">Estado de tickets</button>
  </div>
 
   <div id="chat-input-area">
@@ -136,6 +140,8 @@
 </div>
 
 
+    <script type="module" src="../anime.js"></script>
+
     <script>
         const fechaFormateada = new Date().toLocaleDateString("es-ES", {
             weekday: "long",
@@ -146,6 +152,7 @@
 
         document.getElementById("fechahoy").textContent = fechaFormateada;
     </script>
+
     
 </body>
 </html>
