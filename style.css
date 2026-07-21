@@ -209,7 +209,7 @@ html {
     gap: 28px;
     width: 100%;
     max-width: 850px;
-    margin: 30px auto 0;
+    margin-left: 400px;
 }
 
 .tickets,

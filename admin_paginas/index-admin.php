@@ -1,3 +1,15 @@
+<?php
+session_start();
+require_once __DIR__ . "/../conexion.php";
+
+if (!isset($_SESSION["id_usuario"])) {
+    header("Location: login.php");
+    exit;
+}
+
+$nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? ""));
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -41,9 +53,11 @@
     <div class="informacion">
         <span id="fechahoy"></span>
         <div id="titulo-informacion">
-            <strong>Bienvenido,</strong> Administrador
+            <strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?>
         </div>
+    </div>
 
+        
         <div class="info-resumen">
             <div class="tickets">
                 <h3>Tickets en proceso:</h3>

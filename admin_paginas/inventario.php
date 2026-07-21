@@ -1,3 +1,15 @@
+<?php
+session_start();
+require_once __DIR__ . "/../conexion.php";
+
+if (!isset($_SESSION["id_usuario"])) {
+    header("Location: login.php");
+    exit;
+}
+
+$nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? ""));
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -33,6 +45,12 @@
         </div>
         <div class="usuarios-link">
             <a href="usuario.php" class="side-link">Usuarios</a>
+        </div>
+    </div>
+     <div class="informacion">
+        <span id="fechahoy"></span>
+        <div id="titulo-informacion">
+            <strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?>
         </div>
     </div>
 
@@ -80,6 +98,17 @@
             </table>
         </div>
     </div>
+   
+    <script>
+        const fechaFormateada = new Date().toLocaleDateString("es-ES", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+        document.getElementById("fechahoy").textContent = fechaFormateada;
+    </script>
             
 </body>
 </html>

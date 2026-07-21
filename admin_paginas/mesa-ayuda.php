@@ -7,6 +7,8 @@ $nombre = '';
 $email = '';
 $asunto = '';
 $mensaje = '';
+$nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? ""));
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = trim($_POST['nombre'] ?? '');
@@ -66,6 +68,7 @@ try {
         $mensajeError = 'No se pudo cargar la lista de solicitudes. ' . $e->getMessage();
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -96,6 +99,13 @@ try {
         <div class="inventario-link"><a href="inventario.php" class="side-link" id="inventario">Inventario</a></div>
         <div class="mesa-ayuda-link"><a href="mesa-ayuda.php" class="side-link" id="mesaAyuda">Mesa de ayuda</a></div>
         <div class="usuarios-link"><a href="usuario.php" class="side-link" id="usuarios">Usuarios</a></div>
+    </div>
+
+     <div class="informacion">
+        <span id="fechahoy"></span>
+        <div id="titulo-informacion">
+            <strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?>
+        </div>
     </div>
 
     <div class="informacion">
@@ -168,13 +178,14 @@ try {
     </section>
 
     <script>
-        const fechaFormateada = new Date().toLocaleDateString('es-ES', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        const fechaFormateada = new Date().toLocaleDateString("es-ES", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
         });
-        document.getElementById('fechahoy').textContent = fechaFormateada;
+
+        document.getElementById("fechahoy").textContent = fechaFormateada;
     </script>
 
 </body>
