@@ -241,12 +241,15 @@ img {
   width: 100%;
 }
 
+
 .footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+
 }
 
 @media (max-width: 900px) {
