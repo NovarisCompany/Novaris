@@ -1,0 +1,250 @@
+{
+  "main": {
+    "id": "ec09f13c1a2d2b6a",
+    "type": "split",
+    "children": [
+      {
+        "id": "a2a7857857f5a99c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a50fb9c028025b9e",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
+            }
+          },
+          {
+            "id": "befc7c68f8e3216a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Equipo y Roles.md.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Equipo y Roles.md"
+            }
+          },
+          {
+            "id": "acb9782a82393707",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Especificación de Requerimientos.md.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Especificación de Requerimientos.md"
+            }
+          },
+          {
+            "id": "61b69c9b21b4f8db",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Modelo de Datos.md.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Modelo de Datos.md"
+            }
+          },
+          {
+            "id": "7dfbf14df58e2748",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "4affb25312ed8842",
+    "type": "split",
+    "children": [
+      {
+        "id": "305dbd7bb30bce5f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "caea7bca85976dbe",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "21f7ad09cd480d09",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "ea5793326be21d10",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "9cc3c27f55c494e8",
+    "type": "split",
+    "children": [
+      {
+        "id": "68b145fba956664b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7abc35fdf4de06ab",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Fundamentación Sociológica.md.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes de Fundamentación Sociológica.md"
+            }
+          },
+          {
+            "id": "23ff1629a97fc42e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Fundamentación Sociológica.md.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes de Fundamentación Sociológica.md"
+            }
+          },
+          {
+            "id": "4726d0facbe4499f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "2d6e3627c496feed",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "9f6554c3d7a2249d",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Fundamentación Sociológica.md.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema de Fundamentación Sociológica.md"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false
+    }
+  },
+  "active": "7dfbf14df58e2748",
+  "lastOpenFiles": [
+    "Gestión de Inventario.md",
+    "Fundamentación Sociológica.md.md",
+    "Sin título.canvas",
+    "26, 27.md",
+    "Modelo de Datos.md.md",
+    "Especificación de Requerimientos.md.md",
+    "Equipo y Roles.md.md",
+    "Bienvenido.md",
+    "Novaris_Index.md.md",
+    "Sin título.base",
+    "2026-07-26.md",
+    "cree un enlace.md"
+  ]
+}
