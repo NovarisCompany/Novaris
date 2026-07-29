@@ -3,9 +3,15 @@ session_start();
 require_once __DIR__ . "/../conexion.php";
 
 if (!isset($_SESSION["id_usuario"])) {
-    header("Location: login.php");
+    // #region agent log
+    debugLog('index-admin.php:auth', 'Sin sesión, redirigiendo a login', ['redirect' => 'login.php'], 'E');
+    // #endregion
+    header("Location: ../login.php");
     exit;
 }
+// #region agent log
+debugLog('index-admin.php:auth', 'Sesión válida', ['idUsuario' => $_SESSION['id_usuario'], 'rol' => $_SESSION['rol'] ?? null], 'E');
+// #endregion
 
 $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? ""));
 ?>
@@ -24,11 +30,7 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
         <nav class="navbar">
             <a href="index-admin.php" class="brand">Novaris</a>
             <a href="index-admin.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
-            <div class="idioma">
-                <select name="idioma" id="idioma">
-                    <option value="es">Español</option>
-                    <option value="en">English</option>
-                </select>
+            <div id="google_translate_element">
             </div>
             <a href="../perfil.php" class="nav-cta">Mi Perfil</a>
         </nav>
@@ -117,43 +119,6 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
         </div>
     </div>
 
-    <button id="chat-toggle" type="button" aria-label="Abrir chat">💬</button>
-
-    <div id="chat-widget" aria-live="polite">
-  <div id="chat-header">
-    <div id="chat-header-left">
-      <span id="status-dot"></span>
-      <div>
-        <p id="chat-title">Asistente de Novaris</p>
-        <p id="chat-subtitle">En línea ahora</p>
-      </div>
-    </div>
-    <button id="chat-close" aria-label="Cerrar chat">✕</button>
-  </div>
-
-  <div id="chat-messages">
-    <div class="msg bot">
-        "¡Hola! Soy la asistente virtual de Novaris. Estoy acá para ayudarte con el sistema de soporte informático, tickets y recursos de TI. ¿En qué puedo asesorarte hoy?"    </div>
-  </div>
-
- <div id="chat-suggestions">
-    <button class="suggestion" data-text="¿Cómo creo un ticket de soporte?">Crear ticket</button>
-    <button class="suggestion" data-text="¿Cómo asigno un técnico a un ticket?">Asignar técnico</button>
-    <button class="suggestion" data-text="¿Dónde veo el estado de mis tickets?">Estado de tickets</button>
- </div>
-
-  <div id="chat-input-area">
-    <input type="text" id="chat-input" placeholder="Escribí tu consulta..." autocomplete="off" />
-    <button id="chat-send" aria-label="Enviar mensaje">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="22" y1="2" x2="11" y2="13"></line>
-        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-      </svg>
-    </button>
-  </div>
-</div>
-
-
     <script type="module" src="../anime.js"></script>
 
     <script>
@@ -165,8 +130,14 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
         });
 
         document.getElementById("fechahoy").textContent = fechaFormateada;
+     function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'es', 
+                includedLanguages: 'en,fr,it,pt,de',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
     </script>
-
-    
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>    
 </body>
 </html>

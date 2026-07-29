@@ -1,0 +1,28 @@
+{"sessionId":"9215b0","timestamp":1785327320423,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327326954,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327326955,"location":"login.php:POST","message":"Intento de login","data":{"email":"admin@gmail.com","hasPassword":true},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327326956,"location":"login.php:query","message":"Resultado consulta usuario","data":{"found":true,"idRol":1,"hashPrefix":"$2y$10$"},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327327055,"location":"login.php:auth","message":"Login exitoso, redirigiendo","data":{"idRol":1,"rol":"Administrador"},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327327090,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327478675,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327480343,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327483125,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327781666,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327812818,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327813985,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327814125,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327814565,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327865548,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327866764,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327866897,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327867021,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327926410,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785327997971,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785328001356,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785328001809,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785328002003,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785328458241,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785328461575,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785328461736,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785328465908,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785328480827,"location":"index-admin.php:auth","message":"Sesión válida","data":{"idUsuario":22,"rol":"Administrador"},"hypothesisId":"E","runId":"initial"}

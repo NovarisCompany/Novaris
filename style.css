@@ -350,7 +350,7 @@ body.app-page {
     background-color: #0b1046;
 }
 
-.app-page #idioma {
+.app-page .google_translate_element {
     padding: 4px 8px;
     border: none;
     color: #0b1046;
@@ -362,9 +362,7 @@ body.app-page {
     font-weight: bold;
 }
 
-.app-page #idioma option {
-    color: #000000;
-}
+
 
 .app-page .brand {
     font-size: 26px;
@@ -993,7 +991,7 @@ body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier
         padding: 18px 24px;
     }
 
-    .app-page #idioma {
+    .app-page .google_translate_element {
         margin-left: 0;
     }
 

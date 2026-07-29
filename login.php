@@ -7,12 +7,19 @@ $error = "";
 try {
     $conexion = conectarBD();
 } catch (mysqli_sql_exception $e) {
+    // #region agent log
+    debugLog('login.php:init', 'Fallo conexión al cargar login', ['error' => $e->getMessage()], 'A');
+    // #endregion
     die("error");
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
+
+    // #region agent log
+    debugLog('login.php:POST', 'Intento de login', ['email' => $email, 'hasPassword' => $password !== ''], 'B');
+    // #endregion
 
     if ($email === "" || $password === "") {
         $error = "Por favor complete todos los datos";
@@ -36,7 +43,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $resultado = mysqli_stmt_get_result($stmt);
             $usuario = mysqli_fetch_assoc($resultado);
 
+            // #region agent log
+            debugLog('login.php:query', 'Resultado consulta usuario', [
+                'found' => (bool) $usuario,
+                'idRol' => $usuario['id_rol'] ?? null,
+                'hashPrefix' => $usuario ? substr($usuario['contrasena'], 0, 7) : null,
+            ], 'B');
+            // #endregion
+
            if ($usuario && password_verify($password, $usuario["contrasena"])) {
+    // #region agent log
+    debugLog('login.php:auth', 'Login exitoso, redirigiendo', ['idRol' => $usuario['id_rol'], 'rol' => $usuario['nombre_rol']], 'B');
+    // #endregion
     $_SESSION["id_usuario"] = $usuario["id_usuario"];
     $_SESSION["nombre"] = $usuario["nombre"];
     $_SESSION["apellido"] = $usuario["apellido"];
@@ -57,8 +75,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 
+            // #region agent log
+            debugLog('login.php:auth', 'Login fallido', [
+                'found' => (bool) $usuario,
+                'passwordOk' => $usuario ? password_verify($password, $usuario['contrasena']) : false,
+            ], 'B');
+            // #endregion
             $error = "Email o contraseña incorrectos";
         } catch (mysqli_sql_exception $e) {
+            // #region agent log
+            debugLog('login.php:exception', 'Excepción en login', ['error' => $e->getMessage()], 'B');
+            // #endregion
             $error = "Error al iniciar sesión";
         }
     }

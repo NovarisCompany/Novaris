@@ -1,5 +1,14 @@
 <?php
+session_start();
 require_once __DIR__ . '/../conexion.php';
+
+// #region agent log
+debugLog('mesa-ayuda.php:init', 'Estado sesión al cargar', [
+    'sessionStarted' => session_status() === PHP_SESSION_ACTIVE,
+    'hasIdUsuario' => isset($_SESSION['id_usuario']),
+    'sessionKeys' => array_keys($_SESSION ?? []),
+], 'D');
+// #endregion
 
 $mensajeExito = '';
 $mensajeError = '';

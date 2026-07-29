@@ -49,11 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
 
             mysqli_commit($conexion);
+            // #region agent log
+            debugLog('registrarse.php:commit', 'Usuario creado OK', ['idUsuario' => $idUsuario, 'idRol' => $idRol], 'C');
+            // #endregion
             $mensaje = "Usuario creado correctamente.";
-            $consulta = "INSERT INTO usuario
-            (nombre, apellido, email, contrasena, telefono, id_rol, estado_cuenta)
-            VALUES (?, ?, ?, ?, ?, ?, 'Pendiente')";
         } catch (mysqli_sql_exception $e) {
+            // #region agent log
+            debugLog('registrarse.php:exception', 'Error al registrar', ['error' => $e->getMessage(), 'code' => $e->getCode()], 'C');
+            // #endregion
             mysqli_rollback($conexion);
             $error = $e->getCode() === 1062
                 ? "Ya existe un usuario con ese email."
