@@ -1,143 +1,93 @@
 <?php
-session_start();
-require_once __DIR__ . "/../conexion.php";
+require_once __DIR__ . '/../conexion.php';
 
-if (!isset($_SESSION["id_usuario"])) {
-    // #region agent log
-    debugLog('index-admin.php:auth', 'Sin sesión, redirigiendo a login', ['redirect' => 'login.php'], 'E');
-    // #endregion
-    header("Location: ../login.php");
-    exit;
+exigirAcceso(1);
+
+$nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
+$resumen = ['en_proceso' => 0, 'pendientes' => 0, 'usuarios_activos' => 0, 'equipos' => 0];
+$tickets = [];
+$error = '';
+
+try {
+    $conexion = conectarBD();
+    $resultado = mysqli_query(
+        $conexion,
+        "SELECT
+            SUM(estado = 'En proceso') AS en_proceso,
+            SUM(estado = 'Pendiente') AS pendientes
+         FROM ticket"
+    );
+    $resumenTickets = mysqli_fetch_assoc($resultado);
+    mysqli_free_result($resultado);
+    $resumen['en_proceso'] = (int) ($resumenTickets['en_proceso'] ?? 0);
+    $resumen['pendientes'] = (int) ($resumenTickets['pendientes'] ?? 0);
+
+    $resultado = mysqli_query($conexion, "SELECT COUNT(*) AS total FROM usuario WHERE estado_cuenta = 'Aprobada'");
+    $resumen['usuarios_activos'] = (int) (mysqli_fetch_assoc($resultado)['total'] ?? 0);
+    mysqli_free_result($resultado);
+
+    $resultado = mysqli_query($conexion, 'SELECT COUNT(*) AS total FROM equipo');
+    $resumen['equipos'] = (int) (mysqli_fetch_assoc($resultado)['total'] ?? 0);
+    mysqli_free_result($resultado);
+
+    $resultado = mysqli_query(
+        $conexion,
+        'SELECT id_ticket, titulo, estado, fecha_creacion
+         FROM ticket
+         ORDER BY fecha_creacion DESC
+         LIMIT 5'
+    );
+    $tickets = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    mysqli_free_result($resultado);
+} catch (mysqli_sql_exception | RuntimeException $exception) {
+    $error = 'No se pudo cargar el resumen del panel.';
 }
-// #region agent log
-debugLog('index-admin.php:auth', 'Sesión válida', ['idUsuario' => $_SESSION['id_usuario'], 'rol' => $_SESSION['rol'] ?? null], 'E');
-// #endregion
-
-$nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"] ?? ""));
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novaris</title>
+    <title>Panel administrativo - Novaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css?v=6">
-
 </head>
 <body class="app-page">
-    <header>
-        <nav class="navbar">
-            <a href="index-admin.php" class="brand">Novaris</a>
-            <a href="index-admin.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
-            <div id="google_translate_element">
-            </div>
-            <a href="../perfil.php" class="nav-cta">Mi Perfil</a>
-        </nav>
-    </header>
-
-    <div class="side-bar">
-        <div class="home-link">
-            <a href="index-admin.php" class="side-link">Inicio</a>
-        </div>
-        <div class="inventario-link">
-            <a href="inventario.php" class="side-link">Inventario</a>
-        </div>
-        <div class="mesa-ayuda-link">
-            <a href="mesa-ayuda.php" class="side-link">Mesa de ayuda</a>
-        </div>
-        <div class="reportes-link">
-            <a href="usuario.php" class="side-link">Usuarios</a>
-        </div>
-      
+<header><nav class="navbar">
+    <a href="index-admin.php" class="brand">Novaris</a>
+    <a href="index-admin.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
+    <a href="../perfil.php" class="nav-cta">Mi perfil</a>
+</nav></header>
+<div class="side-bar">
+    <div class="home-link"><a href="index-admin.php" class="side-link">Inicio</a></div>
+    <div class="inventario-link"><a href="inventario.php" class="side-link">Inventario</a></div>
+    <div class="mesa-ayuda-link"><a href="mesa-ayuda.php" class="side-link">Mesa de ayuda</a></div>
+    <div class="reportes-link"><a href="usuario.php" class="side-link">Usuarios</a></div>
+</div>
+<div class="informacion"><span id="fechahoy"></span><div id="titulo-informacion"><strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?></div></div>
+<main>
+    <?php if ($error !== ''): ?><div class="error"><?php echo escaparHTML($error); ?></div><?php endif; ?>
+    <div class="info-resumen">
+        <div class="tickets"><h3>Tickets en proceso:</h3><p><?php echo $resumen['en_proceso']; ?></p><h4>Tickets pendientes:</h4><p><?php echo $resumen['pendientes']; ?></p></div>
+        <div class="inventario"><h3>Usuarios activos:</h3><p><?php echo $resumen['usuarios_activos']; ?></p><h4>Equipos registrados:</h4><p><?php echo $resumen['equipos']; ?></p></div>
     </div>
-
-    <div class="informacion">
-        <span id="fechahoy"></span>
-        <div id="titulo-informacion">
-            <strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?>
-        </div>
-    </div>
-
-        
-        <div class="info-resumen">
-            <div class="tickets">
-                <h3>Tickets en proceso:</h3>
-                <p>6</p>
-                <h4>Tickets pendientes:</h4>
-                <p>3</p>
-            </div>
-            <div class="inventario">
-                <h3>Usuarios activos:</h3>
-                <p>20</p>
-                <h4>Equipos registrados:</h4>
-                <p>80</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="ultimos_tickets">
-        <h3>Últimos tickets:</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Asunto</th>
-                    <th>Estado</th>
-                    <th>Fecha de creación</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Problema con la impresora</td>
-                    <td>En proceso</td>
-                    <td>2024-06-01</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>No puedo acceder al correo</td>
-                    <td>Pendiente</td>
-                    <td>2024-06-02</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Problema con el mouse</td>
-                    <td>Resuelto</td>
-                    <td>2024-06-03</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-    <div class="acciones_rapidas">
-        <h3>Acciones rápidas:</h3>
-        <div class="acciones-botones">
-            <a class="accion-botones">Registrar equipo </a>
-            <a  class="accion-botones">Crear usuario</a>
-            <a class="accion-botones">Asignar tecnico</a>
-            <a class="accion-botones">Generar Reporte</a>
-        </div>
-    </div>
-
-    <script type="module" src="../anime.js"></script>
-
-    <script>
-        const fechaFormateada = new Date().toLocaleDateString("es-ES", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
-
-        document.getElementById("fechahoy").textContent = fechaFormateada;
-     function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'es', 
-                includedLanguages: 'en,fr,it,pt,de',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>    
+    <section class="ultimos_tickets">
+        <h3>Últimos tickets</h3>
+        <?php if ($tickets === []): ?>
+            <p>No hay tickets registrados.</p>
+        <?php else: ?>
+            <table><thead><tr><th>ID</th><th>Asunto</th><th>Estado</th><th>Fecha de creación</th></tr></thead><tbody>
+            <?php foreach ($tickets as $ticket): ?>
+                <tr><td><?php echo (int) $ticket['id_ticket']; ?></td><td><?php echo escaparHTML($ticket['titulo']); ?></td><td><?php echo escaparHTML($ticket['estado']); ?></td><td><?php echo escaparHTML($ticket['fecha_creacion']); ?></td></tr>
+            <?php endforeach; ?>
+            </tbody></table>
+        <?php endif; ?>
+    </section>
+</main>
+<script>
+document.getElementById('fechahoy').textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+</script>
 </body>
 </html>
