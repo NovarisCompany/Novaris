@@ -1,0 +1,189 @@
+/* =========================================================
+   LOGIN Y REGISTRO
+   Usado por: login.php y registrarse.php
+   ========================================================= */
+
+body.auth-page {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    --auth-navy: #0b3b59;
+    --auth-teal: #00766b;
+    --auth-teal-hover: #075b68;
+}
+
+.auth-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Montserrat, Arial, sans-serif;
+}
+
+.auth-page .container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.auth-page .left-panel {
+    width: 60%;
+    background: linear-gradient(
+        135deg,
+        var(--auth-navy) 0%,
+        #0a455f 38%,
+        #075c62 68%,
+        var(--auth-teal) 100%
+    );
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    padding-bottom: 120px;
+}
+
+.auth-page .content {
+    max-width: 500px;
+}
+
+.auth-page .content h1 {
+    font-size: 70px;
+    margin-bottom: 30px;
+}
+
+.auth-page .typing {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: .15em solid rgba(255,255,255,.85);
+    display: inline-block;
+    animation: typing 3s steps(16, end) 0.8s forwards, blink-caret .75s step-end infinite;
+    width: 0;
+    padding-bottom: 20px;
+}
+
+.auth-page .content p {
+    font-size: 24px;
+    line-height: 1.5;
+}
+
+.auth-page .footer {
+    margin-top: 100px;
+    color: #b7d2d9;
+    padding-top: 0;
+}
+
+.auth-page .right-panel {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+
+.auth-page .login-box {
+    width: 70%;
+}
+
+.auth-page .login-box h2 {
+    margin-bottom: 50px;
+}
+
+.auth-page .login-box h1 {
+    margin-bottom: 10px;
+}
+
+.auth-page .login-box p {
+    color: gray;
+    margin-bottom: 25px;
+}
+
+.auth-page .login-box input,
+.auth-page .login-box select {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    font-size: 16px;
+}
+
+.auth-page .login-box button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.auth-page form button {
+    background: #111;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.auth-page .forgot {
+    text-align: center;
+    margin-top: 20px;
+    padding-bottom: -29px;
+}
+
+#login-btn,
+#registrar-btn {
+    background-color: var(--auth-navy);
+    color: white;
+    border-radius: 8px;
+}
+
+#login-btn:hover,
+#registrar-btn:hover {
+    background-color: var(--auth-teal-hover);
+}
+
+#text-login-btn {
+    text-decoration: none;
+}
+
+#boton-rol {
+    background-color: var(--auth-navy);
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-bottom: none;
+}
+
+.auth-page .error,
+.auth-page .success {
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.auth-page .error {
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+}
+
+.auth-page .success {
+    background: #dcfce7;
+    border: 1px solid #86efac;
+    color: #166534;
+}
+
+.auth-page .success a {
+    color: #065f46;
+    font-weight: 700;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: rgba(255,255,255,.85); }
+}

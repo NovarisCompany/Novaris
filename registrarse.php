@@ -30,9 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             mysqli_begin_transaction($conexion);
 
             $contrasena = password_hash($contrasenaPlano, PASSWORD_DEFAULT);
+
             $consulta = "INSERT INTO usuario
-                        (nombre, apellido, email, contrasena, telefono, id_rol)
-                        VALUES (?, ?, ?, ?, ?, ?)";
+                (nombre, apellido, email, contrasena, telefono, id_rol, estado_cuenta)
+                VALUES (?, ?, ?, ?, ?, ?, 'Pendiente')";
 
             $stmt = mysqli_prepare($conexion, $consulta);
             mysqli_stmt_bind_param($stmt, "sssssi", $nombre, $apellido, $email, $contrasena, $telefono, $idRol);
@@ -46,15 +47,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmtTecnico = mysqli_prepare($conexion, $consultaTecnico);
                 mysqli_stmt_bind_param($stmtTecnico, "is", $idUsuario, $especialidad);
                 mysqli_stmt_execute($stmtTecnico);
+                mysqli_stmt_close($stmtTecnico);
             }
 
+            mysqli_stmt_close($stmt);
             mysqli_commit($conexion);
+
             $mensaje = "Usuario creado correctamente.";
-            $consulta = "INSERT INTO usuario
-            (nombre, apellido, email, contrasena, telefono, id_rol, estado_cuenta)
-            VALUES (?, ?, ?, ?, ?, ?, 'Pendiente')";
         } catch (mysqli_sql_exception $e) {
             mysqli_rollback($conexion);
+
             $error = $e->getCode() === 1062
                 ? "Ya existe un usuario con ese email."
                 : "Error al crear el usuario. Intenta nuevamente.";
@@ -69,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear usuario - Novaris</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -125,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <option value="3">Solicitante</option>
                 </select>
 
-                <button type="submit" id="registrar-Fbtn">Crear usuario</button>
+                <button type="submit" id="registrar-btn">Crear usuario</button>
             </form>
 
             <div class="forgot">
