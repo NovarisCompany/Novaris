@@ -16,7 +16,7 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novaris</title>
-    <link rel="stylesheet" href="../style_dark.css?v=7">
+    <link rel="stylesheet" href="../style_light.css?v=7">
 
 </head>
 <body class="app-page">
@@ -151,7 +151,7 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
 function googleTranslateElementInit() {
     new google.translate.TranslateElement({
         pageLanguage: 'es',
-        includedLanguages: 'en,pt,fr,it,de',
+        includedLanguages: 'es,en,pt,fr,it,de',
         autoDisplay: false
     }, 'traductor-google');
 }
