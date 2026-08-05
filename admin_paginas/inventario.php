@@ -1,8 +1,5 @@
 <?php
 require_once __DIR__ . '/../conexion.php';
-
-exigirAcceso(1);
-
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
 $equipos = [];
 $error = '';

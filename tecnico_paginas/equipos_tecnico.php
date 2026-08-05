@@ -1,8 +1,5 @@
 <?php
 require_once __DIR__ . '/../conexion.php';
-
-exigirAcceso(2);
-
 $equipos = [];
 $error = '';
 try {

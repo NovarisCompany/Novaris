@@ -1,8 +1,5 @@
 <?php
 require_once __DIR__ . '/conexion.php';
-
-exigirAcceso();
-
 $mensaje = '';
 $error = '';
 $idUsuario = (int) $_SESSION['id_usuario'];

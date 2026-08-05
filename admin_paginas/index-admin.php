@@ -23,28 +23,10 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
     <header>
         <nav class="navbar">
             <a href="index-admin.php" class="brand"><span>Nov</span><span>aris</span></a>
-        <div class="traductor">
-            <button
-                 type="button"
-                 class="btn-idioma"
-                 id="btn-idioma"
-                 aria-label="Cambiar idioma"
-                 aria-expanded="false"
-                 aria-controls="menu-idiomas"
-            >
-               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.15407 7.30116C7.52877 5.59304 9.63674 4.5 12 4.5C12.365 4.5 12.7238 4.52607 13.0748 4.57644L13.7126 5.85192L11.2716 8.2929L8.6466 8.6679L7.36009 9.95441L6.15407 7.30116ZM5.2011 8.82954C4.75126 9.79256 4.5 10.8669 4.5 12C4.5 15.6945 7.17133 18.7651 10.6878 19.3856L11.0989 18.7195L8.8147 15.547L10.3741 13.5256L9.63268 13.1549L6.94027 13.6036L6.41366 11.4972L5.2011 8.82954ZM7.95559 11.4802L8.05962 11.8964L9.86722 11.5951L11.3726 12.3478L14.0824 11.9714L18.9544 14.8135C19.3063 13.9447 19.5 12.995 19.5 12C19.5 8.93729 17.6642 6.30336 15.033 5.13856L15.5377 6.1481L11.9787 9.70711L9.35371 10.0821L7.95559 11.4802ZM18.2539 16.1414C16.9774 18.0652 14.8369 19.366 12.3859 19.4902L12.9011 18.6555L10.6853 15.578L12.0853 13.7632L13.7748 13.5286L18.2539 16.1414ZM12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3Z" fill="#080341"></path> </g></svg>
-            </button>
-
-            <div class="menu-idiomas" id="menu-idiomas" hidden>
-                 <button type="button" data-idioma="es">Español</button>
-                 <button type="button" data-idioma="en">English</button>
-                 <button type="button" data-idioma="pt">Português</button>
-                 <button type="button" data-idioma="fr">Français</button>
-                 <button type="button" data-idioma="it">Italiano</button>
-                 <button type="button" data-idioma="de">Deutsch</button>
-            </div>
-
-            <div id="traductor-google" aria-hidden="true"></div>
+        <div class="modo-light">
+            <a class="boton-light" href="index-admin_light.php" title="Cambiar a modo claro">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 3V4M12 20V21M4 12H3M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5001M17.6859 17.69L18.5 18.5001M21 12H20M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+            </a>
         </div>
             <a href="index-admin.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
             <a href="../perfil.php" class="nav-cta">Mi Perfil</a>
@@ -147,52 +129,4 @@ $nombreCompleto = trim(($_SESSION["nombre"] ?? "") . " " . ($_SESSION["apellido"
 
         document.getElementById("fechahoy").textContent = fechaFormateada;
 </script>
-<script>
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'en,pt,fr,it,de',
-        autoDisplay: false
-    }, 'traductor-google');
-}
-
-const traductor = document.querySelector('.traductor');
-const botonIdioma = document.getElementById('btn-idioma');
-const menuIdiomas = document.getElementById('menu-idiomas');
-
-botonIdioma.addEventListener('click', () => {
-    const abrirMenu = menuIdiomas.hidden;
-
-    menuIdiomas.hidden = !abrirMenu;
-    botonIdioma.setAttribute('aria-expanded', String(abrirMenu));
-});
-
-document.querySelectorAll('[data-idioma]').forEach((boton) => {
-    boton.addEventListener('click', () => {
-        const idioma = boton.dataset.idioma;
-        const selectorGoogle = document.querySelector('.goog-te-combo');
-
-        if (!selectorGoogle) {
-            console.warn('Google Translate todavía no está listo.');
-            return;
-        }
-
-        selectorGoogle.value = idioma === 'es' ? '' : idioma;
-        selectorGoogle.dispatchEvent(new Event('change'));
-
-        menuIdiomas.hidden = true;
-        botonIdioma.setAttribute('aria-expanded', 'false');
-    });
-});
-
-document.addEventListener('click', (evento) => {
-    if (!traductor.contains(evento.target)) {
-        menuIdiomas.hidden = true;
-        botonIdioma.setAttribute('aria-expanded', 'false');
-    }
-});
-</script>
-
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 </html>

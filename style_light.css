@@ -8,13 +8,14 @@
 :root {
     --bg-main: #f0f6f8;
     --bg-nav: #0b1047;
-    --text-primary: #f7f8f8;
+    --text-primary: black;
     --text-secondary: #030736;
     --accent: #ffffff;
     --accent-hover: rgb(6, 153, 141);
     --outline: #faf6f6;
     --shadow: rgba(3, 29, 69, 0.14);
 }
+
 .app-page * {
     box-sizing: border-box;
 }
@@ -36,7 +37,7 @@ html {
 
 .tickets,
 .inventario {
-    background: linear-gradient(145deg, #ebfcf5, #FFFFFF);
+    background:  white;
     border-radius: 8px;
     padding: 32px;
     min-height: 230px;
@@ -45,10 +46,10 @@ html {
     text-align: left;
 }
 
-.acciones_rapidas  {
+.acciones_rapidas {
     display: flex;
     gap: 12px;
-    margin-left: auto;
+    margin-left: 213.5px;
     color: black;
 }
 
@@ -86,7 +87,8 @@ html {
 .ultimos_tickets {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(145deg, #ebfcf5, #FFFFFF);    color: var(--text-primary);
+    background: white;
+    color: black;
     border-radius: 8px;
     box-shadow: 0 20px 40px rgba(3, 29, 69, 0.12);
     padding: 24px 20px;
@@ -99,8 +101,6 @@ html {
     z-index: 1;
 }
 
-
-
 .ultimos_tickets table {
     width: 100%;
     border-collapse: collapse;
@@ -111,7 +111,6 @@ html {
     padding: 10px 12px;
     text-align: left;
     border-bottom: 1px solid var(--outline);
-    color: black;
 }
 
 .tickets h3,
@@ -119,12 +118,12 @@ html {
 .inventario h3,
 .inventario h4 {
     margin: 0 0 16px;
-    color: black;
+    color: var(--text-primary);
 }
 
 .tickets h4,
 .inventario h4 {
-    margin-top: 26px;n
+    margin-top: 26px;
 }
 
 .tickets p,
@@ -150,17 +149,6 @@ body.app-page {
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-body.app-page > .skiptranslate,
-.goog-te-banner-frame.skiptranslate,
-.goog-te-balloon-frame,
-#goog-gt-tt {
-    display: none !important;
-}
-
-.goog-text-highlight {
-    background: transparent !important;
-    box-shadow: none !important;
-}
 .app-page a {
     color: inherit;
     text-decoration: none;
@@ -188,6 +176,25 @@ body.app-page > .skiptranslate,
     backdrop-filter: blur(18px);
 }
 
+
+.boton-dark{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--outline);
+    border-radius: 50%;
+    background-color: var(--accent);
+    color: #151c2b;
+    font-size: 20px;
+    cursor: pointer;
+}
+.boton-dark svg {
+    width: 34x;
+    height: 34px;
+}
 .app-page .brand {
     font-size: 26px;
     font-weight: 800;
@@ -227,86 +234,6 @@ body.app-page > .skiptranslate,
 
 .app-page .nav-link:hover {
     color: var(--accent-hover);
-}
-.app-page .traductor {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    margin-left: auto;
-    z-index: 210;
-}
-
-.app-page .btn-idioma {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    border: 1px solid var(--outline);
-    border-radius: 50%;
-    background-color: var(--accent);
-    color: #151c2b;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.app-page .btn-idioma:hover,
-.app-page .btn-idioma[aria-expanded="true"] {
-    background-color: var(--accent-hover);
-}
-
-.app-page .menu-idiomas {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 150px;
-    padding: 8px;
-    border: 1px solid var(--outline);
-    border-radius: 10px;
-    background: white;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
-}
-
-.app-page .menu-idiomas[hidden] {
-    display: none;
-}
-
-.app-page .menu-idiomas button {
-    width: 100%;
-    padding: 8px 10px;
-    border: none;
-    border-radius: 7px;
-    color: black;
-    font-size: 14px;
-    text-align: left;
-    cursor: pointer;
-}
-
-.app-page .menu-idiomas button:hover {
-    background: var(--gold-wash);
-    color: var(--accent-hover);
-}
-
-#traductor-google {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.goog-te-banner-frame.skiptranslate,
-.goog-te-balloon-frame,
-#goog-gt-tt {
-    display: none !important;
 }
 
 body.app-page {
@@ -376,6 +303,17 @@ body.app-page {
     font-size: 17px;
     line-height: 1.75;
 }
+.app-page .modo-dark {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    z-index: 210;
+}
+
 
 .app-page .hero-actions {
     display: flex;
@@ -470,13 +408,14 @@ body.app-page {
     height: calc(100vh - 70px);
     padding: 20px;
     padding-right: 30px;
-    background-color: #ffffff;
+    background-color: white;
     border-right: 1px solid var(--outline);
     box-shadow: 0 28px 54px var(--shadow);
     padding-top: 25px;
     overflow-y: auto;
     overflow-x: visible;
     z-index: 100;
+    margin-right: 40px;
 }
 
 .app-page .side-bar a {
@@ -484,7 +423,7 @@ body.app-page {
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    color: black;
+    color:black;
 }
 
 .app-page .side-bar > div,
@@ -501,7 +440,7 @@ body.app-page {
 
 .app-page .side-bar > svg,
 .app-page .side-bar > div > svg,
-.app-page .side-bar > button > svg {
+.app-page .side-bar > a > svg {
     flex: 0 0 20px;
     width: 20px;
     height: 20px;
@@ -520,9 +459,8 @@ body.app-page {
 
 .app-page .side-bar > div:hover,
 .app-page .side-bar > div.active,
-.app-page .side-bar > div:has(.side-.activlinke) {
-    background-color: #E6F1FB 
-;
+.app-page .side-bar > div:has(.side-link.active) {
+    background-color: #EBFCF5;
 }
 
 .app-page .side-bar > div.active,
@@ -532,7 +470,7 @@ body.app-page {
 
 .app-page .side-bar > div.active > svg,
 .app-page .side-bar > div:has(.side-link.active) > svg {
-    color: black;
+    color: var(--accent-hover);
 }
 
 .app-page .side-link {
@@ -580,14 +518,14 @@ body.app-page {
     max-width: 980px;
     margin: 0 auto 24px;
     padding: 0 20px;
-    color: var(--text-secondary);
+    color: black;
     background-color: transparent;
 }
 
 .inventario-info h1 {
     font-size: 28px;
     margin-bottom: 14px;
-    color: var(--text-primary);
+    color: black;
     margin-left: 150px;
 
 
@@ -642,7 +580,7 @@ body.app-page {
     max-width: 980px;
     margin: 0 auto 24px;
     padding: 0 20px;
-    color: var(--text-secondary);
+    color: black;
     background-color: transparent;
     margin-left: 300px;
 }
@@ -898,7 +836,7 @@ body.perfil-page {
     font-size: 18px;
     line-height: 1.6;
     text-align: center;
-    color: black;
+    color: var(--text-secondary);
 }
 
 .app-page .informacion {
@@ -908,7 +846,7 @@ body.perfil-page {
     font-size: 18px;
     line-height: 1.6;
     text-align: left;
-    color: black;
+    color: var(--text-secondary);
     margin-left: 280px;
     position: relative;
     z-index: 1;

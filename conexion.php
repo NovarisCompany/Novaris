@@ -1,7 +1,6 @@
 <?php
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// #region agent log
 function debugLog(string $location, string $message, array $data = [], string $hypothesisId = ''): void
 {
     $entry = json_encode([

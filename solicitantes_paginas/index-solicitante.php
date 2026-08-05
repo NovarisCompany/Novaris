@@ -1,8 +1,5 @@
 <?php
 require_once __DIR__ . '/../conexion.php';
-
-exigirAcceso(3);
-
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
 $resumen = ['tickets_activos' => 0, 'equipos_mantenimiento' => 0];
 $tickets = [];

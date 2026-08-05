@@ -59,7 +59,7 @@ html {
 .acciones_rapidas {
     display: flex;
     gap: 12px;
-    margin-left: auto;
+    margin-left: 213.5px;
     color: var(--text-primary);
 }
 
@@ -159,17 +159,6 @@ body.app-page {
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-body.app-page > .skiptranslate,
-.goog-te-banner-frame.skiptranslate,
-.goog-te-balloon-frame,
-#goog-gt-tt {
-    display: none !important;
-}
-
-.goog-text-highlight {
-    background: transparent !important;
-    box-shadow: none !important;
-}
 .app-page a {
     color: inherit;
     text-decoration: none;
@@ -197,6 +186,25 @@ body.app-page > .skiptranslate,
     backdrop-filter: blur(18px);
 }
 
+
+.boton-light{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--outline);
+    border-radius: 50%;
+    background-color: var(--accent);
+    color: #9dafc4;
+    font-size: 20px;
+    cursor: pointer;
+}
+.boton-light svg {
+    width: 34x;
+    height: 34px;
+}
 .app-page .brand {
     font-size: 26px;
     font-weight: 800;
@@ -237,87 +245,6 @@ body.app-page > .skiptranslate,
 .app-page .nav-link:hover {
     color: var(--accent-hover);
 }
-.app-page .traductor {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    margin-left: auto;
-    z-index: 210;
-}
-
-.app-page .btn-idioma {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    border: 1px solid var(--outline);
-    border-radius: 50%;
-    background-color: var(--accent);
-    color: #151c2b;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.app-page .btn-idioma:hover,
-.app-page .btn-idioma[aria-expanded="true"] {
-    background-color: var(--accent-hover);
-}
-
-.app-page .menu-idiomas {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 150px;
-    padding: 8px;
-    border: 1px solid var(--outline);
-    border-radius: 10px;
-    background: var(--panel);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
-}
-
-.app-page .menu-idiomas[hidden] {
-    display: none;
-}
-
-.app-page .menu-idiomas button {
-    width: 100%;
-    padding: 8px 10px;
-    border: none;
-    border-radius: 7px;
-    background: transparent;
-    color: var(--text-primary);
-    font-size: 14px;
-    text-align: left;
-    cursor: pointer;
-}
-
-.app-page .menu-idiomas button:hover {
-    background: var(--gold-wash);
-    color: var(--accent-hover);
-}
-
-#traductor-google {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.goog-te-banner-frame.skiptranslate,
-.goog-te-balloon-frame,
-#goog-gt-tt {
-    display: none !important;
-}
 
 body.app-page {
     top: 0 !important;
@@ -338,6 +265,18 @@ body.app-page {
     transition: background-color 180ms ease, transform 180ms ease;
     margin-left: 0;
 }
+
+.app-page .modo-light {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    z-index: 210;
+}
+
 
 .app-page .nav-cta:hover {
     background-color: var(--accent-hover);
@@ -487,6 +426,7 @@ body.app-page {
     overflow-y: auto;
     overflow-x: visible;
     z-index: 100;
+    margin-right: 60px;
 }
 
 .app-page .side-bar a {
@@ -510,7 +450,7 @@ body.app-page {
 
 .app-page .side-bar > svg,
 .app-page .side-bar > div > svg,
-.app-page .side-bar > button > svg {
+.app-page .side-bar > a > svg {
     flex: 0 0 20px;
     width: 20px;
     height: 20px;

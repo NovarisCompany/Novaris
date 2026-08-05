@@ -1,8 +1,5 @@
 <?php
 require_once __DIR__ . '/../conexion.php';
-
-exigirAcceso(2);
-
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
 $estadisticas = ['activos' => 0, 'pendientes' => 0, 'en_reparacion' => 0];
 $ticketsRecientes = [];

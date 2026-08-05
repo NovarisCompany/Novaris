@@ -1,0 +1,15 @@
+{"sessionId":"9215b0","timestamp":1785843138958,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785843138959,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785843138959,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785843183891,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785843183893,"location":"login.php:POST","message":"Intento de login","data":{"email":"admin@gmail.com","hasPassword":true},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785843184014,"location":"login.php:query","message":"Resultado consulta usuario","data":{"found":true,"idRol":1,"hashPrefix":"$2y$10$"},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785843184114,"location":"login.php:auth","message":"Login exitoso, redirigiendo","data":{"idRol":1,"rol":"Administrador"},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785926346060,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785926377043,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785926383791,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785926383795,"location":"login.php:POST","message":"Intento de login","data":{"email":"admin@gmail.com","hasPassword":true},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785926383799,"location":"login.php:query","message":"Resultado consulta usuario","data":{"found":true,"idRol":1,"hashPrefix":"$2y$10$"},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785926384039,"location":"login.php:auth","message":"Login exitoso, redirigiendo","data":{"idRol":1,"rol":"Administrador"},"hypothesisId":"B","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785932795068,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785932796487,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
