@@ -1,0 +1,43 @@
+.theme-mode-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    z-index: 210;
+}
+
+.theme-mode-control[hidden] {
+    display: none !important;
+}
+
+.theme-mode-control .theme-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--outline, rgba(169, 192, 220, 0.14));
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.theme-mode-control .theme-button svg {
+    width: 34px;
+    height: 34px;
+}
+
+.theme-mode-control.modo-light .theme-button {
+    background-color: var(--accent, #c9a230);
+}
+
+.theme-mode-control.modo-dark .theme-button {
+    background-color: var(--accent, #ffffff);
+}
+
+html.theme-ready body.app-page > * {
+    animation: none !important;
+}
