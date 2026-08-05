@@ -33,3 +33,4 @@
 {"sessionId":"9215b0","timestamp":1785973392336,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
 {"sessionId":"9215b0","timestamp":1785973398747,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
 {"sessionId":"9215b0","timestamp":1785973398812,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
+{"sessionId":"9215b0","timestamp":1785973824157,"location":"conexion.php:conectarBD","message":"Conexión BD exitosa","data":{"host":"localhost","db":"sistema_gestion_ti"},"hypothesisId":"A","runId":"initial"}
