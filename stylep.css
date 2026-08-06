@@ -25,7 +25,31 @@ body.perfil-page {
     align-items: center;
     justify-content: center;
 }
+.btn-volver{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 20px 40px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: #104d79;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(16, 77, 121, 0.25);
+}
 
+.btn-volver svg {
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+}
+
+.btn-volver:hover {
+    background: #0b3858;
+}
 .icono-preview,
 .foto-perfil img {
     width: 100%;

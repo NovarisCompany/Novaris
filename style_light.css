@@ -541,7 +541,7 @@ body.app-page {
     margin-top: 60px;
 }
 
-.inventario-table table 
+.inventario-table table {
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
@@ -550,7 +550,7 @@ body.app-page {
 .inventario-table th,
 .inventario-table td {
     padding: 8px 10px;
-    border: 1px solid var(--outline);
+    border: 1px solid black;
     font-size: 14px;
     text-align: left;
     white-space: normal;
@@ -619,7 +619,7 @@ body.app-page {
 .usuario-table th,
 .usuario-table td {
     padding: 8px 10px;
-    border: 1px solid var(--outline);
+    border: 1px solid black;
     font-size: 14px;
     text-align: left;
     white-space: normal;
@@ -991,17 +991,17 @@ body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier
 }
 
 .help-form {
-    background: linear-gradient(145deg, rgba(24, 57, 87, 0.82), rgba(14, 35, 59, 0.7));
+    background: white;
     padding: 26px;
     border-radius: 10px;
     box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);
-    color: var(--text-primary);
+    color: black;
 }
 
 .help-form h2 {
     margin: 0 0 18px;
     font-size: 20px;
-    color: var(--text-primary);
+    color: black;
 }
 
 .form-group {
@@ -1012,7 +1012,7 @@ body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #b7c8d9;
+    color: black;
 }
 
 .help-form input[type="text"],
@@ -1023,14 +1023,14 @@ body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier
     border: 1px solid var(--outline);
     border-radius: 8px;
     font-size: 15px;
-    color: var(--text-primary);
-    background: rgba(10, 22, 39, 0.38);
+    color: #1F2937;
+    background: #F3F4F6;
 }
 
 .help-form textarea { resize: vertical; }
 
 .ticket-list {
-    background: linear-gradient(145deg, rgba(24, 57, 87, 0.82), rgba(14, 35, 59, 0.7));
+    background: white;
     padding: 18px;
     border-radius: 10px;
     box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);

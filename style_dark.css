@@ -551,7 +551,7 @@ body.app-page {
     margin-top: 60px;
 }
 
-.inventario-table table 
+.inventario-table table {
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
