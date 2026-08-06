@@ -7,32 +7,18 @@ $error = "";
 try {
     $conexion = conectarBD();
 } catch (mysqli_sql_exception $e) {
-    // #region agent log
-    debugLog('login.php:init', 'Fallo conexión al cargar login', ['error' => $e->getMessage()], 'A');
-    // #endregion
-    die("error");
+    die("Error al conectar con la base de datos.");
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
 
-    // #region agent log
-    debugLog('login.php:POST', 'Intento de login', ['email' => $email, 'hasPassword' => $password !== ''], 'B');
-    // #endregion
-
     if ($email === "" || $password === "") {
-        $error = "Por favor complete todos los datos";
+        $error = "Por favor complete todos los datos.";
     } else {
         try {
-            $consulta = "SELECT 
-                            u.id_usuario,
-                            u.nombre,
-                            u.apellido,
-                            u.email,
-                            u.contrasena,
-                            u.id_rol,
-                            r.nombre_rol
+            $consulta = "SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.contrasena, u.id_rol, r.nombre_rol
                          FROM usuario AS u
                          INNER JOIN roles AS r ON u.id_rol = r.id_rol
                          WHERE u.email = ?";
@@ -42,51 +28,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             mysqli_stmt_execute($stmt);
             $resultado = mysqli_stmt_get_result($stmt);
             $usuario = mysqli_fetch_assoc($resultado);
+            mysqli_stmt_close($stmt);
 
-            // #region agent log
-            debugLog('login.php:query', 'Resultado consulta usuario', [
-                'found' => (bool) $usuario,
-                'idRol' => $usuario['id_rol'] ?? null,
-                'hashPrefix' => $usuario ? substr($usuario['contrasena'], 0, 7) : null,
-            ], 'B');
-            // #endregion
+            if ($usuario && password_verify($password, $usuario["contrasena"])) {
+                $_SESSION["id_usuario"] = $usuario["id_usuario"];
+                $_SESSION["nombre"] = $usuario["nombre"];
+                $_SESSION["apellido"] = $usuario["apellido"];
+                $_SESSION["email"] = $usuario["email"];
+                $_SESSION["id_rol"] = $usuario["id_rol"];
+                $_SESSION["rol"] = $usuario["nombre_rol"];
 
-           if ($usuario && password_verify($password, $usuario["contrasena"])) {
-    // #region agent log
-    debugLog('login.php:auth', 'Login exitoso, redirigiendo', ['idRol' => $usuario['id_rol'], 'rol' => $usuario['nombre_rol']], 'B');
-    // #endregion
-    $_SESSION["id_usuario"] = $usuario["id_usuario"];
-    $_SESSION["nombre"] = $usuario["nombre"];
-    $_SESSION["apellido"] = $usuario["apellido"];
-    $_SESSION["email"] = $usuario["email"];
-    $_SESSION["id_rol"] = $usuario["id_rol"];
-    $_SESSION["rol"] = $usuario["nombre_rol"];
+                if ($usuario["id_rol"] == 1) {
+                    header("Location: admin_paginas/index-admin.php");
+                } elseif ($usuario["id_rol"] == 2) {
+                    header("Location: tecnico_paginas/index-tecnico.php");
+                } else {
+                    header("Location: solicitantes_paginas/index-solicitante.php");
+                }
 
-    if ($usuario["id_rol"] == 1) {
-        header("Location: admin_paginas/index-admin.php");
-    } elseif ($usuario["id_rol"] == 2) {
-        header("Location: tecnico_paginas/index-tecnico.php");
-    } elseif ($usuario["id_rol"] == 3) {
-        header("Location: solicitantes_paginas/index-solicitante.php");
-    } else {
-        header("Location: login.php");
-    }
+                exit;
+            }
 
-    exit;
-}
-
-            // #region agent log
-            debugLog('login.php:auth', 'Login fallido', [
-                'found' => (bool) $usuario,
-                'passwordOk' => $usuario ? password_verify($password, $usuario['contrasena']) : false,
-            ], 'B');
-            // #endregion
-            $error = "Email o contraseña incorrectos";
+            $error = "Email o contraseña incorrectos.";
         } catch (mysqli_sql_exception $e) {
-            // #region agent log
-            debugLog('login.php:exception', 'Excepción en login', ['error' => $e->getMessage()], 'B');
-            // #endregion
-            $error = "Error al iniciar sesión";
+            $error = "Error al iniciar sesión.";
         }
     }
 }
@@ -109,25 +74,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="left-panel">
         <div class="content">
             <h1 class="typing">Bienvenido!</h1>
-
-            <p>
-                Soporte técnico y gestión de recursos informáticos.
-            </p>
-
-            <div class="footer">
-                © 2026 Novaris. Todos los derechos reservados.
-            </div>
+            <p>Soporte técnico y gestión de recursos informáticos.</p>
+            <div class="footer">© 2026 Novaris. Todos los derechos reservados.</div>
         </div>
     </div>
 
     <div class="right-panel">
         <div class="login-box">
             <h1>Bienvenido de nuevo!</h1>
-
-            <p>
-                ¿No tienes un usuario?
-                <a href="registrarse.php">Crea un usuario ahora</a>
-            </p>
+            <p>¿No tienes un usuario? <a href="registrarse.php">Crea un usuario ahora</a></p>
 
             <?php if ($error !== ""): ?>
                 <div class="error"><?php echo escaparHTML($error); ?></div>
@@ -135,13 +90,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <form action="login.php" method="POST">
                 <input type="email" name="email" placeholder="Email" required>
-
                 <input type="password" name="password" placeholder="Contraseña" required>
-
                 <button type="submit" id="login-btn">Iniciar sesión</button>
             </form>
-
-           
         </div>
     </div>
 </div>

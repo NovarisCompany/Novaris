@@ -8,6 +8,8 @@ if (!isset($_SESSION['id_usuario'])) {
 }
 
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
+
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
