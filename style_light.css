@@ -1029,6 +1029,8 @@ body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier
 
 .help-form textarea { resize: vertical; }
 
+
+
 .ticket-list {
     background: white;
     padding: 18px;

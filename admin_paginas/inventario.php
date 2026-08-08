@@ -1,20 +1,19 @@
 <?php
 session_start();
 require_once __DIR__ . '/../conexion.php';
+$nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
 
 if (!isset($_SESSION['id_usuario'])) {
     header('Location: ../login.php');
     exit;
 }
 
-$nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
-$equipos = [
-    ['id' => 1, 'nombre' => 'Notebook Administración 01', 'tipo' => 'Notebook', 'marca' => 'Dell', 'modelo' => 'Latitude 5420', 'serie' => 'NB-ADM-001', 'estado' => 'Asignado', 'fecha' => '2026-06-12', 'ubicacion' => 'Administración - Planta baja'],
-    ['id' => 2, 'nombre' => 'PC Soporte 01', 'tipo' => 'PC', 'marca' => 'Lenovo', 'modelo' => 'ThinkCentre M70', 'serie' => 'PC-SOP-001', 'estado' => 'Disponible', 'fecha' => '2026-05-28', 'ubicacion' => 'Sala técnica'],
-    ['id' => 3, 'nombre' => 'Monitor Recepción 01', 'tipo' => 'Monitor', 'marca' => 'Samsung', 'modelo' => 'F24T35', 'serie' => 'MON-REC-001', 'estado' => 'En reparación', 'fecha' => '2026-04-19', 'ubicacion' => 'Mesa de ayuda'],
-    ['id' => 4, 'nombre' => 'Impresora Finanzas 01', 'tipo' => 'Impresora', 'marca' => 'HP', 'modelo' => 'LaserJet Pro', 'serie' => 'IMP-FIN-001', 'estado' => 'Asignado', 'fecha' => '2026-03-08', 'ubicacion' => 'Finanzas - Piso 1'],
-];
-?>
+$conexion = conectarBD();
+
+$registros = mysqli_query($conexion, "SELECT * FROM equipo") or
+    die("Problemas en el select: " . mysqli_error($conexion));
+
+$tickets = mysqli_fetch_all($registros, MYSQLI_ASSOC);?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -67,27 +66,48 @@ $equipos = [
     <span id="fechahoy"></span>
     <div id="titulo-informacion"><strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?></div>
 </div>
-<main class="inventario-info">
-    <h1>Inventario</h1>
-    <div class="inventario-table"><table>
-        <thead><tr><th>ID</th><th>Nombre</th><th>Tipo</th><th>Marca</th><th>Modelo</th><th>Número de serie</th><th>Estado</th><th>Fecha de alta</th><th>Ubicación</th></tr></thead>
-        <tbody>
-        <?php foreach ($equipos as $equipo): ?>
-            <tr>
-                <td><?php echo (int) $equipo['id']; ?></td>
-                <td><div class="cell-content"><?php echo escaparHTML($equipo['nombre']); ?></div></td>
-                <td><?php echo escaparHTML($equipo['tipo']); ?></td>
-                <td><?php echo escaparHTML($equipo['marca']); ?></td>
-                <td><?php echo escaparHTML($equipo['modelo']); ?></td>
-                <td><?php echo escaparHTML($equipo['serie']); ?></td>
-                <td><?php echo escaparHTML($equipo['estado']); ?></td>
-                <td><?php echo escaparHTML($equipo['fecha']); ?></td>
-                <td><div class="cell-content"><?php echo escaparHTML($equipo['ubicacion']); ?></div></td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table></div>
-</main>
+
+<div class="inventario-info">
+<table class="inventario-table"> 
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>ID equipo</th>
+        <th>Numero de serie</th>
+        <th>Estado del equipo</th>
+        <th>Fecha de alta</th>
+      </tr>
+    </thead>
+      <?php foreach ($tickets as $ticket): ?>
+        <tr>
+          <td><?php echo htmlspecialchars($ticket['nombre']); ?></td>
+          <td><?php echo htmlspecialchars($ticket['tipo']); ?></td>
+          <td><?php echo htmlspecialchars($ticket['marca']); ?></td>
+          <td><?php echo htmlspecialchars($ticket['modelo']); ?></td>
+          <td><?php echo htmlspecialchars($ticket['id_equipo']); ?></td>
+          <td><?php echo htmlspecialchars($ticket['numero_serie']); ?></td>
+          <td><?php echo htmlspecialchars($ticket['estado_equipo']); ?></td>
+          <td><?php echo htmlspecialchars($ticket['fecha_alta']); ?></td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
+
+    <div class="">
+        <section class="help-form">
+            <h2>Nueva solicitud</h2>
+            <p>Simulación de formulario para registrar una solicitud de soporte.</p>
+            <div class="form-group"><label>Nombre</label><input type="text" value="Administrador" readonly></div>
+            <div class="form-group"><label>Correo electrónico</label><input type="email" value="admin@novaris.com" readonly></div>
+            <div class="form-group"><label>Asunto</label><input type="text" value="Ejemplo de solicitud" readonly></div>
+            <div class="form-group"><label>Detalle</label><textarea rows="5" readonly>Describe aquí el problema que necesita atención.</textarea></div>
+            <button type="button" class="btn btn-primary">Enviar solicitud</button>
+        </section>
+    </div>
+</body>
+
 <script>
 document.getElementById('fechahoy').textContent = new Date().toLocaleDateString('es-ES', {
     weekday: 'long',
