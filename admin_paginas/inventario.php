@@ -95,8 +95,9 @@ $tickets = mysqli_fetch_all($registros, MYSQLI_ASSOC);?>
       <?php endforeach; ?>
     </table>
 
-    <div class="">
-        <section class="help-form">
+    
+    <div class="inventario-acciones">
+        <section class="formularrio-inventario">
             <h2>Nueva solicitud</h2>
             <p>Simulación de formulario para registrar una solicitud de soporte.</p>
             <div class="form-group"><label>Nombre</label><input type="text" value="Administrador" readonly></div>
