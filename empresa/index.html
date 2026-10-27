@@ -1,205 +1,350 @@
-<meta charset="UTF-8">
-<div class="pantalla-carga">
-  <p id="texto-carga" class="texto-carga visible">Cargando Sistemas de Gestion...</p>
-</div>
-<meta http-equiv="refresh" content="5;url=inicio.html">
-<img id="satelite" class="satelite" src="../Imagenes/logo.png" alt="Foto" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novaris | Tecnología y gestión informática</title>
 
-<style>
-html,
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  overflow: hidden;
-}
+  <meta name="description" content="Novaris ofrece soporte técnico, gestión tecnológica, seguridad e infraestructura para empresas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="../Imagenes/logo.png" type="image/png">
 
-.pantalla-carga {
-  width: 100vw;
-  min-height: 100vh;
-  background: radial-gradient(circle at top, rgba(0,255,204,0.20), #06090e 40%), #06090e;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-family: monospace;
-  position: relative;
-  overflow: hidden;
-}
+</head>
+<body>
 
-.texto-carga {
-  color: #8b949e;
-  margin-top: 20px;
-  font-size: 25px;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand-group">
+        <img id="logo" class="logo" src="../Imagenes/logo.png" alt="Logotipo de Novaris" />
+        <a class="brand" href="#inicio">Novaris</a>
+      </div>
 
-.texto-carga.cambiando {
-  opacity: 0;
-  transform: translateY(8px);
-}
+      <nav class="menu">
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <div class="traductor">
+        <button type="button" class="btn-idioma" id="btn-idioma" aria-label="Cambiar idioma. Idioma actual: Español" aria-expanded="false" aria-controls="menu-idiomas">
+          <i class="fa-solid fa-globe" aria-hidden="true"></i>
+          <span id="idioma-actual">ES</span>
+          <i class="fa-solid fa-chevron-down flecha-idioma" aria-hidden="true"></i>
+        </button>
+        <div class="menu-idiomas" id="menu-idiomas" role="menu" aria-label="Seleccionar idioma" hidden>
+          <button type="button" role="menuitem" data-idioma="es" data-codigo="ES" data-nombre="Español" aria-current="true"><span aria-hidden="true">🇪🇸</span> Español <i class="fa-solid fa-check" aria-hidden="true"></i></button>
+          <button type="button" role="menuitem" data-idioma="en" data-codigo="EN" data-nombre="English"><span aria-hidden="true">🇺🇸</span> English <i class="fa-solid fa-check" aria-hidden="true"></i></button>
+          <button type="button" role="menuitem" data-idioma="pt" data-codigo="PT" data-nombre="Português"><span aria-hidden="true">🇧🇷</span> Português <i class="fa-solid fa-check" aria-hidden="true"></i></button>
+          <button type="button" role="menuitem" data-idioma="fr" data-codigo="FR" data-nombre="Français"><span aria-hidden="true">🇫🇷</span> Français <i class="fa-solid fa-check" aria-hidden="true"></i></button>
+          <button type="button" role="menuitem" data-idioma="it" data-codigo="IT" data-nombre="Italiano"><span aria-hidden="true">🇮🇹</span> Italiano <i class="fa-solid fa-check" aria-hidden="true"></i></button>
+          <button type="button" role="menuitem" data-idioma="de" data-codigo="DE" data-nombre="Deutsch"><span aria-hidden="true">🇩🇪</span> Deutsch <i class="fa-solid fa-check" aria-hidden="true"></i></button>
+        </div>
+        <div id="traductor-google" class="traductor-google" aria-hidden="true"></div>
+      </div>
+    </div>
+  </header>
 
+  <main>
+    <section id="inicio" class="hero">
+      <div class="container hero-content">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <i class="fa-solid fa-sparkles"></i>
+            Tecnología que acompaña tu crecimiento
+          </p>
+          <h1>Soluciones informáticas para trabajar mejor.</h1>
+          <p class="hero-text">En Novaris ayudamos a organizaciones a simplificar su tecnología, cuidar sus equipos y avanzar con confianza.</p>
 
+          <div class="hero-actions">
+            <a class="button button-primary" href="#contacto">Hablemos</a>
+            <a class="button button-secondary" href="#servicios">Conocé nuestros servicios <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
 
-      .satelite {
-        position: absolute;
-        width: 90px;
-        height: 90px;
-        object-fit: contain;
-        z-index: 20;
-        left: 20px;
-        bottom: -140px;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s ease;
-      }
-.panel-datos {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(19, 26, 46, 0.95);
-  border: 1px solid #00ffcc;
-  padding: 15px;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 0.9rem;
-  width: 280px;
-  pointer-events: none;
-  box-shadow: 0 4px 20px rgba(0,255,204,0.15);
-  color: #e2e8f0;
-}
+        <div class="hero-card">
+          <div class="hero-card-icon">
+            <i class="fa-solid fa-laptop-code"></i>
+          </div>
+          <p>Soporte cercano</p>
+          <strong>Soluciones claras para cada desafío.</strong>
+          <div class="card-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </section>
 
-.panel-datos h3 {
-  margin: 0 0 10px 0;
-  color: #00ffcc;
-  font-size: 1rem;
-  border-bottom: 1px solid rgba(0,255,204,0.3);
-  padding-bottom: 5px;
-}
+    <section id="servicios" class="section services-section">
+      <div class="container">
+        <div class="section-intro">
+          <p class="eyebrow">Qué hacemos</p>
+          <h2>Tecnología pensada para tu empresa</h2>
+          <p>Servicios confiables y a medida para que tu equipo pueda enfocarse en lo importante.</p>
+        </div>
 
-.formula-linea {
-  margin: 6px 0;
-  color: #e2e8f0;
-}
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-headset"></i></div>
+            <h3>Soporte técnico</h3>
+            <p>Acompañamiento ágil para resolver incidencias y mantener tu operación en marcha.</p>
+          </article>
 
-.variable {
-  color: #ff007c;
-  font-weight: bold;
-}
+          <article class="service-card featured">
+            <div class="service-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>Gestión y seguridad</h3>
+            <p>Protegemos la información y administramos tus recursos tecnológicos con criterio.</p>
+          </article>
 
-.resultado {
-  color: #00ffcc;
-  font-weight: bold;
-}
+          <article class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-network-wired"></i></div>
+            <h3>Infraestructura</h3>
+            <p>Redes, equipos y herramientas conectadas para un entorno de trabajo más eficiente.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-.btn-lanzar {
-  margin-top: 20px;
-  background-color: #00ffcc;
-  color: #06090e;
-  border: 2px solid #00ffcc;
-  padding: 12px 30px;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  z-index: 10;
-}
+    <section class="trust-bar" aria-label="Compromisos de Novaris">
+      <div class="container trust-grid">
+        <div>
+          <i class="fa-solid fa-bolt"></i>
+          <span><strong>Respuesta ágil</strong> cuando la necesitás</span>
+        </div>
+        <div>
+          <i class="fa-solid fa-user-shield"></i>
+          <span><strong>Atención confiable</strong> y transparente</span>
+        </div>
+        <div>
+          <i class="fa-solid fa-chart-line"></i>
+          <span><strong>Soluciones escalables</strong> para crecer</span>
+        </div>
+      </div>
+    </section>
 
-.btn-lanzar:hover {
-  background-color: #8bffff;
-  color: #06090e;
-  box-shadow: 0 0 20px rgba(0,255,204,0.4);
-}
-@keyframes rotacionConstante {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-</style>
-<script>
-// Parámetros físicos iniciales
-const v0 = 65; // Velocidad inicial
-const anguloGrados = 40; // Ángulo en grados
-const anguloRadianes = anguloGrados * (Math.PI / 180); // Conversión correcta a radianes
-const g = 10; // Gravedad
+    <section id="nosotros" class="section about-section">
+      <div class="container about-grid">
+        <div class="about-visual">
+          <div class="visual-orbit orbit-one"></div>
+          <div class="visual-orbit orbit-two"></div>
+          <i class="fa-solid fa-people-group"></i>
+        </div>
 
-// Cálculos físicos
-const vox = v0 * Math.cos(anguloRadianes);
-const voy = v0 * Math.sin(anguloRadianes);
-const tSubida = voy / g;
-const tTotal = 2 * tSubida;
+        <div class="about-copy">
+          <p class="eyebrow">Sobre Novaris</p>
+          <h2>Un aliado tecnológico, no solo un proveedor.</h2>
+          <p>Combinamos cercanía, organización y conocimiento técnico para transformar necesidades cotidianas en soluciones que funcionan.</p>
 
-const satelite = document.getElementById('satelite');
-let idAnimacion = null;
-const alturaSuelo = 20;
-const entradaDesdeAbajo = 140;
+          <div class="benefits">
+            <div><i class="fa-solid fa-check"></i><span>Atención personalizada</span></div>
+            <div><i class="fa-solid fa-check"></i><span>Procesos claros y ordenados</span></div>
+            <div><i class="fa-solid fa-check"></i><span>Mejora continua</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-function actualizarPosicion(startTime) {
-  let tiempoInicio = startTime || performance.now();
+    <section class="section process-section">
+      <div class="container">
+        <div class="section-intro centered">
+          <p class="eyebrow">Cómo trabajamos</p>
+          <h2>Un proceso simple, de principio a fin</h2>
+          <p>Nos involucramos para entender tu realidad y ofrecer una solución que tenga sentido para tu equipo.</p>
+        </div>
 
-  function loop(tiempoActual) {
-    // tiempo transcurrido en segundos (sin parar): usado para el loop
-    const raw = (tiempoActual - tiempoInicio) / 1000 * 1.5;
+        <ol class="process-grid">
+          <li>
+            <span>01</span>
+            <div>
+              <h3>Escuchamos</h3>
+              <p>Conocemos tu necesidad y el contexto de tu organización.</p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <h3>Planificamos</h3>
+              <p>Definimos una propuesta clara, práctica y a tu medida.</p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <h3>Implementamos</h3>
+              <p>Ejecutamos y acompañamos cada paso del proceso.</p>
+            </div>
+          </li>
+          <li>
+            <span>04</span>
+            <div>
+              <h3>Mejoramos</h3>
+              <p>Seguimos cerca para que tu tecnología evolucione.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
 
-    // si tTotal es cero (evitar div/0), mostramos raw
-    const t = tTotal > 0 ? raw % tTotal : raw;
+    <section class="section faq-section">
+      <div class="container faq-layout">
+        <div>
+          <p class="eyebrow">Preguntas frecuentes</p>
+          <h2>Información clara desde el primer contacto.</h2>
+          <p class="faq-lead">Estas son algunas consultas habituales. Si tenés una necesidad distinta, escribinos y la conversamos.</p>
+        </div>
 
-    const x = vox * t;
-    const y = (voy * t) - (0.5 * g * t * t);
+        <div class="faq-list">
+          <details open>
+            <summary>¿Trabajan con empresas de cualquier tamaño? <i class="fa-solid fa-plus"></i></summary>
+            <p>Adaptamos el alcance de cada servicio a las necesidades y los recursos de cada organización.</p>
+          </details>
+          <details>
+            <summary>¿Puedo consultar antes de contratar un servicio? <i class="fa-solid fa-plus"></i></summary>
+            <p>Sí. El primer contacto nos permite entender tu situación y orientarte sobre la mejor alternativa.</p>
+          </details>
+          <details>
+            <summary>¿Qué tipo de soporte brindan? <i class="fa-solid fa-plus"></i></summary>
+            <p>Brindamos apoyo para equipos, infraestructura, seguridad y gestión de incidentes tecnológicos.</p>
+          </details>
+        </div>
+      </div>
+    </section>
 
-    // Actualizar valores si existen los elementos
-    const setIf = (id, val) => {
-      const el = document.getElementById(id);
-      if (el) el.innerText = val;
-    };
-    setIf('val-t', t.toFixed(2));
-    setIf('val-x', Math.round(x));
-    setIf('val-y', Math.round(y));
+    <section class="cta-section">
+      <div class="container cta-content">
+        <div>
+          <p class="eyebrow">¿Listo para avanzar?</p>
+          <h2>Hagamos que la tecnología juegue a favor de tu equipo.</h2>
+        </div>
+        <a class="button button-light" href="mailto:novarisuruguay@gmail.com">Escribinos <i class="fa-solid fa-paper-plane"></i></a>
+      </div>
+    </section>
+    <section id="reseñas" class="reseñas-section">
+        <div class="container-reseñas">
+            <h2>Lo que dicen nuestros usuarios</h2>
+            <div class="reseñas-grid">
+                <div class="reseña-card">
+                    <div class="estrellas">⭐⭐⭐⭐⭐</div>
+                    <p>"Con Novaris puedo reportar un problema y consultar el estado de mi ticket. Tener el seguimiento en un solo lugar me facilita pedir ayuda."</p>
+                    <div class="autor-reseña">
+                        <strong>María González</strong>
+                        <span>Solicitante · Seguimiento de tickets</span>
+                    </div>
+                </div>
 
-    if (satelite) {
-      const bottomPx = alturaSuelo + (y * 1.8) - entradaDesdeAbajo;
-      const dentroPantalla = bottomPx >= -80 && bottomPx <= window.innerHeight + 80;
+                <div class="reseña-card">
+                    <div class="estrellas">⭐⭐⭐⭐</div>
+                    <p>"Ahora tenemos los equipos organizados por área y marca. El inventario de Novaris nos permite consultar qué recursos tenemos y a quién están asignados."</p>
+                    <div class="autor-reseña">
+                        <strong>Carlos Rodríguez</strong>
+                        <span>Administrador · Gestión de inventario</span>
+                    </div>
+                </div>
 
-      satelite.style.left = (280 + x * 1.8) + 'px';
-      satelite.style.bottom = bottomPx + 'px';
-      satelite.style.opacity = dentroPantalla ? '1' : '0';
+                <div class="reseña-card">
+                    <div class="estrellas">⭐⭐⭐⭐⭐</div>
+                    <p>"Me resulta práctico consultar los equipos que tengo asignados y crear una solicitud cuando alguno presenta una falla. Todo queda registrado."</p>
+                    <div class="autor-reseña">
+                        <strong>Ana Martínez</strong>
+                        <span>Solicitante · Consulta de equipos</span>
+                    </div>
+                </div>
+
+                <div class="reseña-card">
+                    <div class="estrellas">⭐⭐⭐⭐⭐</div>
+                    <p>"Puedo revisar mis tickets por prioridad y registrar el diagnóstico y la solución. Así mantengo organizado el trabajo de soporte técnico."</p>
+                    <div class="autor-reseña">
+                        <strong>Roberto Silva</strong>
+                        <span>Técnico · Atención de incidencias</span>
+                    </div>
+                </div>
+
+                <div class="reseña-card">
+                    <div class="estrellas">⭐⭐⭐⭐</div>
+                    <p>"Desde el panel administro las solicitudes de registro y asigno los tickets a los técnicos. Los resúmenes me ayudan a ver cómo está el trabajo."</p>
+                    <div class="autor-reseña">
+                        <strong>Laura Fernández</strong>
+                        <span>Administradora · Usuarios y asignaciones</span>
+                    </div>
+                </div>
+
+                <div class="reseña-card">
+                    <div class="estrellas">⭐⭐⭐⭐⭐</div>
+                    <p>"El historial me permite volver a consultar los trabajos resueltos y sus soluciones. Es útil para revisar cómo atendí una incidencia anterior."</p>
+                    <div class="autor-reseña">
+                        <strong>Miguel Torres</strong>
+                        <span>Técnico · Historial de trabajos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  </main>
+
+  <footer id="contacto" class="site-footer">
+    <div class="container">
+      <div class="section-heading"><h2>Contáctanos</h2></div>
+      <div class="redes">
+        <div class="redes-grupo">
+          <a class="red-social" href="https://wa.me/1234567890" target="_blank" rel="noreferrer noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a class="red-social" href="mailto:novarisuruguay@gmail.com" aria-label="Correo"><i class="fas fa-envelope"></i> Correo</a>
+          <a class="red-social" href="tel:+1234567890" aria-label="Teléfono"><i class="fas fa-phone"></i> Teléfono</a>
+        </div>
+        <div class="redes-grupo">
+          <span class="redes-label">Síguenos en nuestras redes sociales</span>
+          <a class="red-social" href="https://www.facebook.com/people/Novaris-Uruguay/61592727004095/" target="_blank" rel="noreferrer noopener" aria-label="Facebook"><i class="fab fa-facebook"></i> Facebook</a>
+          <a class="red-social" href="https://x.com/novarisuruguay" target="_blank" rel="noreferrer noopener" aria-label="X"><i class="fab fa-x-twitter"></i> X</a>
+          <a class="red-social" href="https://instagram.com/novarisuruguay/" target="_blank" rel="noreferrer noopener" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          <a class="red-social" href="https://linkedin.com/company/novaris" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer-content"><p>© 2026 Novaris. Todos los derechos reservados</p></div>
+    </div>
+  </footer>
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'en,pt,fr,it,de', autoDisplay: false }, 'traductor-google');
     }
-
-    idAnimacion = requestAnimationFrame(loop);
-  }
-
-  idAnimacion = requestAnimationFrame(loop);
-}
-
-// Arrancar automáticamente al cargar la páginas
-document.addEventListener('DOMContentLoaded', () => {
-  actualizarPosicion(performance.now());
-
-  const textoCarga = document.getElementById('texto-carga');
-  const mensajes = [
-    'Cargando Novaris.',
-    'Cargando Novaris..',
-    'Cargando Novaris...'
-  ];
-  let indice = 0;
-
-  function cambiarTextoCarga() {
-    if (!textoCarga) return;
-
-    textoCarga.classList.add('cambiando');
-
-    setTimeout(() => {
-      textoCarga.textContent = mensajes[indice];
-      textoCarga.classList.remove('cambiando');
-      indice = (indice + 1) % mensajes.length;
-    }, 150);
-  }
-
-  cambiarTextoCarga();
-  setInterval(cambiarTextoCarga, 1800);
-});
-</script>
+    const traductor = document.querySelector('.traductor');
+    const botonIdioma = document.getElementById('btn-idioma');
+    const menuIdiomas = document.getElementById('menu-idiomas');
+    const idiomaActual = document.getElementById('idioma-actual');
+    const cerrarMenu = () => {
+      menuIdiomas.hidden = true;
+      botonIdioma.setAttribute('aria-expanded', 'false');
+    };
+    botonIdioma.addEventListener('click', () => {
+      const abrirMenu = menuIdiomas.hidden;
+      menuIdiomas.hidden = !abrirMenu;
+      botonIdioma.setAttribute('aria-expanded', String(abrirMenu));
+    });
+    document.querySelectorAll('[data-idioma]').forEach((opcion) => {
+      opcion.addEventListener('click', () => {
+        const selectorGoogle = document.querySelector('.goog-te-combo');
+        if (!selectorGoogle) {
+          console.warn('Google Translate todavía no está listo.');
+          return;
+        }
+        selectorGoogle.value = opcion.dataset.idioma === 'es' ? '' : opcion.dataset.idioma;
+        selectorGoogle.dispatchEvent(new Event('change'));
+        idiomaActual.textContent = opcion.dataset.codigo;
+        botonIdioma.setAttribute('aria-label', `Cambiar idioma. Idioma actual: ${opcion.dataset.nombre}`);
+        document.querySelectorAll('[data-idioma]').forEach((item) => item.removeAttribute('aria-current'));
+        opcion.setAttribute('aria-current', 'true');
+        cerrarMenu();
+      });
+    });
+    document.addEventListener('click', (evento) => {
+      if (!traductor.contains(evento.target)) cerrarMenu();
+    });
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Escape' && !menuIdiomas.hidden) {
+        cerrarMenu();
+        botonIdioma.focus();
+      }
+    });
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
