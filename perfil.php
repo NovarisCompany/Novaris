@@ -18,14 +18,18 @@ if (!isset($_SESSION["id_usuario"])) {
 
 $idUsuario = (int) ($_SESSION["id_usuario"] ?? 0);
 
+$paginaInicio = match ((int) ($_SESSION['id_rol'] ?? 0)) {
+    1 => 'admin_paginas/index-admin.php',
+    2 => 'tecnico_paginas/index-tecnico.php',
+    3 => 'solicitantes_paginas/index-solicitante.php',
+    default => 'login.php',
+};
+
 $nombre = "";
 $apellido = "";
 $telefono = "";
 $email = "";
-$idRol = 0;
 $fotoPerfil = "Imagenes/usuariofemenino.png";
-$nombreRol = "";
-$roles = [];
 $fotosPredeterminadas = [
     "Imagenes/usuariofemenino.png",
     "Imagenes/usuariomasculino.png",
@@ -37,10 +41,9 @@ $fotosPredeterminadas = [
     "Imagenes/usuariomasculinocalvo.png",
 ];
 
-$consultaUsuario = "SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.telefono, u.id_rol, u.fotoperfil, r.nombre_rol
-                    FROM usuario AS u
-                    LEFT JOIN roles AS r ON u.id_rol = r.id_rol
-                    WHERE u.id_usuario = ?";
+$consultaUsuario = "SELECT id_usuario, nombre, apellido, email, telefono, fotoperfil
+                    FROM usuario
+                    WHERE id_usuario = ?";
 $stmtUsuario = mysqli_prepare($conexion, $consultaUsuario);
 mysqli_stmt_bind_param($stmtUsuario, "i", $idUsuario);
 mysqli_stmt_execute($stmtUsuario);
@@ -52,19 +55,12 @@ if ($usuarioActual) {
     $apellido = $usuarioActual["apellido"] ?? "";
     $telefono = $usuarioActual["telefono"] ?? "";
     $email = $usuarioActual["email"] ?? "";
-    $idRol = (int) ($usuarioActual["id_rol"] ?? 0);
-    $nombreRol = $usuarioActual["nombre_rol"] ?? "";
     $fotoPerfil = $usuarioActual["fotoperfil"] ?? "";
     if ($fotoPerfil === "" || !in_array($fotoPerfil, $fotosPredeterminadas, true)) {
         $fotoPerfil = $fotosPredeterminadas[0];
     }
 }
 
-$consultaRoles = "SELECT id_rol, nombre_rol FROM roles ORDER BY id_rol";
-$resultadoRoles = mysqli_query($conexion, $consultaRoles);
-while ($rol = mysqli_fetch_assoc($resultadoRoles)) {
-    $roles[] = $rol;
-}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = trim($_POST["nombre"] ?? "");
@@ -73,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"] ?? "");
     $contrasena = $_POST["contrasena"] ?? "";
     $confirmarContrasena = $_POST["confirmar_contrasena"] ?? "";
-    $idRol = (int) ($_POST["id_rol"] ?? 0);
     $fotoPerfil = trim($_POST["foto_perfil"] ?? $fotosPredeterminadas[0]);
 
     if (!in_array($fotoPerfil, $fotosPredeterminadas, true)) {
@@ -86,19 +81,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = "El email no tiene un formato válido.";
     } elseif ($contrasena !== "" && $contrasena !== $confirmarContrasena) {
         $error = "Las contraseñas no coinciden.";
-    } elseif ($idRol <= 0 || !in_array($idRol, array_map('intval', array_column($roles, 'id_rol')), true)) {
-        $error = "Selecciona un rol válido.";
     } else {
         try {
             mysqli_begin_transaction($conexion);
 
             if ($contrasena !== "") {
                 $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-                $stmt = mysqli_prepare($conexion, "UPDATE usuario SET nombre = ?, apellido = ?, email = ?, telefono = ?, id_rol = ?, contrasena = ?, fotoperfil = ? WHERE id_usuario = ?");
-                mysqli_stmt_bind_param($stmt, "ssssissi", $nombre, $apellido, $email, $telefono, $idRol, $hash, $fotoPerfil, $idUsuario);
+                $stmt = mysqli_prepare($conexion, "UPDATE usuario SET nombre = ?, apellido = ?, email = ?, telefono = ?, contrasena = ?, fotoperfil = ? WHERE id_usuario = ?");
+                mysqli_stmt_bind_param($stmt, "ssssssi", $nombre, $apellido, $email, $telefono, $hash, $fotoPerfil, $idUsuario);
             } else {
-                $stmt = mysqli_prepare($conexion, "UPDATE usuario SET nombre = ?, apellido = ?, email = ?, telefono = ?, id_rol = ?, fotoperfil = ? WHERE id_usuario = ?");
-                mysqli_stmt_bind_param($stmt, "ssssisi", $nombre, $apellido, $email, $telefono, $idRol, $fotoPerfil, $idUsuario);
+                $stmt = mysqli_prepare($conexion, "UPDATE usuario SET nombre = ?, apellido = ?, email = ?, telefono = ?, fotoperfil = ? WHERE id_usuario = ?");
+                mysqli_stmt_bind_param($stmt, "sssssi", $nombre, $apellido, $email, $telefono, $fotoPerfil, $idUsuario);
             }
 
             mysqli_stmt_execute($stmt);
@@ -107,12 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["nombre"] = $nombre;
             $_SESSION["apellido"] = $apellido;
             $_SESSION["email"] = $email;
-            $_SESSION["id_rol"] = $idRol;
-            $stmtRol = mysqli_prepare($conexion, "SELECT nombre_rol FROM roles WHERE id_rol = ?");
-            mysqli_stmt_bind_param($stmtRol, "i", $idRol);
-            mysqli_stmt_execute($stmtRol);
-            $rolActualizado = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtRol));
-            $_SESSION["rol"] = $rolActualizado["nombre_rol"] ?? $nombreRol;
             $_SESSION["foto_perfil"] = $fotoPerfil;
 
             $mensaje = "Datos guardados correctamente.";
@@ -123,9 +110,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-$inicioSegunRol = $idRol === 1
-    ? "admin_paginas/index-admin.php"
-    : ($idRol === 2 ? "tecnico_paginas/index-tecnico.php" : "solicitantes_paginas/index-solicitante.php");
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -139,8 +123,7 @@ $inicioSegunRol = $idRol === 1
     <link rel="stylesheet" href="stylep.css">
 </head>
 <body class="perfil-page">
-<a href="<?php echo escaparHTML($inicioSegunRol); ?>" class="btn-volver"><svg fill="#000000" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="513,216.6 158.5,216.6 316.1,59.1 197.9,59.1 1,256 197.9,452.9 316.1,452.9 158.5,295.4 513,295.4 "></polygon> </g></svg> Volver al inicio</a>
-
+<a href="<?php echo escaparHTML($paginaInicio); ?>" class="btn-volver"><svg fill="#000000" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="513,216.6 158.5,216.6 316.1,59.1 197.9,59.1 1,256 197.9,452.9 316.1,452.9 158.5,295.4 513,295.4 "></polygon> </g></svg> Volver al inicio</a>
 
 <div class="contenedor">
 
@@ -215,18 +198,6 @@ $inicioSegunRol = $idRol === 1
                     <label for="telefono">Teléfono</label>
                     <input type="text" name="telefono" id="telefono" placeholder="Teléfono" value="<?php echo escaparHTML($telefono); ?>">
                 </div>
-
-                <div class="grupo">
-                    <label for="id_rol">Rol</label>
-                    <select name="id_rol" id="id_rol">
-                        <?php foreach ($roles as $rol): ?>
-                            <option value="<?php echo (int) $rol['id_rol']; ?>"<?php echo $idRol === (int) $rol['id_rol'] ? ' selected' : ''; ?>><?php echo escaparHTML($rol['nombre_rol']); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="fila">
                 <div class="grupo">
                     <label for="email">Email</label>
                     <input type="email" name="email" id="email" placeholder="you@email.com" value="<?php echo escaparHTML($email); ?>" required>
@@ -274,7 +245,6 @@ $inicioSegunRol = $idRol === 1
         'apellido' => $apellido,
         'telefono' => $telefono,
         'email' => $email,
-        'idRol' => (string) $idRol,
         'foto' => $fotoPerfil,
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
 
@@ -282,7 +252,6 @@ $inicioSegunRol = $idRol === 1
     document.getElementById('apellidos').value = datosPerfil.apellido;
     document.getElementById('telefono').value = datosPerfil.telefono;
     document.getElementById('email').value = datosPerfil.email;
-    document.getElementById('id_rol').value = datosPerfil.idRol;
     preview.src = datosPerfil.foto;
     inputFotoPerfil.value = datosPerfil.foto;
 
@@ -307,7 +276,6 @@ $inicioSegunRol = $idRol === 1
         document.getElementById('email').value = '';
         document.getElementById('contrasena').value = '';
         document.getElementById('confirmar_contrasena').value = '';
-        document.getElementById('id_rol').selectedIndex = 0;
     });
 </script>
 

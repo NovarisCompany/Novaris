@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=Cormorant+Garamond:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap');
 
 /* =========================================================
    INDEX Y PAGINAS INTERNAS
@@ -8,12 +8,21 @@
 :root {
     --bg-main: #f0f6f8;
     --bg-nav: #0b1047;
+    --panel: #ffffff;
+    --panel-light: #f4f7fa;
     --text-primary: black;
     --text-secondary: #030736;
     --accent: #ffffff;
     --accent-hover: rgb(6, 153, 141);
     --outline: #faf6f6;
     --shadow: rgba(3, 29, 69, 0.14);
+    --gold-wash: #EBFCF5;
+    --success: #176b43;
+    --success-wash: #e8f8ef;
+    --warning: #a16207;
+    --warning-wash: #fff7e6;
+    --danger: #a33a3a;
+    --danger-wash: #fdecec;
 }
 
 .app-page * {
@@ -200,7 +209,7 @@ body.app-page {
     font-weight: 800;
     letter-spacing: 0;
     margin-right: 0px;
-    margin-left: 40px;
+    margin-left: -30px;
 }
 .app-page .brand span:first-child {
     color: #ffffff; 
@@ -209,11 +218,18 @@ body.app-page {
 .app-page .brand span:last-child {
     color: #f1d36d ; 
 }
-.logo{
-    width: 50px;
-    height: 50px;
-    margin-bottom: -10px;
-    margin-left: -1160px;
+.app-page .logo {
+    display: block;
+    width: clamp(36px, 5vw, 50px);
+    height: auto;
+    max-height: 50px;
+    object-fit: contain;
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.app-page .navbar > a:has(.logo) {
+    order: -1;
 }
 
 .app-page .nav-links {
@@ -415,7 +431,8 @@ body.app-page {
     overflow-y: auto;
     overflow-x: visible;
     z-index: 100;
-    margin-right: 40px;
+    margin-right: 60px;
+    scrollbar-width: thin;
 }
 
 .app-page .side-bar a {
@@ -648,16 +665,12 @@ body.app-page {
    Estilos para .inventario-acciones y .formulario-inventario
    ========================================================= */
 .inventario-acciones {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 28px;
-    align-items: start;
-    margin-left: 300px;
-    margin-top: 60px;
-    margin-bottom: 60px;
+    max-width: 1100px;
+    margin-left: 150px;
+    margin-top: 20px;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    justify-content: flex-end;
+    padding: 0 20px 28px 0;
 }
 
 .formulario-inventario {
@@ -675,7 +688,7 @@ body.app-page {
     color: var(--text-primary);
 }
 .formulario-inventario p { color: var(--text-secondary); margin: 0 0 12px; font-size: 14px; }
-.formulario-inventario .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+.formulario-inventario .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
 .formulario-inventario .form-group label { font-size: 13px; color: var(--text-secondary); }
 .formulario-inventario .form-group input,
 .formulario-inventario .form-group textarea {
@@ -1092,6 +1105,60 @@ body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier
 
 .ticket-table-wrapper { overflow-x: auto; }
 
+/* =========================================================
+   BARRA DE DESPLAZAMIENTO NOVARIS
+   Mantiene el desplazamiento nativo, pero adapta su aspecto
+   a la identidad visual azul marino y dorada de la empresa.
+   ========================================================= */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--bg-nav);
+}
+
+html::-webkit-scrollbar {
+    width: 10px;
+}
+
+html::-webkit-scrollbar-track {
+    background: var(--bg-nav);
+}
+
+html::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border: 2px solid var(--bg-nav);
+    border-radius: 999px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+/* El menú lateral también tiene desplazamiento propio. */
+.app-page .side-bar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+.app-page .side-bar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.app-page .side-bar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.app-page .side-bar::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+}
+
+.app-page .side-bar::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+    background-clip: padding-box;
+}
+
 .ticket-table {
     width: 100%;
     border-collapse: collapse;
@@ -1128,3 +1195,66 @@ body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier
     .ticket-list { order: 2; }
     .help-page { margin-left: 0; max-width: 100%; padding: 0 16px; }
 }
+/* Graficos del dashboard del tecnico */
+.tecnico-graficos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin: 30px 24px 30px 300px;
+    color: var(--text-primary);
+}
+.tecnico-grafico {
+    min-width: 0;
+    padding: 28px;
+    background: var(--panel);
+    border-radius: 12px;
+    box-shadow: 0 12px 28px var(--shadow);
+}
+.tecnico-grafico h2 { margin: 0 0 10px; font-size: 18px; }
+.tecnico-grafico p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+.tecnico-grafico-canvas { position: relative; height: 280px; margin: 20px 0; }
+.tecnico-grafico .tecnico-grafico-ayuda { font-size: 12px; }
+.tecnico-grafico-resumen { list-style: none; padding: 0; margin: 16px 0 0; }
+.tecnico-grafico-resumen li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 14px; }
+.tecnico-grafico-vacio { padding: 60px 0; text-align: center; }
+@media (max-width: 1050px) { .tecnico-graficos { grid-template-columns: 1fr; } }
+@media (max-width: 768px) {
+    .tecnico-graficos { margin: 24px 16px; }
+    .tecnico-grafico { padding: 22px; }
+}
+
+/* Graficos del dashboard del solicitante */
+.solicitante-graficos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin: 30px 24px 30px 300px;
+    color: var(--text-primary);
+}
+.solicitante-grafico {
+    min-width: 0;
+    padding: 28px;
+    border-radius: 12px;
+    background: var(--panel);
+    box-shadow: 0 12px 28px var(--shadow);
+}
+.solicitante-grafico h3 { margin: 0 0 10px; font-size: 18px; }
+.grafico-descripcion, .grafico-vacio { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+.grafico-canvas { position: relative; height: 270px; margin: 20px 0; }
+.grafico-canvas-barra { height: 200px; }
+.grafico-total strong { font-size: 32px; }
+.grafico-total { margin: 20px 0 0; }
+.grafico-leyenda { list-style: none; padding: 0; margin: 20px 0 0; }
+.grafico-leyenda li { display: flex; align-items: center; gap: 10px; padding: 9px 0; font-size: 14px; }
+.grafico-leyenda strong { margin-left: auto; white-space: nowrap; }
+.grafico-leyenda small { font-weight: normal; color: var(--text-secondary); }
+.grafico-color { flex: 0 0 11px; height: 11px; border-radius: 3px; }
+.grafico-vacio { padding: 36px 0; text-align: center; }
+@media (max-width: 1050px) {
+    .solicitante-graficos { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .solicitante-graficos { margin: 24px 16px; }
+    .solicitante-grafico { padding: 22px; }
+}
+

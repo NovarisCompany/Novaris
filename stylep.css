@@ -2,6 +2,7 @@ body.perfil-page {
     background: #f5f5f5;
     min-height: 100vh;
     padding: 40px;
+    font-family: Montserrat, Arial, sans-serif;
 }
 
 .contenedor {
@@ -248,3 +249,97 @@ body.app-page.slide-out > *:nth-child(2) { animation: flowOut 0.45s cubic-bezier
 body.app-page.slide-out > *:nth-child(3) { animation: flowOut 0.45s cubic-bezier(0.55,0,1,0.45) 120ms both; }
 body.app-page.slide-out > *:nth-child(4) { animation: flowOut 0.45s cubic-bezier(0.55,0,1,0.45) 180ms both; }
 body.app-page.slide-out > *:nth-child(5) { animation: flowOut 0.45s cubic-bezier(0.55,0,1,0.45) 240ms both; }
+
+/* Perfil: columnas flexibles y campos contenidos en su tarjeta. */
+body.perfil-page {
+    margin: 0;
+    padding: clamp(16px, 3vw, 40px);
+}
+
+.perfil-page *,
+.perfil-page *::before,
+.perfil-page *::after {
+    box-sizing: border-box;
+}
+
+.perfil-page .contenedor,
+.perfil-page .perfil-izq,
+.perfil-page .perfil-der,
+.perfil-page .fila,
+.perfil-page .grupo {
+    min-width: 0;
+}
+
+.perfil-page .contenedor {
+    width: 100%;
+    gap: clamp(20px, 3vw, 40px);
+}
+
+.perfil-page .perfil-izq {
+    flex: 0 0 320px;
+    width: 320px;
+}
+
+.perfil-page .foto-perfil {
+    width: min(100%, 300px);
+    height: auto;
+    aspect-ratio: 1;
+}
+
+.perfil-page .btn-volver {
+    min-height: 44px;
+    margin: 0 0 24px;
+}
+
+.perfil-page .perfil-der .fila {
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.perfil-page .perfil-der .grupo {
+    flex: 1 1 200px;
+}
+
+.perfil-page .perfil-der .grupo input {
+    max-width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    font-size: 16px;
+}
+
+.perfil-page .botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.perfil-page .botones button {
+    min-height: 44px;
+}
+
+@media (max-width: 900px) {
+    .perfil-page .perfil-izq {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 460px;
+        align-self: center;
+    }
+
+    .perfil-page .perfil-der {
+        width: 100%;
+    }
+
+    .perfil-page .perfil-der .grupo {
+        flex-basis: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .perfil-page .perfil-der {
+        padding: 16px;
+    }
+
+    .perfil-page .botones button {
+        flex: 1 1 120px;
+    }
+}

@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = "Por favor complete todos los datos.";
     } else {
         try {
-            $consulta = "SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.contrasena, u.id_rol, r.nombre_rol
+            $consulta = "SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.contrasena, u.id_rol,
+                                u.estado_cuenta, r.nombre_rol
                          FROM usuario AS u
                          INNER JOIN roles AS r ON u.id_rol = r.id_rol
                          WHERE u.email = ?";
@@ -31,25 +32,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             mysqli_stmt_close($stmt);
 
             if ($usuario && password_verify($password, $usuario["contrasena"])) {
-                $_SESSION["id_usuario"] = $usuario["id_usuario"];
-                $_SESSION["nombre"] = $usuario["nombre"];
-                $_SESSION["apellido"] = $usuario["apellido"];
-                $_SESSION["email"] = $usuario["email"];
-                $_SESSION["id_rol"] = $usuario["id_rol"];
-                $_SESSION["rol"] = $usuario["nombre_rol"];
-
-                if ($usuario["id_rol"] == 1) {
-                    header("Location: admin_paginas/index-admin.php");
-                } elseif ($usuario["id_rol"] == 2) {
-                    header("Location: tecnico_paginas/index-tecnico.php");
+                if ($usuario["estado_cuenta"] !== "Aprobada") {
+                    $error = $usuario["estado_cuenta"] === "Pendiente"
+                        ? "Tu cuenta está pendiente de aprobación por un administrador."
+                        : "Tu solicitud de cuenta fue rechazada.";
                 } else {
-                    header("Location: solicitantes_paginas/index-solicitante.php");
-                }
+                    $_SESSION["id_usuario"] = $usuario["id_usuario"];
+                    $_SESSION["nombre"] = $usuario["nombre"];
+                    $_SESSION["apellido"] = $usuario["apellido"];
+                    $_SESSION["email"] = $usuario["email"];
+                    $_SESSION["id_rol"] = $usuario["id_rol"];
+                    $_SESSION["rol"] = $usuario["nombre_rol"];
 
-                exit;
+                    if ($usuario["id_rol"] == 1) {
+                        header("Location: admin_paginas/index-admin.php");
+                    } elseif ($usuario["id_rol"] == 2) {
+                        header("Location: tecnico_paginas/index-tecnico.php");
+                    } else {
+                        header("Location: solicitantes_paginas/index-solicitante.php");
+                    }
+
+                    exit;
+                }
             }
 
-            $error = "Email o contraseña incorrectos.";
+            if ($error === "") {
+                $error = "Email o contraseña incorrectos.";
+            }
         } catch (mysqli_sql_exception $e) {
             $error = "Error al iniciar sesión.";
         }
@@ -71,17 +80,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body class="auth-page">
 
 <div class="container">
-    <div class="left-panel">
+    <div class="left-panel login-left-panel">
+        <div class="login-brand">
+            <img class="logo-image" src="Imagenes/logo.png" alt="Logo de Novaris">
+            <p class="logo">Novaris</p>
+        </div>
         <div class="content">
             <h1 class="typing">Bienvenido!</h1>
-            <p>Soporte técnico y gestión de recursos informáticos.</p>
+            <p>Gestioná tus equipos y resolvé incidencias desde un solo lugar.</p>
             <div class="footer">© 2026 Novaris. Todos los derechos reservados.</div>
         </div>
     </div>
 
     <div class="right-panel">
+        <div class="link-empresa">
+            <a href="empresa/index.html" target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="6" y="7" width="12" height="14" rx="1.5" />
+                    <path d="M9 7V3h6v4M10 21v-4h4v4M3 21h18M9 11h1M14 11h1M9 14h1M14 14h1" />
+                </svg>
+                <span>Ir a Novaris</span>
+            </a>
+        </div>
         <div class="login-box">
-            <h1>Bienvenido de nuevo!</h1>
+            <h1>Accede a tu cuenta</h1>
             <p>¿No tienes un usuario? <a href="registrarse.php">Crea un usuario ahora</a></p>
 
             <?php if ($error !== ""): ?>

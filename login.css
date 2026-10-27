@@ -27,23 +27,39 @@ body.auth-page {
 
 .auth-page .left-panel {
     width: 60%;
-    background: linear-gradient(
-        135deg,
-        var(--auth-navy) 0%,
-        #0a455f 38%,
-        #075c62 68%,
-        var(--auth-teal) 100%
-    );
+    background: url("Imagenes/fondologin.png") center / cover no-repeat;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 50px;
     padding-bottom: 120px;
+    padding: clamp(24px, 4vw, 50px);
+}
+
+.auth-page .left-panel.login-left-panel {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-left: 140px;
+}
+
+.auth-page .login-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.auth-page .login-brand .logo {
+    margin-bottom: 0;
 }
 
 .auth-page .content {
     max-width: 500px;
+}
+
+.auth-page .login-left-panel .content {
+    margin: auto 0;
 }
 
 .auth-page .content h1 {
@@ -151,7 +167,17 @@ body.auth-page {
     margin-bottom: 20px;
     border-bottom: none;
 }
+.logo{
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px;
+}
 
+.logo-image{
+    width: 60px;
+    height: 60px;
+}
 .auth-page .error,
 .auth-page .success {
     border-radius: 8px;
@@ -186,4 +212,171 @@ body.auth-page {
 @keyframes blink-caret {
     from, to { border-color: transparent; }
     50% { border-color: rgba(255,255,255,.85); }
+}
+
+/* El formulario conserva su ancho útil tanto en escritorio como en móvil. */
+.auth-page .left-panel,
+.auth-page .right-panel,
+.auth-page .content,
+.auth-page .login-box {
+    min-width: 0;
+}
+
+.auth-page .left-panel {
+    padding: clamp(24px, 4vw, 50px);
+}
+
+.auth-page .right-panel {
+    padding: clamp(24px, 4vw, 64px);
+}
+
+.auth-page .content {
+    width: 100%;
+}
+
+.auth-page .content h1 {
+    font-size: clamp(32px, 5vw, 70px);
+}
+
+.auth-page .content p {
+    font-size: clamp(18px, 2vw, 24px);
+}
+
+.auth-page .typing {
+    max-width: 100%;
+}
+
+.auth-page .login-box {
+    width: 100%;
+    max-width: 440px;
+    overflow-wrap: anywhere;
+}
+
+.auth-page .login-box input,
+.auth-page .login-box select,
+.auth-page .login-box button {
+    min-width: 0;
+    min-height: 48px;
+}
+
+@media (max-width: 900px) {
+    .auth-page .container {
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
+    .auth-page .left-panel,
+    .auth-page .right-panel {
+        width: 100%;
+        padding: 32px 24px;
+    }
+
+    .auth-page .right-panel {
+        flex: 1;
+    }
+
+    .auth-page .content {
+        max-width: 560px;
+    }
+
+    .auth-page .content h1 {
+        margin-bottom: 16px;
+        font-size: clamp(30px, 6vw, 44px);
+    }
+
+    .auth-page .typing {
+        width: auto;
+        white-space: normal;
+        border-right: 0;
+        padding-bottom: 0;
+        animation: none;
+    }
+
+    .auth-page .footer {
+        margin-top: 24px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-page .left-panel,
+    .auth-page .right-panel {
+        padding: 24px 20px;
+    }
+
+    .auth-page .login-box h1 {
+        font-size: 28px;
+    }
+}
+
+/* Acceso al sitio de la empresa, independiente del formulario de ingreso. */
+.auth-page .right-panel:has(> .link-empresa) {
+    position: relative;
+}
+
+.auth-page .link-empresa {
+    position: absolute;
+    top: 32px;
+    right: clamp(24px, 4vw, 64px);
+    z-index: 2;
+    max-width: calc(100% - 40px);
+}
+
+.auth-page .link-empresa a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid #c6d4e2;
+    border-radius: 10px;
+    color: var(--auth-navy);
+    background: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.auth-page .link-empresa svg {
+    flex: 0 0 20px;
+}
+
+.auth-page .link-empresa a:hover {
+    border-color: #8fa9bf;
+    background: #f3f7fb;
+    box-shadow: 0 3px 10px rgba(11, 59, 89, .08);
+}
+
+.auth-page .link-empresa a:focus-visible {
+    outline: 3px solid #8fa9bf;
+    outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+    .auth-page .right-panel:has(> .link-empresa) {
+        padding-top: 92px;
+    }
+
+    .auth-page .link-empresa {
+        top: 20px;
+        right: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-page .link-empresa {
+        right: 20px;
+    }
+}
+
+@media (min-width: 901px) and (max-height: 600px) {
+    .auth-page .right-panel:has(> .link-empresa) {
+        padding-top: 104px;
+        padding-bottom: 32px;
+    }
 }
