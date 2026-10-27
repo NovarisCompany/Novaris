@@ -1,17 +1,87 @@
 <?php
 session_start();
 require_once __DIR__ . '/../conexion.php';
-
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['id_usuario']) || (int) ($_SESSION['id_rol'] ?? 0) !== 3) {
     header('Location: ../login.php');
     exit;
 }
 
+$conexion = conectarBD();
+
+
+
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
-$equipos = [
-    ['id' => 1, 'nombre' => 'Notebook Administracion 01', 'detalle' => 'Dell Latitude 5420'],
-    ['id' => 2, 'nombre' => 'PC Soporte 01', 'detalle' => 'Lenovo ThinkCentre M70'],
-];
+$idUsuario = (int) $_SESSION['id_usuario'];
+$equipos = [];
+$error = '';
+$idEquipo = 0;
+$titulo = '';
+$descripcion = '';
+$prioridad = 'Media';
+
+// Se cambia después de crear el ticket para evitar envíos duplicados.
+if (!isset($_SESSION['token_crear_ticket'])) {
+    $_SESSION['token_crear_ticket'] = bin2hex(random_bytes(32));
+}
+
+try {
+    
+    $stmt = mysqli_prepare($conexion, "SELECT DISTINCT e.id_equipo, e.nombre
+        FROM historial_asignacion AS h
+        INNER JOIN equipo AS e ON e.id_equipo = h.id_equipo
+        WHERE h.id_usuario = ? AND h.fecha_fin IS NULL AND e.estado_equipo <> 'Baja'
+        ORDER BY e.nombre");
+    mysqli_stmt_bind_param($stmt, 'i', $idUsuario);
+    mysqli_stmt_execute($stmt);
+    $equipos = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+    mysqli_stmt_close($stmt);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $idEquipo = filter_var($_POST['id_equipo'] ?? '', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        $titulo = is_string($_POST['titulo'] ?? null) ? trim($_POST['titulo']) : '';
+        $descripcion = is_string($_POST['descripcion'] ?? null) ? trim($_POST['descripcion']) : '';
+        $prioridad = is_string($_POST['prioridad'] ?? null) ? $_POST['prioridad'] : '';
+        $token = $_POST['token'] ?? '';
+
+        if (!is_string($token) || !hash_equals($_SESSION['token_crear_ticket'], $token)) {
+            throw new InvalidArgumentException('El formulario venció o ya fue enviado. Revisa los datos e inténtalo otra vez.');
+        }
+        if ($titulo === '' || $descripcion === '' || !in_array($prioridad, ['Baja', 'Media', 'Alta'], true)) {
+            throw new InvalidArgumentException('Completa el título, la descripción y una prioridad válida.');
+        }
+        if (mb_strlen($titulo, 'UTF-8') > 100 || strlen($descripcion) > 65535) {
+            throw new InvalidArgumentException('El título admite hasta 100 caracteres. La descripción no puede superar 65535 bytes.');
+        }
+        if (!$idEquipo) {
+            throw new InvalidArgumentException('Selecciona uno de tus equipos.');
+        }
+
+        // Se comprueba la asignación otra vez al guardar, no solo al mostrar el formulario.
+        $stmt = mysqli_prepare($conexion, "INSERT INTO ticket
+            (titulo, descripcion, prioridad, estado, id_usuario, id_equipo)
+            SELECT ?, ?, ?, 'Pendiente', ?, e.id_equipo
+            FROM equipo AS e
+            WHERE e.id_equipo = ? AND e.estado_equipo <> 'Baja'
+              AND EXISTS (SELECT 1 FROM historial_asignacion AS h
+                  WHERE h.id_equipo = e.id_equipo AND h.id_usuario = ? AND h.fecha_fin IS NULL)");
+        mysqli_stmt_bind_param($stmt, 'sssiii', $titulo, $descripcion, $prioridad, $idUsuario, $idEquipo, $idUsuario);
+        mysqli_stmt_execute($stmt);
+        $creado = mysqli_stmt_affected_rows($stmt);
+        mysqli_stmt_close($stmt);
+        if ($creado !== 1) {
+            throw new InvalidArgumentException('El equipo seleccionado ya no está asignado a tu cuenta o está dado de baja.');
+        }
+        $idTicket = mysqli_insert_id($conexion);
+        $_SESSION['token_crear_ticket'] = bin2hex(random_bytes(32));
+        $_SESSION['mensaje_ticket'] = 'Ticket creado correctamente. Está pendiente de asignación.';
+        header('Location: mis_ticketsS.php');
+        exit;
+    }
+} catch (InvalidArgumentException $exception) {
+    $error = $exception->getMessage();
+} catch (mysqli_sql_exception $exception) {
+    $error = 'No se pudo cargar o guardar el ticket. Inténtalo nuevamente.';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -42,6 +112,7 @@ $equipos = [
 
             <a href="index-solicitante.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
             <a href="../perfil.php" class="nav-cta">Mi Perfil</a>
+            
         </nav>
     </header>
 
@@ -58,6 +129,10 @@ $equipos = [
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
             <a href="mis_equipos.php" class="side-link">Mis equipos</a>
         </div>
+        <div class="tickets-link">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5V8"></path><path d="M15 16V19"></path><path d="M15 11V13"></path><path d="M4.4416 10.4557C3.79252 9.73379 2.96682 8.93468 3.07899 7.97035C3.35831 5.56902 4.46022 5 7.648 5H16.352C19.5398 5 20.6417 5.56902 20.921 7.97035C21.0332 8.93468 20.2075 9.73379 19.5584 10.4557C19.2424 10.8072 19 11.3037 19 12C19 12.6963 19.2424 13.1928 19.5584 13.5443C20.2075 14.2662 21.0332 15.0653 20.921 16.0296C20.6417 18.431 19.5398 19 16.352 19H7.648C4.46022 19 3.35831 18.431 3.07899 16.0296C2.96682 15.0653 3.79252 15.0653 4.4416 13.5443C4.75761 13.1928 5 12.6963 5 12C5 11.3037 4.75761 10.8072 4.4416 10.4557Z"></path></svg>
+            <a href="mis_ticketsS.php" class="side-link">Mis tickets</a>
+        </div>
     </div>
 
     <div class="informacion">
@@ -70,31 +145,27 @@ $equipos = [
         <div class="help-grid">
             <section class="help-form">
                 <h2>Nuevo ticket</h2>
-                <div class="form-group">
-                    <label for="equipo">Equipo afectado</label>
-                    <select id="equipo" name="equipo">
-                        <?php foreach ($equipos as $equipo): ?>
-                            <option><?php echo escaparHTML($equipo['nombre'] . ' - ' . $equipo['detalle']); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="prioridad">Prioridad</label>
-                    <select id="prioridad" name="prioridad">
-                        <option>Baja</option>
-                        <option selected>Media</option>
-                        <option>Alta</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="titulo">Asunto</label>
-                    <input id="titulo" type="text" value="La notebook no inicia correctamente" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="descripcion">Detalle del problema</label>
-                    <textarea id="descripcion" rows="6" readonly>La pantalla queda en negro al encender el equipo y no permite iniciar la sesión.</textarea>
-                </div>
-                <button type="button" class="btn btn-primary">Enviar solicitud</button>
+                <?php if ($error !== ''): ?><div class="mensaje-error" role="alert"><?php echo escaparHTML($error); ?></div><?php endif; ?>
+                <?php if ($equipos === [] && $error === ''): ?><p>No tienes equipos asignados disponibles para crear tickets. Solicita la asignación al administrador.</p><?php endif; ?>
+            <form method="post">
+                <input type="hidden" name="token" value="<?php echo escaparHTML($_SESSION['token_crear_ticket']); ?>">
+                <div class="form-group"><label for="equipo-afectado">Equipo afectado</label><select id="equipo-afectado" name="id_equipo" required>
+                    <option value="">Seleccionar equipo</option>
+                    <?php foreach ($equipos as $equipo): ?>
+                        <option value="<?php echo (int) $equipo['id_equipo']; ?>"<?php echo (int) $idEquipo === (int) $equipo['id_equipo'] ? ' selected' : ''; ?>>
+                            <?php echo escaparHTML($equipo['nombre']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select></div>
+                <div class="form-group"><label for="ticket-titulo">Título</label><input id="ticket-titulo" name="titulo" type="text" required maxlength="100" value="<?php echo escaparHTML($titulo); ?>"></div>
+                <div class="form-group"><label for="ticket-descripcion">Descripción</label><textarea id="ticket-descripcion" name="descripcion" rows="5" required><?php echo escaparHTML($descripcion); ?></textarea></div>
+                <div class="form-group"><label for="ticket-prioridad">Prioridad</label><select id="ticket-prioridad" name="prioridad" required>
+                    <?php foreach (['Baja', 'Media', 'Alta'] as $opcion): ?>
+                        <option value="<?php echo $opcion; ?>"<?php echo $prioridad === $opcion ? ' selected' : ''; ?>><?php echo $opcion; ?></option>
+                    <?php endforeach; ?>
+                </select></div>
+                <button type="submit" class="btn btn-primary"<?php echo $equipos === [] ? ' disabled' : ''; ?>>Crear ticket</button>
+            </form>
             </section>
 
             <section class="ticket-list">

@@ -1,18 +1,37 @@
 <?php
 session_start();
 require_once __DIR__ . '/../conexion.php';
-
 if (!isset($_SESSION['id_usuario'])) {
     header('Location: ../login.php');
     exit;
 }
 
+$conexion = conectarBD();
+
+
+
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
-$equipos = [
-    ['nombre' => 'Notebook Administracion 01', 'marca_modelo' => 'Dell Latitude 5420', 'estado' => 'Asignado', 'fecha' => '2026-06-12'],
-    ['nombre' => 'Monitor Recepcion 01', 'marca_modelo' => 'Samsung F24T35', 'estado' => 'Asignado', 'fecha' => '2026-04-19'],
-    ['nombre' => 'PC Soporte 01', 'marca_modelo' => 'Lenovo ThinkCentre M70', 'estado' => 'En mantenimiento', 'fecha' => '2026-05-28'],
-];
+$equipos = [];
+$error = '';
+
+try {
+    
+    $idUsuario = (int) $_SESSION['id_usuario'];
+    $consulta = "SELECT e.nombre, e.tipo, e.estado_equipo AS estado, h.fecha_inicio AS fecha,
+                        m.nombre_marca, m.modelo
+                 FROM historial_asignacion AS h
+                 INNER JOIN equipo AS e ON e.id_equipo = h.id_equipo
+                 LEFT JOIN marca AS m ON m.id_marca = e.id_marca
+                 WHERE h.id_usuario = ? AND h.fecha_fin IS NULL
+                 ORDER BY h.fecha_inicio DESC, e.nombre";
+    $stmt = mysqli_prepare($conexion, $consulta);
+    mysqli_stmt_bind_param($stmt, 'i', $idUsuario);
+    mysqli_stmt_execute($stmt);
+    $equipos = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+    mysqli_stmt_close($stmt);
+} catch (mysqli_sql_exception $exception) {
+    $error = 'No se pudieron cargar tus equipos.';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -43,21 +62,27 @@ $equipos = [
 
             <a href="index-solicitante.php"><img src="../Imagenes/logo.png" alt="Logo de Novaris" class="logo"></a>
             <a href="../perfil.php" class="nav-cta">Mi Perfil</a>
+            
         </nav>
     </header>
 
+   
     <div class="side-bar">
         <div class="home-link">
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
             <a href="index-solicitante.php" class="side-link">Inicio</a>
         </div>
-        <div class="inventario-link">
+        <div class="inventario-link ">
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 2v-5.18A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-linecap="round"/></svg>
             <a href="crear_ticket.php" class="side-link">Crear ticket</a>
         </div>
         <div class="mesa-ayuda-link active">
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
             <a href="mis_equipos.php" class="side-link">Mis equipos</a>
+        </div>
+        <div class="tickets-link">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5V8"></path><path d="M15 16V19"></path><path d="M15 11V13"></path><path d="M4.4416 10.4557C3.79252 9.73379 2.96682 8.93468 3.07899 7.97035C3.35831 5.56902 4.46022 5 7.648 5H16.352C19.5398 5 20.6417 5.56902 20.921 7.97035C21.0332 8.93468 20.2075 9.73379 19.5584 10.4557C19.2424 10.8072 19 11.3037 19 12C19 12.6963 19.2424 13.1928 19.5584 13.5443C20.2075 14.2662 21.0332 15.0653 20.921 16.0296C20.6417 18.431 19.5398 19 16.352 19H7.648C4.46022 19 3.35831 18.431 3.07899 16.0296C2.96682 15.0653 3.79252 15.0653 4.4416 13.5443C4.75761 13.1928 5 12.6963 5 12C5 11.3037 4.75761 10.8072 4.4416 10.4557Z"></path></svg>
+            <a href="mis_ticketsS.php" class="side-link">Mis tickets</a>
         </div>
     </div>
 
@@ -70,16 +95,20 @@ $equipos = [
     <main class="help-page">
         <section class="ticket-list">
             <h2>Mis equipos</h2>
+            <?php if ($error !== ''): ?><div class="error"><?php echo escaparHTML($error); ?></div><?php endif; ?>
             <div class="ticket-table-wrapper">
                 <table class="ticket-table">
                     <thead>
                         <tr><th>Equipo</th><th>Marca y modelo</th><th>Estado</th><th>Fecha de asignacion</th></tr>
                     </thead>
                     <tbody>
+                        <?php if ($equipos === [] && $error === ''): ?>
+                            <tr><td colspan="4">No tienes equipos asignados actualmente.</td></tr>
+                        <?php endif; ?>
                         <?php foreach ($equipos as $equipo): ?>
                             <tr>
                                 <td><?php echo escaparHTML($equipo['nombre']); ?></td>
-                                <td><?php echo escaparHTML($equipo['marca_modelo']); ?></td>
+                                <td><?php echo escaparHTML(trim(($equipo['nombre_marca'] ?? 'Sin marca') . ' ' . ($equipo['modelo'] ?? ''))); ?></td>
                                 <td><?php echo escaparHTML($equipo['estado']); ?></td>
                                 <td><?php echo escaparHTML($equipo['fecha']); ?></td>
                             </tr>
