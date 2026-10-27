@@ -41,3 +41,843 @@
 html.theme-ready body.app-page > * {
     animation: none !important;
 }
+
+/* =========================================================
+   Layout administrativo
+   Se carga después de los estilos generales para evitar
+   márgenes fijos y controles con forma de píldora.
+   ========================================================= */
+body.app-page {
+    overflow-x: hidden;
+}
+
+.app-page .side-bar .marca-link > svg path {
+    stroke: currentColor !important;
+}
+.app-page .side-bar .tickets-link > svg path {
+     stroke: currentColor !important;
+}
+
+.app-page .informacion {
+    margin-left: 280px;
+    padding: 24px 48px 18px;
+}
+
+.app-page #fechahoy,
+.app-page #titulo-informacion {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.app-page #fechahoy {
+    margin-bottom: 8px;
+}
+
+.app-page #titulo-informacion {
+    font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.2;
+}
+
+.app-page .inventario-info,
+.app-page .usuario-info {
+    width: calc(100% - 280px);
+    max-width: none;
+    margin: 0 0 48px 280px;
+    padding: 0 48px 40px;
+}
+
+.app-page .inventario-info h1,
+.app-page .usuario-info h1 {
+    margin: 0 0 28px;
+    font-size: clamp(26px, 3vw, 34px);
+    line-height: 1.2;
+    text-align: left;
+}
+
+.app-page .inventario-acciones {
+    display: block;
+    max-width: 1200px;
+    margin: 0;
+    padding: 0;
+}
+
+.app-page .inventario-acciones > section,
+.app-page .usuario-info > section {
+    margin: 0 0 28px;
+}
+
+.app-page .formulario-inventario,
+.app-page .formularrio-inventario {
+    width: min(100%, 720px);
+    max-width: 720px;
+    margin: 0;
+    padding: 24px;
+    border-radius: 14px;
+    background: var(--panel, #ffffff);
+    color: var(--text-primary);
+}
+
+.app-page .formulario-inventario h2,
+.app-page .formularrio-inventario h2 {
+    margin: 0 0 18px;
+}
+
+.app-page .asignacion-equipo {
+    margin: 18px 0 24px;
+}
+
+.app-page .asignacion-equipo h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+}
+
+.app-page .asignacion-equipo p {
+    margin: 0 0 16px;
+    color: var(--text-secondary);
+}
+
+.app-page .formulario-inventario form,
+.app-page .formularrio-inventario form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: end;
+}
+
+.app-page .formulario-inventario form > input[type="hidden"],
+.app-page .formularrio-inventario form > input[type="hidden"] {
+    display: none;
+}
+
+.app-page .formulario-inventario .form-group,
+.app-page .formularrio-inventario .form-group {
+    margin: 0;
+}
+
+.app-page .formulario-inventario .form-group input,
+.app-page .formulario-inventario .form-group select,
+.app-page .formulario-inventario .form-group textarea,
+.app-page .formularrio-inventario .form-group input,
+.app-page .formularrio-inventario .form-group select,
+.app-page .formularrio-inventario .form-group textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--outline, #d7e0e8);
+    border-radius: 10px;
+    background: var(--panel-light, #ffffff);
+    color: var(--text-primary, #111827);
+    font: inherit;
+}
+
+.app-page .formulario-inventario .form-group textarea,
+.app-page .formularrio-inventario .form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.app-page .formulario-inventario .btn,
+.app-page .formularrio-inventario .btn {
+    width: auto;
+    min-width: 140px;
+    min-height: 44px;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 10px;
+}
+
+.app-page .usuario-table {
+    width: 100%;
+    max-width: none;
+    margin: 0 0 28px;
+    overflow-x: auto;
+}
+
+.app-page .usuario-table table,
+.app-page .inventario-table {
+    width: 100%;
+    min-width: 680px;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+.app-page .usuario-table th,
+.app-page .usuario-table td {
+    padding: 12px 14px;
+    border: 1px solid var(--outline, #d7e0e8);
+    color: var(--text-primary, #111827);
+}
+
+.app-page .usuario-table th {
+    background: var(--panel-light, #f4f7fa);
+    font-weight: 700;
+}
+
+.app-page .usuario-table td .btn,
+.app-page .usuario-table td form .btn {
+    min-width: auto;
+    min-height: 36px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+/* Acciones de usuarios: estilos incorporados del proyecto de la compañera. */
+.app-page .usuario-accion-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 190px;
+}
+
+.app-page .usuario-accion-form select {
+    min-width: 125px;
+    padding: 8px;
+    border: 1px solid var(--outline, #d7e0e8);
+    border-radius: 8px;
+    color: var(--text-primary, #111827);
+    background: var(--panel-light, #fff);
+}
+
+.app-page .usuario-accion-form button {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    background: var(--accent, #0b6b70);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+html[data-theme="light"] .app-page .usuario-accion-form button {
+    color: #ffffff;
+    background: #087f78;
+}
+
+html[data-theme="light"] .app-page .usuario-accion-form button:hover:not(:disabled) {
+    background: #066a64;
+}
+
+.app-page .usuario-accion-form button:disabled {
+    cursor: not-allowed;
+    opacity: .55;
+}
+
+.app-page .mensaje-exito,
+.app-page .mensaje-error {
+    max-width: 720px;
+    margin: 0 0 20px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.app-page .mensaje-exito {
+    background: var(--success-wash, #e8f8ef);
+    color: var(--success, #176b43);
+}
+
+.app-page .mensaje-error {
+    background: var(--danger-wash, #fdecec);
+    color: var(--danger, #a33a3a);
+}
+
+@media (max-width: 860px) {
+    .app-page .informacion,
+    .app-page .inventario-info,
+    .app-page .usuario-info {
+        margin-left: 220px;
+    }
+
+    .app-page .inventario-info,
+    .app-page .usuario-info {
+        width: calc(100% - 220px);
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .app-page .informacion {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+}
+
+/* Los gráficos deben respetar la barra lateral hasta que pase al flujo móvil. */
+@media (min-width: 641px) and (max-width: 768px) {
+    .app-page .tecnico-graficos,
+    .app-page .solicitante-graficos {
+        margin: 24px 24px 24px 300px;
+    }
+}
+
+@media (max-width: 640px) {
+    body.app-page {
+        padding-top: 70px;
+    }
+
+    .app-page .side-bar {
+        position: static;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 12px 16px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .app-page .informacion,
+    .app-page .inventario-info,
+    .app-page .usuario-info {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .app-page .informacion {
+        padding-top: 20px;
+    }
+
+    .app-page .formulario-inventario form,
+    .app-page .formularrio-inventario form {
+        grid-template-columns: 1fr;
+    }
+
+    .app-page .formulario-inventario,
+    .app-page .formularrio-inventario {
+        padding: 18px;
+    }
+}
+.app-page .technician-ticket-page {
+    width: calc(100% - 280px);
+    max-width: none;
+    margin: 20px 0 60px 280px;
+    padding: 0 48px;
+}
+
+.app-page .technician-tickets {
+    padding: 24px;
+}
+
+.app-page .technician-tickets > p {
+    margin: 0 0 22px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.app-page .technician-tickets > p a {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.app-page .technician-ticket-list {
+    display: grid;
+    gap: 18px;
+}
+
+.app-page .technician-ticket {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--outline);
+    border-radius: 10px;
+    background: var(--panel-light);
+}
+
+.app-page .technician-tickets .ticket-heading,
+.app-page .technician-tickets .ticket-meta,
+.app-page .technician-tickets .ticket-tags,
+.app-page .technician-tickets .ticket-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+}
+
+.app-page .technician-tickets .ticket-heading {
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.app-page .technician-tickets .ticket-heading h3 {
+    margin: 4px 0 0;
+    font-size: 19px;
+    overflow-wrap: anywhere;
+}
+
+.app-page .technician-tickets .ticket-number,
+.app-page .technician-tickets .ticket-meta {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.app-page .technician-tickets .ticket-meta {
+    margin-top: 14px;
+}
+
+.app-page .technician-tickets .ticket-meta strong {
+    color: var(--text-primary);
+}
+
+.app-page .technician-tickets .ticket-tags span {
+    padding: 6px 10px;
+    border: 1px solid var(--outline);
+    border-radius: 8px;
+    background: var(--panel);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.app-page .technician-tickets .ticket-description {
+    margin: 18px 0;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.app-page .technician-tickets .ticket-work-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding-top: 18px;
+    border-top: 1px solid var(--outline);
+}
+
+.app-page .technician-tickets .ticket-work-form .form-group {
+    min-width: 0;
+    margin: 0;
+}
+
+.app-page .technician-tickets .ticket-work-form label {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.app-page .technician-tickets .ticket-work-form textarea {
+    display: block;
+    width: 100%;
+    min-height: 96px;
+    margin-top: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--outline);
+    border-radius: 8px;
+    background: var(--panel);
+    color: var(--text-primary);
+    font: inherit;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.app-page .technician-tickets .ticket-work-form textarea:focus-visible {
+    outline: 2px solid var(--accent-hover);
+    outline-offset: 2px;
+}
+
+.app-page .technician-tickets .ticket-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+}
+
+.app-page .technician-tickets .ticket-work-form .btn {
+    width: auto;
+    min-width: 140px;
+    min-height: 42px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.app-page .technician-tickets .ticket-empty {
+    margin: 0;
+    padding: 20px;
+    border-radius: 8px;
+    background: var(--panel-light);
+    color: var(--text-secondary);
+}
+
+html[data-theme="light"] .app-page .technician-tickets .btn-primary {
+    background: #068f84;
+    border-color: #068f84;
+    color: #ffffff;
+}
+
+html[data-theme="light"] .app-page .technician-ticket,
+html[data-theme="light"] .app-page .technician-tickets .ticket-tags span,
+html[data-theme="light"] .app-page .technician-tickets textarea,
+html[data-theme="light"] .app-page .technician-tickets .btn-secondary {
+    border-color: #d8e2e7;
+}
+
+html[data-theme="light"] .app-page .technician-tickets .btn-primary:hover {
+    background: #06796f;
+    border-color: #06796f;
+    color: #ffffff;
+}
+
+@media (max-width: 860px) {
+    .app-page .technician-ticket-page {
+        width: calc(100% - 220px);
+        margin-left: 220px;
+        padding: 0 28px;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-page .technician-ticket-page {
+        width: 100%;
+        margin-left: 0;
+        padding: 0 16px;
+    }
+
+    .app-page .technician-tickets,
+    .app-page .technician-ticket {
+        padding: 18px;
+    }
+
+    .app-page .technician-tickets .ticket-work-form {
+        grid-template-columns: 1fr;
+    }
+
+    .app-page .technician-tickets .ticket-actions .btn {
+        flex: 1 1 100%;
+    }
+}
+
+/* Adaptación común de las páginas internas, en ambos temas. */
+body.app-page {
+    --layout-sidebar: 280px;
+    --layout-gutter: clamp(20px, 2.5vw, 48px);
+    --layout-header: 80px;
+    padding-top: var(--layout-header);
+    min-width: 0;
+}
+
+body.app-page > header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: var(--layout-header);
+}
+
+body.app-page [id] {
+    scroll-margin-top: calc(var(--layout-header) + 16px);
+}
+
+body.app-page .navbar {
+    height: var(--layout-header);
+    min-height: var(--layout-header);
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 16px;
+    padding: 12px 24px;
+}
+
+body.app-page .navbar .brand {
+    flex-shrink: 0;
+    margin: 0;
+}
+
+body.app-page .navbar .nav-cta {
+    width: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+body.app-page .side-bar {
+    position: fixed;
+    top: var(--layout-header);
+    width: var(--layout-sidebar);
+    height: calc(100vh - var(--layout-header));
+    height: calc(100dvh - var(--layout-header));
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+body.app-page .side-bar .side-link {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+body.app-page > .informacion,
+body.app-page > .inventario-info,
+body.app-page > .usuario-info,
+body.app-page > .help-page {
+    width: calc(100% - var(--layout-sidebar));
+    max-width: none;
+    min-width: 0;
+    margin: 0 0 32px var(--layout-sidebar);
+    padding: 0 var(--layout-gutter);
+}
+
+body.app-page > .informacion {
+    padding-top: 24px;
+    margin-bottom: 24px;
+}
+
+body.app-page .informacion > p {
+    max-width: none;
+    margin: 12px 0 0;
+    padding: 0;
+    text-align: left;
+}
+
+body.app-page #titulo-informacion {
+    font-size: clamp(25px, 3vw, 38px);
+    overflow-wrap: anywhere;
+}
+
+body.app-page > .info-resumen,
+body.app-page > .ultimos_tickets,
+body.app-page > .graficos-dashboard,
+body.app-page > .tecnico-graficos,
+body.app-page > .solicitante-graficos,
+body.app-page > .acciones_rapidas {
+    width: calc(100% - var(--layout-sidebar) - 2 * var(--layout-gutter));
+    max-width: none;
+    min-width: 0;
+    margin: 24px var(--layout-gutter) 28px calc(var(--layout-sidebar) + var(--layout-gutter));
+}
+
+body.app-page .info-resumen,
+body.app-page .graficos-dashboard,
+body.app-page .tecnico-graficos,
+body.app-page .solicitante-graficos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+body.app-page .help-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+}
+
+body.app-page .help-grid > *,
+body.app-page .info-resumen > *,
+body.app-page .graficos-dashboard > *,
+body.app-page .form-group,
+body.app-page .help-form,
+body.app-page .ticket-list {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+body.app-page .formulario-inventario,
+body.app-page .formularrio-inventario {
+    width: 100%;
+    max-width: 720px;
+    min-width: 0;
+}
+
+body.app-page .inventario-acciones {
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+}
+
+body.app-page .acciones-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+body.app-page .accion-botones {
+    margin: 0;
+    min-width: 0;
+    min-height: 44px;
+    max-width: 100%;
+    white-space: normal;
+}
+
+body.app-page .usuario-table,
+body.app-page .ticket-table-wrapper,
+body.app-page .ultimos_tickets {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Las tablas se desplazan sin comprimir las palabras a una letra por línea. */
+body.app-page .usuario-table th,
+body.app-page .usuario-table td,
+body.app-page .ticket-table th,
+body.app-page .ticket-table td {
+    min-width: 120px;
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+body.app-page .usuario-table:has(.usuario-accion-form) th:first-child,
+body.app-page .usuario-table:has(.usuario-accion-form) td:first-child {
+    min-width: 140px;
+}
+
+body.app-page .usuario-table:has(.usuario-accion-form) th:nth-child(2),
+body.app-page .usuario-table:has(.usuario-accion-form) td:nth-child(2) {
+    min-width: 180px;
+    overflow-wrap: anywhere;
+}
+
+body.app-page .form-group input,
+body.app-page .form-group select,
+body.app-page .form-group textarea {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body.app-page .tecnico-grafico-canvas,
+body.app-page .grafico-canvas,
+body.app-page .grafico-contenedor {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
+body.app-page canvas {
+    max-width: 100%;
+}
+
+@media (max-width: 1200px) {
+    body.app-page {
+        --layout-sidebar: 240px;
+        --layout-gutter: 24px;
+    }
+
+    body.app-page .side-bar {
+        gap: 16px;
+        padding: 20px 12px;
+    }
+
+    body.app-page .side-link {
+        font-size: 16px;
+    }
+
+    body.app-page .help-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 1100px) {
+    body.app-page .graficos-dashboard,
+    body.app-page .tecnico-graficos,
+    body.app-page .solicitante-graficos {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    body.app-page {
+        --layout-sidebar: 0px;
+        --layout-gutter: 20px;
+    }
+
+    body.app-page .side-bar {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 8px;
+        width: 100%;
+        height: auto;
+        padding: 12px var(--layout-gutter);
+        border-right: 0;
+    }
+
+    body.app-page .side-bar > div {
+        gap: 8px;
+        min-width: 0;
+        min-height: 44px;
+        padding: 8px 10px;
+    }
+
+    body.app-page .side-bar .side-link {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    body.app-page .ultimos_tickets table {
+        min-width: 580px;
+    }
+
+    body.app-page .form-group input,
+    body.app-page .form-group select,
+    body.app-page .form-group textarea {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    body.app-page {
+        --layout-gutter: 16px;
+        --layout-header: 72px;
+    }
+
+    body.app-page .navbar {
+        gap: 8px;
+        padding: 10px 12px;
+    }
+
+    body.app-page .navbar .brand {
+        font-size: 22px;
+    }
+
+    body.app-page .navbar .logo {
+        width: 32px;
+        max-height: 38px;
+    }
+
+    body.app-page .navbar .nav-cta {
+        min-height: 42px;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    body.app-page .side-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body.app-page .info-resumen,
+    body.app-page .formulario-inventario form,
+    body.app-page .formularrio-inventario form,
+    body.app-page .technician-tickets .ticket-work-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    body.app-page .tickets,
+    body.app-page .inventario,
+    body.app-page .help-form,
+    body.app-page .ticket-list,
+    body.app-page .tecnico-grafico,
+    body.app-page .solicitante-grafico,
+    body.app-page .grafico-tickets,
+    body.app-page .formulario-inventario,
+    body.app-page .formularrio-inventario {
+        padding: 20px 16px;
+    }
+
+    body.app-page .acciones-botones > a,
+    body.app-page .technician-tickets .ticket-actions .btn {
+        flex: 1 1 150px;
+        text-align: center;
+    }
+
+    body.app-page .technician-ticket {
+        padding: 16px;
+    }
+
+    body.app-page .tecnico-grafico-canvas,
+    body.app-page .grafico-canvas,
+    body.app-page .grafico-contenedor {
+        height: 240px;
+    }
+
+    body.app-page .grafico-canvas-barra {
+        height: 200px;
+    }
+}
