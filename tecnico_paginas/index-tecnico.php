@@ -2,18 +2,67 @@
 session_start();
 require_once __DIR__ . '/../conexion.php';
 
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['id_usuario']) || (int) ($_SESSION['id_rol'] ?? 0) !== 2) {
     header('Location: ../login.php');
     exit;
 }
 
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
-$estadisticas = ['activos' => 8, 'pendientes' => 3, 'en_reparacion' => 2];
-$ticketsRecientes = [
-    ['id' => 18, 'titulo' => 'La impresora no responde', 'estado' => 'En proceso', 'prioridad' => 'Alta'],
-    ['id' => 17, 'titulo' => 'Problemas con el correo', 'estado' => 'Pendiente', 'prioridad' => 'Media'],
-    ['id' => 16, 'titulo' => 'Cambio de teclado', 'estado' => 'En proceso', 'prioridad' => 'Baja'],
-];
+$estadisticas = ['activos' => 0, 'en_proceso' => 0, 'resueltos' => 0];
+$ticketsRecientes = [];
+$ticketsPorEstado = [];
+$ticketsPorPrioridad = [];
+$error = '';
+try {
+    $conexion = conectarBD();
+    $idUsuario = (int) $_SESSION['id_usuario'];
+    $stmt = mysqli_prepare($conexion, "SELECT t.estado, COUNT(*) AS total
+        FROM ticket AS t
+        INNER JOIN tecnico AS te ON te.id_tecnico = t.id_tecnico
+        INNER JOIN usuario AS tu ON tu.id_usuario = te.id_usuario
+        WHERE te.id_usuario = ? AND te.estado = 'Activo' AND tu.id_rol = 2
+        GROUP BY t.estado");
+    mysqli_stmt_bind_param($stmt, 'i', $idUsuario);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+    while ($fila = mysqli_fetch_assoc($resultado)) {
+        $ticketsPorEstado[$fila['estado']] = (int) $fila['total'];
+        if ($fila['estado'] === 'Resuelto') {
+            $estadisticas['resueltos'] = (int) $fila['total'];
+        } else {
+            $estadisticas['activos'] += (int) $fila['total'];
+            if ($fila['estado'] === 'En proceso') {
+                $estadisticas['en_proceso'] = (int) $fila['total'];
+            }
+        }
+    }
+    mysqli_stmt_close($stmt);
+    $stmt = mysqli_prepare($conexion, "SELECT t.prioridad, COUNT(*) AS total
+        FROM ticket AS t
+        INNER JOIN tecnico AS te ON te.id_tecnico = t.id_tecnico
+        INNER JOIN usuario AS tu ON tu.id_usuario = te.id_usuario
+        WHERE te.id_usuario = ? AND te.estado = 'Activo' AND tu.id_rol = 2 AND t.estado <> 'Resuelto'
+        GROUP BY t.prioridad ORDER BY FIELD(t.prioridad, 'Alta', 'Media', 'Baja'), t.prioridad");
+    mysqli_stmt_bind_param($stmt, 'i', $idUsuario);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+    while ($fila = mysqli_fetch_assoc($resultado)) {
+        $ticketsPorPrioridad[$fila['prioridad']] = (int) $fila['total'];
+    }
+    mysqli_stmt_close($stmt);
+    $stmt = mysqli_prepare($conexion, "SELECT t.id_ticket AS id, t.titulo, t.estado, t.prioridad
+        FROM ticket AS t
+        INNER JOIN tecnico AS te ON te.id_tecnico = t.id_tecnico
+        INNER JOIN usuario AS tu ON tu.id_usuario = te.id_usuario
+        WHERE te.id_usuario = ? AND te.estado = 'Activo' AND tu.id_rol = 2 AND t.estado <> 'Resuelto'
+        ORDER BY t.fecha_creacion DESC, t.id_ticket DESC LIMIT 3");
+    mysqli_stmt_bind_param($stmt, 'i', $idUsuario);
+    mysqli_stmt_execute($stmt);
+    $ticketsRecientes = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+    mysqli_stmt_close($stmt);
+} catch (mysqli_sql_exception $exception) {
+    $error = 'No se pudo cargar el resumen de tus tickets.';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,9 +70,10 @@ $ticketsRecientes = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel tecnico - Novaris</title>
-    <link id="tema-oscuro" rel="stylesheet" href="../style_dark.css?v=9" media="all">
-    <link id="tema-claro" rel="stylesheet" href="../style_light.css?v=9" media="not all">
-    <link rel="stylesheet" href="../admin_paginas/admin-theme.css?v=1">
+    <link id="tema-oscuro" rel="stylesheet" href="../style_dark.css?v=12" media="all">
+    <link id="tema-claro" rel="stylesheet" href="../style_light.css?v=12" media="not all">
+    <link rel="stylesheet" href="../admin_paginas/admin-theme.css?v=3">
+
 </head>
 <body class="app-page">
     <header>
@@ -51,7 +101,7 @@ $ticketsRecientes = [
         </div>
         <div class="inventario-link">
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 2v-5.18A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-linecap="round"/></svg>
-            <a href="mis_tickets.php" class="side-link">Mis tickets</a>
+            <a href="mis_ticketsT.php" class="side-link">Mis tickets</a>
         </div>
         <div class="mesa-ayuda-link">
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
@@ -66,32 +116,151 @@ $ticketsRecientes = [
     <div class="informacion">
         <span id="fechahoy"></span>
         <div id="titulo-informacion"><strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?></div>
-        <p>Gestiona los tickets que tienes asignados y consulta el inventario de soporte.</p>
     </div>
 
+    <?php if ($error === ''): ?>
+    <section class="tecnico-graficos" aria-label="Resumen visual de mis tickets asignados">
+        <?php foreach ([['titulo' => 'Mis tickets por estado', 'descripcion' => 'Todos tus tickets asignados, incluidos los resueltos.', 'id' => 'graficoEstadosTecnico', 'datos' => $ticketsPorEstado], ['titulo' => 'Tickets activos por prioridad', 'descripcion' => 'Prioridades de los tickets que tienes por resolver.', 'id' => 'graficoPrioridadesTecnico', 'datos' => $ticketsPorPrioridad]] as $grafico): ?>
+        <article class="tecnico-grafico">
+            <h2><?php echo escaparHTML($grafico['titulo']); ?></h2>
+            <p><?php echo escaparHTML($grafico['descripcion']); ?></p>
+            <?php if (array_sum($grafico['datos']) > 0): ?>
+                <div class="tecnico-grafico-canvas"><canvas id="<?php echo escaparHTML($grafico['id']); ?>" role="img" aria-label="<?php echo escaparHTML($grafico['titulo']); ?>. Cantidades en la lista siguiente."></canvas></div>
+                <ul class="tecnico-grafico-resumen">
+                    <?php foreach ($grafico['datos'] as $etiqueta => $cantidad): ?>
+                        <li><span><?php echo escaparHTML($etiqueta); ?></span><strong><?php echo (int) $cantidad; ?></strong></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p class="tecnico-grafico-vacio">No tienes tickets <?php echo $grafico['id'] === 'graficoEstadosTecnico' ? 'asignados' : 'activos'; ?>.</p>
+            <?php endif; ?>
+        </article>
+        <?php endforeach; ?>
+    </section>
+    <?php endif; ?>
+
     <main class="help-page">
+        <?php if ($error !== ''): ?><div class="mensaje-error" role="alert"><?php echo escaparHTML($error); ?></div><?php endif; ?>
         <div class="help-grid">
             <section class="help-form">
                 <h2>Resumen de trabajo</h2>
                 <p>Tickets activos: <strong><?php echo $estadisticas['activos']; ?></strong></p>
-                <p>Tickets pendientes: <strong><?php echo $estadisticas['pendientes']; ?></strong></p>
-                <p>Equipos en reparacion: <strong><?php echo $estadisticas['en_reparacion']; ?></strong></p>
+                <p>Tickets en proceso: <strong><?php echo $estadisticas['en_proceso']; ?></strong></p>
+                <p>Tickets resueltos: <strong><?php echo $estadisticas['resueltos']; ?></strong></p>
                 <div class="acciones-botones">
-                    <a href="mis_tickets.php" class="accion-botones">Ver mis tickets</a>
+                    <a href="mis_ticketsT.php" class="accion-botones">Ver mis tickets</a>
                     <a href="historial_trabajos.php" class="accion-botones">Ver historial</a>
                 </div>
             </section>
             <section class="ticket-list">
-                <h2>Tickets recientes</h2>
+                <h2>Tickets activos recientes</h2>
+                <?php if ($ticketsRecientes === [] && $error === ''): ?><p>No tienes tickets activos asignados.</p><?php endif; ?>
                 <ul>
                     <?php foreach ($ticketsRecientes as $ticket): ?>
-                        <li>#<?php echo (int) $ticket['id']; ?> - <?php echo escaparHTML($ticket['titulo']); ?> (<?php echo escaparHTML($ticket['estado']); ?>, <?php echo escaparHTML($ticket['prioridad']); ?>)</li>
+                        <li><a href="mis_ticketsT.php">#<?php echo (int) $ticket['id']; ?> - <?php echo escaparHTML($ticket['titulo']); ?></a> (<?php echo escaparHTML($ticket['estado']); ?>, <?php echo escaparHTML($ticket['prioridad']); ?>)</li>
                     <?php endforeach; ?>
                 </ul>
             </section>
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script id="datos-graficos-tecnico" type="application/json"><?php echo json_encode(['estados' => $ticketsPorEstado, 'prioridades' => $ticketsPorPrioridad], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?></script>
+    <script>
+(function () {
+    const elemento = document.getElementById('datos-graficos-tecnico');
+    if (!elemento || typeof Chart === 'undefined') return;
+    const datos = JSON.parse(elemento.textContent);
+    const graficos = [];
+    const colores = {
+        Pendiente: '#0B1047', 'En proceso': '#3B82F6', Resuelto: '#93C5FD',
+        Alta: '#0B1047', Media: '#3B82F6', Baja: '#93C5FD'
+    };
+    const alternativos = ['#a78bfa', '#22d3ee', '#fb923c'];
+    const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function crearGrafico(id, valores, barras) {
+        const canvas = document.getElementById(id);
+        if (!canvas) return;
+        const etiquetas = Object.keys(valores);
+        const cantidades = Object.values(valores).map(Number);
+        const total = cantidades.reduce((suma, valor) => suma + valor, 0);
+        const fondos = etiquetas.map((etiqueta, indice) => colores[etiqueta] || alternativos[indice % alternativos.length]);
+        const opciones = {
+            responsive: true, maintainAspectRatio: false,
+            animation: reducirMovimiento ? false : { duration: 650 },
+            layout: { padding: 12 },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { padding: 18, usePointStyle: true, pointStyle: 'circle' },
+                    onHover(evento, item, leyenda) {
+                        leyenda.chart.canvas.style.cursor = 'pointer';
+                        leyenda.chart.setActiveElements([{ datasetIndex: barras ? item.datasetIndex : 0, index: barras ? 0 : item.index }]);
+                        leyenda.chart.update('none');
+                    },
+                    onLeave(evento, item, leyenda) {
+                        leyenda.chart.canvas.style.cursor = 'default';
+                        leyenda.chart.setActiveElements([]);
+                        leyenda.chart.update('none');
+                    }
+                },
+                tooltip: { callbacks: { label(contexto) {
+                    const cantidad = barras ? contexto.parsed.x : contexto.parsed;
+                    const etiqueta = barras ? contexto.dataset.label : contexto.label;
+                    return `${etiqueta}: ${cantidad} (${(cantidad / total * 100).toFixed(1)}%)`;
+                } } }
+            }
+        };
+        if (barras) {
+            opciones.indexAxis = 'y';
+            opciones.scales = {
+                x: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } },
+                y: { grid: { display: false }, border: { display: false } }
+            };
+        } else {
+            opciones.cutout = '68%';
+        }
+        graficos.push(new Chart(canvas, {
+            type: barras ? 'bar' : 'doughnut',
+            data: barras ? {
+                labels: ['Tickets activos'],
+                datasets: etiquetas.map((etiqueta, indice) => ({
+                    label: etiqueta, data: [cantidades[indice]], backgroundColor: fondos[indice],
+                    borderRadius: 6, borderSkipped: false, maxBarThickness: 38
+                }))
+            } : {
+                labels: etiquetas,
+                datasets: [{ data: cantidades, backgroundColor: fondos, borderWidth: 3, hoverOffset: 12 }]
+            },
+            options: opciones
+        }));
+    }
+    crearGrafico('graficoEstadosTecnico', datos.estados, false);
+    crearGrafico('graficoPrioridadesTecnico', datos.prioridades, true);
+
+    function actualizarTema() {
+        const estilos = getComputedStyle(document.documentElement);
+        const texto = estilos.getPropertyValue('--text-primary').trim();
+        graficos.forEach(grafico => {
+            grafico.options.plugins.legend.labels.color = texto;
+            if (grafico.config.type === 'bar') {
+                grafico.options.scales.x.ticks.color = texto;
+                grafico.options.scales.y.ticks.color = texto;
+                grafico.options.scales.x.grid.color = estilos.getPropertyValue('--outline').trim();
+            } else {
+                grafico.data.datasets[0].borderColor = estilos.getPropertyValue('--panel').trim();
+            }
+            grafico.update('none');
+        });
+    }
+    new MutationObserver(() => requestAnimationFrame(actualizarTema))
+        .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    document.querySelectorAll('#tema-claro, #tema-oscuro').forEach(enlace => enlace.addEventListener('load', actualizarTema));
+    actualizarTema();
+}());
+
+    </script>
     <script>
         const fechaFormateada = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         document.getElementById('fechahoy').textContent = fechaFormateada;

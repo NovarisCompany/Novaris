@@ -2,18 +2,26 @@
 session_start();
 require_once __DIR__ . '/../conexion.php';
 
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['id_usuario']) || (int) ($_SESSION['id_rol'] ?? 0) !== 2) {
     header('Location: ../login.php');
     exit;
 }
 
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
-$equipos = [
-    ['nombre' => 'Notebook Administracion 01', 'marca_modelo' => 'Dell Latitude 5420', 'estado' => 'Asignado', 'ubicacion' => 'Administracion - Planta baja'],
-    ['nombre' => 'PC Soporte 01', 'marca_modelo' => 'Lenovo ThinkCentre M70', 'estado' => 'Disponible', 'ubicacion' => 'Sala tecnica'],
-    ['nombre' => 'Monitor Recepcion 01', 'marca_modelo' => 'Samsung F24T35', 'estado' => 'En reparacion', 'ubicacion' => 'Mesa de ayuda'],
-    ['nombre' => 'Impresora Finanzas 01', 'marca_modelo' => 'HP LaserJet Pro', 'estado' => 'Asignado', 'ubicacion' => 'Finanzas - Piso 1'],
-];
+$equipos = [];
+$error = '';
+try {
+    $conexion = conectarBD();
+    $equipos = $conexion->query("SELECT e.nombre, e.estado_equipo AS estado,
+        COALESCE(NULLIF(TRIM(CONCAT_WS(' ', m.nombre_marca, m.modelo)), ''), 'Sin marca registrada') AS marca_modelo,
+        CONCAT_WS(' - ', a.nombre_area, NULLIF(a.oficina, ''), a.ubicacion) AS ubicacion
+        FROM equipo AS e
+        INNER JOIN area AS a ON a.id_area = e.id_area
+        LEFT JOIN marca AS m ON m.id_marca = e.id_marca
+        ORDER BY e.nombre, e.id_equipo")->fetch_all(MYSQLI_ASSOC);
+} catch (mysqli_sql_exception $exception) {
+    $error = 'No se pudo cargar el inventario de equipos.';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,9 +29,9 @@ $equipos = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equipos - Novaris</title>
-    <link id="tema-oscuro" rel="stylesheet" href="../style_dark.css?v=9" media="all">
-    <link id="tema-claro" rel="stylesheet" href="../style_light.css?v=9" media="not all">
-    <link rel="stylesheet" href="../admin_paginas/admin-theme.css?v=1">
+    <link id="tema-oscuro" rel="stylesheet" href="../style_dark.css?v=12" media="all">
+    <link id="tema-claro" rel="stylesheet" href="../style_light.css?v=12" media="not all">
+    <link rel="stylesheet" href="../admin_paginas/admin-theme.css?v=3">
 </head>
 <body class="app-page">
     <header><nav class="navbar">
@@ -34,12 +42,12 @@ $equipos = [
     </nav></header>
     <div class="side-bar">
         <div class="home-link"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><a href="index-tecnico.php" class="side-link">Inicio</a></div>
-        <div class="inventario-link"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 2v-5.18A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-linecap="round"/></svg><a href="mis_tickets.php" class="side-link">Mis tickets</a></div>
+        <div class="inventario-link"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 2v-5.18A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-linecap="round"/></svg><a href="mis_ticketsT.php" class="side-link">Mis tickets</a></div>
         <div class="mesa-ayuda-link"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg><a href="historial_trabajos.php" class="side-link">Historial de trabajos</a></div>
         <div class="reportes-link active"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M3 7h18M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M8 11h8M8 15h5" stroke-linecap="round"/></svg><a href="equipos_tecnico.php" class="side-link">Equipos</a></div>
     </div>
     <div class="informacion"><span id="fechahoy"></span><div id="titulo-informacion"><strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?></div><p>Consulta el inventario disponible para soporte.</p></div>
-    <main class="help-page"><section class="ticket-list"><h2>Equipos</h2><div class="ticket-table-wrapper"><table class="ticket-table"><thead><tr><th>Equipo</th><th>Marca y modelo</th><th>Estado</th><th>Ubicacion</th></tr></thead><tbody><?php foreach ($equipos as $equipo): ?><tr><td><?php echo escaparHTML($equipo['nombre']); ?></td><td><?php echo escaparHTML($equipo['marca_modelo']); ?></td><td><?php echo escaparHTML($equipo['estado']); ?></td><td><?php echo escaparHTML($equipo['ubicacion']); ?></td></tr><?php endforeach; ?></tbody></table></div></section></main>
+    <main class="help-page"><?php if (!empty($error)): ?><div class="mensaje-error" role="alert"><?php echo escaparHTML($error); ?></div><?php endif; ?><section class="ticket-list"><h2>Equipos</h2><div class="ticket-table-wrapper"><table class="ticket-table"><thead><tr><th>Equipo</th><th>Marca y modelo</th><th>Estado</th><th>Ubicacion</th></tr></thead><tbody><?php foreach ($equipos as $equipo): ?><tr><td><?php echo escaparHTML($equipo['nombre']); ?></td><td><?php echo escaparHTML($equipo['marca_modelo']); ?></td><td><?php echo escaparHTML($equipo['estado']); ?></td><td><?php echo escaparHTML($equipo['ubicacion']); ?></td></tr><?php endforeach; ?><?php if (!$equipos): ?><tr><td colspan="4">No hay equipos registrados.</td></tr><?php endif; ?></tbody></table></div></section></main>
     <script>document.getElementById('fechahoy').textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); (function () { const temaOscuro = document.getElementById('tema-oscuro'); const temaClaro = document.getElementById('tema-claro'); const temaGuardado = localStorage.getItem('novaris-tema'); const temaInicial = temaGuardado === 'light' ? 'light' : 'dark'; function aplicarTema(tema, guardar = true) { const esClaro = tema === 'light'; document.documentElement.dataset.theme = tema; temaOscuro.media = esClaro ? 'not all' : 'all'; temaClaro.media = esClaro ? 'all' : 'not all'; document.querySelector('[data-tema="dark"]').hidden = esClaro; document.querySelector('[data-tema="light"]').hidden = !esClaro; if (guardar) localStorage.setItem('novaris-tema', tema); } window.cambiarTema = function (tema) { document.documentElement.classList.add('theme-ready'); aplicarTema(tema); }; document.addEventListener('DOMContentLoaded', function () { aplicarTema(temaInicial, false); setTimeout(function () { document.documentElement.classList.add('theme-ready'); }, 1000); }); }());</script>
 </body>
 </html>

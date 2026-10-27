@@ -2,17 +2,32 @@
 session_start();
 require_once __DIR__ . '/../conexion.php';
 
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['id_usuario']) || (int) ($_SESSION['id_rol'] ?? 0) !== 2) {
     header('Location: ../login.php');
     exit;
 }
 
 $nombreCompleto = trim(($_SESSION['nombre'] ?? '') . ' ' . ($_SESSION['apellido'] ?? ''));
-$trabajos = [
-    ['id' => 14, 'equipo' => 'Notebook Administracion 01', 'detalle' => 'Se actualizo el sistema operativo y se verifico el inicio.', 'fecha' => '2026-06-05'],
-    ['id' => 12, 'equipo' => 'Monitor Recepcion 01', 'detalle' => 'Se reemplazo el cable de video y se probo el funcionamiento.', 'fecha' => '2026-05-22'],
-    ['id' => 9, 'equipo' => 'PC Soporte 01', 'detalle' => 'Se limpio el equipo y se corrigio el problema de ventilacion.', 'fecha' => '2026-04-30'],
-];
+$trabajos = [];
+$error = '';
+try {
+    $conexion = conectarBD();
+    $idUsuario = (int) $_SESSION['id_usuario'];
+    $stmt = mysqli_prepare($conexion, "SELECT t.id_ticket, t.titulo, t.descripcion, t.diagnostico, t.resolucion, t.fecha_cierre,
+        e.nombre AS equipo_nombre
+        FROM ticket AS t
+        INNER JOIN tecnico AS te ON te.id_tecnico = t.id_tecnico
+        INNER JOIN usuario AS tu ON tu.id_usuario = te.id_usuario
+        INNER JOIN equipo AS e ON e.id_equipo = t.id_equipo
+        WHERE te.id_usuario = ? AND te.estado = 'Activo' AND tu.id_rol = 2 AND t.estado = 'Resuelto'
+        ORDER BY t.fecha_cierre DESC, t.id_ticket DESC");
+    mysqli_stmt_bind_param($stmt, 'i', $idUsuario);
+    mysqli_stmt_execute($stmt);
+    $trabajos = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+    mysqli_stmt_close($stmt);
+} catch (mysqli_sql_exception $exception) {
+    $error = 'No se pudo cargar tu historial de trabajos.';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,9 +35,9 @@ $trabajos = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de trabajos - Novaris</title>
-    <link id="tema-oscuro" rel="stylesheet" href="../style_dark.css?v=9" media="all">
-    <link id="tema-claro" rel="stylesheet" href="../style_light.css?v=9" media="not all">
-    <link rel="stylesheet" href="../admin_paginas/admin-theme.css?v=1">
+    <link id="tema-oscuro" rel="stylesheet" href="../style_dark.css?v=12" media="all">
+    <link id="tema-claro" rel="stylesheet" href="../style_light.css?v=12" media="not all">
+    <link rel="stylesheet" href="../admin_paginas/admin-theme.css?v=3">
 </head>
 <body class="app-page">
     <header><nav class="navbar">
@@ -33,12 +48,43 @@ $trabajos = [
     </nav></header>
     <div class="side-bar">
         <div class="home-link"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><a href="index-tecnico.php" class="side-link">Inicio</a></div>
-        <div class="inventario-link"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 2v-5.18A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-linecap="round"/></svg><a href="mis_tickets.php" class="side-link">Mis tickets</a></div>
+        <div class="inventario-link"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 2v-5.18A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-linecap="round"/></svg><a href="mis_ticketsT.php" class="side-link">Mis tickets</a></div>
         <div class="mesa-ayuda-link active"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg><a href="historial_trabajos.php" class="side-link">Historial de trabajos</a></div>
         <div class="reportes-link"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M3 7h18M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M8 11h8M8 15h5" stroke-linecap="round"/></svg><a href="equipos_tecnico.php" class="side-link">Equipos</a></div>
     </div>
     <div class="informacion"><span id="fechahoy"></span><div id="titulo-informacion"><strong>Bienvenido,</strong> <?php echo escaparHTML($nombreCompleto); ?></div><p>Consulta los tickets que finalizaste.</p></div>
-    <main class="help-page"><section class="ticket-list"><h2>Historial de trabajos</h2><div class="ticket-table-wrapper"><table class="ticket-table"><thead><tr><th>ID</th><th>Equipo</th><th>Detalle</th><th>Fecha de cierre</th></tr></thead><tbody><?php foreach ($trabajos as $trabajo): ?><tr><td><?php echo (int) $trabajo['id']; ?></td><td><?php echo escaparHTML($trabajo['equipo']); ?></td><td><?php echo escaparHTML($trabajo['detalle']); ?></td><td><?php echo escaparHTML($trabajo['fecha']); ?></td></tr><?php endforeach; ?></tbody></table></div></section></main>
+    <main class="help-page">
+        <section class="ticket-list">
+            <h2>Historial de trabajos</h2>
+            <p>Tickets resueltos por ti. Abre el detalle para consultar el diagnóstico y la solución.</p>
+            <?php if ($error !== ''): ?><div class="mensaje-error" role="alert"><?php echo escaparHTML($error); ?></div><?php endif; ?>
+            <div class="ticket-table-wrapper">
+                <table class="ticket-table">
+                    <thead><tr><th>ID</th><th>Título</th><th>Equipo</th><th>Solución</th><th>Fecha de cierre</th><th>Acción</th></tr></thead>
+                    <tbody>
+                        <?php if ($trabajos === [] && $error === ''): ?><tr><td colspan="6">Todavía no tienes tickets resueltos.</td></tr><?php endif; ?>
+                        <?php foreach ($trabajos as $trabajo): ?>
+                            <tr>
+                                <td><?php echo (int) $trabajo['id_ticket']; ?></td>
+                                <td><?php echo escaparHTML($trabajo['titulo']); ?></td>
+                                <td><?php echo escaparHTML($trabajo['equipo_nombre']); ?></td>
+                                <td><?php echo escaparHTML($trabajo['resolucion'] ?: 'Sin solución registrada.'); ?></td>
+                                <td><?php echo escaparHTML($trabajo['fecha_cierre'] ?? 'Sin fecha registrada'); ?></td>
+                                <td>
+                                    <details>
+                                        <summary>Ver detalle</summary>
+                                        <p><strong>Descripción:</strong><br><?php echo nl2br(escaparHTML($trabajo['descripcion'])); ?></p>
+                                        <p><strong>Diagnóstico:</strong><br><?php echo nl2br(escaparHTML($trabajo['diagnostico'] ?: 'Sin diagnóstico registrado.')); ?></p>
+                                        <p><strong>Solución:</strong><br><?php echo nl2br(escaparHTML($trabajo['resolucion'] ?: 'Sin solución registrada.')); ?></p>
+                                    </details>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
     <script>document.getElementById('fechahoy').textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); (function () { const temaOscuro = document.getElementById('tema-oscuro'); const temaClaro = document.getElementById('tema-claro'); const temaGuardado = localStorage.getItem('novaris-tema'); const temaInicial = temaGuardado === 'light' ? 'light' : 'dark'; function aplicarTema(tema, guardar = true) { const esClaro = tema === 'light'; document.documentElement.dataset.theme = tema; temaOscuro.media = esClaro ? 'not all' : 'all'; temaClaro.media = esClaro ? 'all' : 'not all'; document.querySelector('[data-tema="dark"]').hidden = esClaro; document.querySelector('[data-tema="light"]').hidden = !esClaro; if (guardar) localStorage.setItem('novaris-tema', tema); } window.cambiarTema = function (tema) { document.documentElement.classList.add('theme-ready'); aplicarTema(tema); }; document.addEventListener('DOMContentLoaded', function () { aplicarTema(temaInicial, false); setTimeout(function () { document.documentElement.classList.add('theme-ready'); }, 1000); }); }());</script>
 </body>
 </html>
