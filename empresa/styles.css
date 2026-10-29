@@ -373,6 +373,34 @@ a {
   line-height: 1.65;
 }
 
+.manuals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 1.3rem;
+}
+
+.manuals-grid .service-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.manuals-grid .service-card p {
+  margin-bottom: 1.5rem;
+}
+
+.manuals-grid .button {
+  margin-top: auto;
+  max-width: 100%;
+  text-align: center;
+}
+
+.manuals-grid .button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
 .trust-bar {
   padding: 1.65rem 0;
   color: #fff;
